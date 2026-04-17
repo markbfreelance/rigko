@@ -239,7 +239,7 @@ function DitheredWaves({
           uniforms={waveUniforms}
         />
       </mesh>
-      <EffectComposer disableNormalPass>
+      <EffectComposer enableNormalPass={false}>
         <RetroEffect colorNum={colorNum} pixelSize={pixelSize} />
       </EffectComposer>
       <mesh
