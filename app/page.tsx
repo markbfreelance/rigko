@@ -1,5 +1,5 @@
-import Header from "./components/header"; // verified_fix
-import Footer from "./components/footer"; // verified_fix
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import HeroHome from "./home/hero-home";
 import SuggestedBuildsHome from "./home/suggested-builds-home";
 import GettingStartedHome from "./home/getting-started-home";
