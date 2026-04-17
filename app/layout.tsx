@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { outfit, geistMono } from "./fonts";
 import "./globals.css";
-import ThemeProvider from "./components/ThemeProvider";
+import ThemeProvider from "./components/theme-provider";
+import RevealObserver from "./components/reveal-observer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
+// REFRESH_TRIGGER: kebab-case transition complete
 export const metadata: Metadata = {
-  title: "Rigko — PC Part Picker for Southeast Asia",
+  title: "Rigko — Premium PC Part Picker & Builder",
   description:
-    "Compare PC component prices across Southeast Asian retailers. Check compatibility, track price drops, and build smarter — all in Philippine Peso.",
+    "Compare PC component prices across Southeast Asian retailers. Build your dream rig with real-time price tracking and compatibility checking.",
 };
 
 export default function RootLayout({
@@ -27,10 +19,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${outfit.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen flex flex-col bg-background text-foreground">
+      <body 
+        className="min-h-screen w-full flex flex-col antialiased selection:bg-[#c2000b] selection:text-white scanlines relative"
+        suppressHydrationWarning
+      >
+        <div className="vignette"></div>
+        <RevealObserver />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
