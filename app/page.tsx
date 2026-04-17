@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="flex-1 relative flex flex-col bg-black px-4 md:px-12 lg:px-16">
+      <main className="flex-1 relative flex flex-col bg-transparent">
         {/* Analog Texture Backdrops */}
         <BackgroundTerminalText />
         

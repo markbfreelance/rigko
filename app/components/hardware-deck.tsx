@@ -200,7 +200,7 @@ const components = [
     row: 4,
     x_override: 20,
     nudge: { x: 0, y: 0 },
-    rotation: 0,
+    rotation: -15,
     icon: (
       <svg viewBox="0 0 100 120" className="w-full h-full">
         <rect x="15" y="15" width="70" height="90" rx="3" fill="#0a1a10" stroke="#000" strokeWidth="1" />
@@ -337,7 +337,7 @@ export default function HardwareDeck() {
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)]"
+                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)] dark:invert-0 invert dark:hue-rotate-0 hue-rotate-180"
                 >
                    {comp.icon}
                 </motion.div>

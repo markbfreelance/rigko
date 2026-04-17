@@ -28,7 +28,7 @@ const steps = [
 
 export default function GettingStartedHome() {
   return (
-    <section className="w-full bg-[#0a0a0a] py-32 px-4 md:px-12 relative overflow-hidden">
+    <section className="w-full bg-[#fdfdfd] dark:bg-[#0a0a0a] py-32 px-4 md:px-12 relative overflow-hidden transition-colors">
       
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
         
@@ -42,50 +42,50 @@ export default function GettingStartedHome() {
                 <div className="w-24 h-24 rounded-3xl bg-[#c2000b] flex items-center justify-center shadow-2xl shadow-[#c2000b]/30 animate-float">
                    <Icon icon="solar:cpu-bold" className="w-12 h-12 text-white" />
                 </div>
-                <div className="flex gap-4">
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#c2000b]/20 transition-colors">
-                      <Icon icon="solar:videocard-bold" className="w-6 h-6 text-white/40" />
+                 <div className="flex gap-4">
+                   <div className="w-12 h-12 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center hover:bg-[#c2000b]/20 transition-colors">
+                      <Icon icon="solar:videocard-bold" className="w-6 h-6 text-black/40 dark:text-white/40 transition-colors" />
                    </div>
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#c2000b]/20 transition-colors">
-                      <Icon icon="solar:ssd-round-bold" className="w-6 h-6 text-white/40" />
+                   <div className="w-12 h-12 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center hover:bg-[#c2000b]/20 transition-colors">
+                      <Icon icon="solar:ssd-round-bold" className="w-6 h-6 text-black/40 dark:text-white/40 transition-colors" />
                    </div>
                 </div>
              </div>
 
              {/* Dynamic Circles */}
-             <div className="absolute inset-0 border-[60px] border-white/5 rounded-full scale-[1.5] group-hover:scale-[1.6] transition-transform duration-1000"></div>
+             <div className="absolute inset-0 border-[60px] border-black/5 dark:border-white/5 rounded-full scale-[1.5] group-hover:scale-[1.6] transition-transform duration-1000"></div>
           </div>
         </div>
 
         {/* Right Side: content */}
         <div className="reveal w-full lg:w-1/2 order-1 lg:order-2">
           <div className="text-[#c2000b] text-xs font-bold tracking-widest uppercase mb-4">Precision Engineering</div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-10 leading-tight tracking-tight">INTELLIGENT_BUILDING_PROCESS</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-white mb-10 leading-tight tracking-tight transition-colors">INTELLIGENT_BUILDING_PROCESS</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10">
             {steps.map((step, idx) => (
               <div key={idx} className="group">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#c2000b] transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-[#c2000b] transition-colors">
                     <Icon icon={step.icon} className="w-4 h-4 text-[#c2000b] group-hover:text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-white group-hover:text-[#c2000b] transition-colors">{step.title}</h3>
+                  <h3 className="text-lg font-bold text-black dark:text-white group-hover:text-[#c2000b] transition-colors">{step.title}</h3>
                 </div>
-                <p className="text-sm text-gray-400 leading-relaxed font-mono">
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-mono transition-colors">
                   {step.desc}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="mt-16 pt-10 border-t border-white/5 flex items-center gap-8">
+          <div className="mt-16 pt-10 border-t border-black/10 dark:border-white/5 flex items-center gap-8 transition-colors">
             <div className="flex -space-x-3">
                {[1,2,3].map(i => (
-                 <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-gray-800 flex items-center justify-center text-[10px] font-bold">U{i}</div>
+                 <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-black bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[10px] font-bold text-black dark:text-white transition-colors">U{i}</div>
                ))}
             </div>
-            <div className="text-sm text-gray-500 font-medium">
-               <span className="text-white">5,000+ Builders</span> already configured their rigs this month.
+            <div className="text-sm text-gray-600 dark:text-gray-500 font-medium transition-colors">
+               <span className="text-black dark:text-white">5,000+ Builders</span> already configured their rigs this month.
             </div>
           </div>
         </div>

@@ -3,12 +3,37 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #080301;
+  --background: #fdfdfd;
+  --foreground: #111111;
+  --accent: #c2000b;
+  --chassis-gray: #ffffff;
+  --chassis-metal: #f8f8f8;
+  --chassis-highlight: #ffffff;
+  
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: #d0d0d0;
+  
+  --mesh-bg: #ececec;
+  --mesh-dot: #d0d0d0;
+  
+  --crt-scanline: rgba(0, 0, 0, 0.02);
+}
+
+.dark {
+  --background: #050100;
   --foreground: #ffffff;
   --accent: #c2000b;
   --chassis-gray: #121212;
   --chassis-metal: #080808;
   --chassis-highlight: #1f1f1f;
+  
+  --scrollbar-track: #050100;
+  --scrollbar-thumb: #1a0000;
+  
+  --mesh-bg: #111111;
+  --mesh-dot: #222222;
+  
+  --crt-scanline: rgba(0, 0, 0, 0.25);
 }
 
 @theme inline {
@@ -25,33 +50,33 @@ html, body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   scrollbar-width: thin !important;
-  scrollbar-color: #c2000b #050100 !important;
+  scrollbar-color: #c2000b var(--scrollbar-track) !important;
 }
 
 ::-webkit-scrollbar {
   width: 12px !important;
   height: 12px !important;
-  background-color: #050100 !important;
+  background-color: var(--scrollbar-track) !important;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050100 !important;
+  background: var(--scrollbar-track) !important;
   border-radius: 0px !important;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #1a0000 !important; /* Recessed Dark Center */
-  border: 1px solid #c2000b !important; /* Sharp Red Outline */
+  background-color: var(--scrollbar-thumb) !important;
+  border: 1px solid #c2000b !important;
   border-radius: 0px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #2a0000 !important;
-  border-color: #ff0000 !important; /* Glow on hover */
+  background-color: #c2000b !important;
+  border-color: #ff0000 !important;
 }
 
 ::-webkit-scrollbar-corner {
-  background: #050100 !important;
+  background: var(--scrollbar-track) !important;
 }
 
 /* Scanlines Overlay (The "Texture") */
@@ -63,7 +88,7 @@ html, body {
   left: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, var(--crt-scanline) 50%), 
               linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
   z-index: 50;
   background-size: 100% 4px, 6px 100%;
@@ -78,10 +103,10 @@ html, body {
 }
 
 .chassis-mesh {
-  background-color: #111;
+  background-color: var(--mesh-bg);
   background-image: 
-    radial-gradient(#222 1px, transparent 1px),
-    radial-gradient(#222 1px, transparent 1px);
+    radial-gradient(var(--mesh-dot) 1px, transparent 1px),
+    radial-gradient(var(--mesh-dot) 1px, transparent 1px);
   background-size: 4px 4px;
   background-position: 0 0, 2px 2px;
 }
@@ -96,9 +121,9 @@ html, body {
 }
 
 .io-port {
-  background: #000;
-  border: 1px solid #333;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+  background: var(--chassis-metal);
+  border: 1px solid var(--chassis-gray);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
 }
 
 /* Nothing-Style Glyph Matrix Effect */

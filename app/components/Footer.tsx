@@ -39,7 +39,7 @@ import LightningScreen from "./lightning-screen";
 
 export default function Footer() {
   return (
-    <footer className="w-full chassis-steel pt-16 pb-16 px-6 md:px-16 relative z-[110] border-t-2 border-black/50">
+    <footer className="w-full chassis-steel pt-16 pb-16 px-6 md:px-16 relative z-[110] border-t-2 border-black/10 dark:border-black/50">
       {/* Structural Hardware Detail (The "Seam") */}
       <div className="absolute top-4 left-6 hex-screw scale-75"></div>
       <div className="absolute top-4 right-6 hex-screw scale-75"></div>
@@ -90,11 +90,11 @@ export default function Footer() {
 
           {footerLinks.map(group => (
             <div key={group.title}>
-              <h4 className="text-gray-400 font-black text-[10px] uppercase mb-6 tracking-[0.2em]">{group.title}</h4>
+              <h4 className="text-gray-500 dark:text-gray-400 font-black text-[10px] uppercase mb-6 tracking-[0.2em] transition-colors">{group.title}</h4>
               <ul className="space-y-3">
                 {group.links.map(link => (
                   <li key={link.label}>
-                    <a href={link.href} className="text-gray-600 hover:text-[#ff0000] text-[11px] font-bold transition-colors uppercase tracking-tight">
+                    <a href={link.href} className="text-gray-500 hover:text-[#ff0000] dark:text-gray-600 dark:hover:text-[#ff0000] text-[11px] font-bold transition-colors uppercase tracking-tight">
                       {link.label}
                     </a>
                   </li>
