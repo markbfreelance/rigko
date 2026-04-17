@@ -3,6 +3,7 @@ import { outfit, geistMono } from "./fonts";
 import "./globals.css";
 import ThemeProvider from "./components/theme-provider";
 import RevealObserver from "./components/reveal-observer";
+import ChassisFrame from "./components/chassis-frame";
 
 // REFRESH_TRIGGER: kebab-case transition complete
 export const metadata: Metadata = {
@@ -28,7 +29,12 @@ export default function RootLayout({
       >
         <div className="vignette"></div>
         <RevealObserver />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ChassisFrame />
+        <ThemeProvider>
+          <div className="flex-1 w-full pt-16 md:pt-20">
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

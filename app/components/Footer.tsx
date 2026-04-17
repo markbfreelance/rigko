@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Icon } from "@iconify/react";
 
 const footerLinks = [
@@ -34,38 +35,66 @@ const footerLinks = [
   },
 ];
 
+import LightningScreen from "./lightning-screen";
+
 export default function Footer() {
   return (
-    <footer className="w-full bg-black pt-20 pb-10 px-4 md:px-12 border-t border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+    <footer className="w-full chassis-steel pt-16 pb-16 px-6 md:px-16 relative z-[110] border-t-2 border-black/50">
+      {/* Structural Hardware Detail (The "Seam") */}
+      <div className="absolute top-4 left-6 hex-screw scale-75"></div>
+      <div className="absolute top-4 right-6 hex-screw scale-75"></div>
+
+      <div className="max-w-[1440px] mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12 pt-12">
           
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-6">
-              <div className="relative h-6 w-6">
-                <Image src="/rigko-logo.svg" alt="Rigko Logo" fill />
+          {/* LCD Status Screen - Left Panel */}
+          <div className="lg:col-span-2 relative group">
+            <div className="absolute -inset-1 bg-black rounded-lg border-t border-l border-white/5 border-b border-r border-white/10 shadow-2xl"></div>
+            <div className="relative bg-[#050100] border-2 border-black rounded-md overflow-hidden shadow-[0_0_40px_rgba(194,0,11,0.1)] p-8">
+              {/* High-Voltage Lightning Backdrop */}
+              <div className="absolute inset-0">
+                <LightningScreen 
+                  hue={360}
+                  speed={0.5}
+                  xOffset={-1.5}
+                  intensity={1.6}
+                  size={1.4}
+                />
               </div>
-              <span className="text-xl font-bold text-white uppercase tracking-tight">Rigko</span>
-            </Link>
-            <p className="text-gray-500 text-sm max-w-sm leading-relaxed">
-              The intelligent PC configurator for next-gen builders. Providing real-time market data and precision compatibility for the PH hardware community.
-            </p>
-            <div className="flex gap-4 mt-8">
-              {["brandico:github", "brandico:twitter-bird", "brandico:facebook-rect"].map(icon => (
-                <a key={icon} href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#c2000b] hover:border-[#c2000b] transition-all">
-                  <Icon icon={icon} className="w-5 h-5" />
-                </a>
-              ))}
+              {/* Screen CRT Effect Overlay */}
+              <div className="absolute inset-0 scanlines opacity-20 pointer-events-none"></div>
+              
+              <Link href="/" className="flex items-center gap-4 mb-6 relative z-10">
+                <div className="relative h-8 w-8">
+                  <div className="absolute inset-0 bg-[#c2000b] blur-sm animate-pulse opacity-50"></div>
+                  <Image src="/rigko-logo.svg" alt="Rigko Logo" fill className="relative z-10" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-2xl font-black text-white uppercase tracking-tighter text-glow">Rigko</span>
+                </div>
+              </Link>
+
+              <p className="text-gray-400 text-[11px] font-mono leading-relaxed uppercase opacity-80 mb-8 border-l-2 border-[#c2000b] pl-4">
+                INDUSTRIAL_PC_CONFIGURATOR // DATA_DRIVEN_BUILDS // PH_HARDWARE_INDEX.ACCESS_GRANTED.
+              </p>
+
+              <div className="flex gap-4 relative z-10">
+                {["brandico:github", "brandico:twitter-bird", "brandico:facebook-rect"].map(icon => (
+                  <a key={icon} href="#" className="w-10 h-10 border border-[#c2000b]/20 flex items-center justify-center text-[#c2000b] hover:text-white hover:bg-[#c2000b] transition-all bg-black shadow-[inset_0_0_10px_rgba(194,0,11,0.2)]">
+                    <Icon icon={icon} className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
           {footerLinks.map(group => (
             <div key={group.title}>
-              <h4 className="text-white font-bold text-sm uppercase mb-6">{group.title}</h4>
-              <ul className="space-y-4">
+              <h4 className="text-gray-400 font-black text-[10px] uppercase mb-6 tracking-[0.2em]">{group.title}</h4>
+              <ul className="space-y-3">
                 {group.links.map(link => (
                   <li key={link.label}>
-                    <a href={link.href} className="text-gray-500 hover:text-white text-sm transition-colors">
+                    <a href={link.href} className="text-gray-600 hover:text-[#ff0000] text-[11px] font-bold transition-colors uppercase tracking-tight">
                       {link.label}
                     </a>
                   </li>
@@ -76,14 +105,17 @@ export default function Footer() {
 
         </div>
 
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-gray-500 text-xs">
-            © {new Date().getFullYear()} Rigko Hardware Systems. All rights reserved.
-          </p>
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-4">
+             <div className="w-8 h-2 bg-gray-900 rounded-sm"></div>
+             <p className="text-gray-600 text-[9px] font-mono tracking-widest uppercase">
+              VERSION: 1.0.4-STABLE // BUILD_CYCLE: {new Date().getFullYear()}
+            </p>
+          </div>
           <div className="flex gap-8">
-            <a href="#" className="text-gray-500 hover:text-white text-xs">Security</a>
-            <a href="#" className="text-gray-500 hover:text-white text-xs">Status</a>
-            <a href="#" className="text-gray-500 hover:text-white text-xs">Sitemap</a>
+            {["Security", "Status", "Sitemap"].map(link => (
+              <a key={link} href="#" className="text-gray-600 hover:text-white text-[10px] uppercase font-bold tracking-tighter">{link}</a>
+            ))}
           </div>
         </div>
       </div>
