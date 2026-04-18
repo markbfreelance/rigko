@@ -280,7 +280,7 @@ const components = [
 
 export default function HardwareDeck() {
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none">
+    <div className="absolute inset-0 pointer-events-none">
       {/* Max-Width Assembly Container (Matched to Header max-w-7xl) */}
       <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-none">
         {components.map((comp, idx) => {
@@ -295,8 +295,8 @@ export default function HardwareDeck() {
           return (
             <motion.div
               key={comp.id + idx}
-              initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
-              animate={{ opacity: 1, scale: comp.scale, x: "-50%", y: "-50%" }}
+              initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", zIndex: 5 }}
+              animate={{ opacity: 1, scale: comp.scale, x: "-50%", y: "-50%", zIndex: 5 }}
               transition={{ 
                 duration: 1.2, 
                 delay: idx * 0.08,
@@ -310,7 +310,7 @@ export default function HardwareDeck() {
                 height: "280px",
                 pointerEvents: "auto"
               }}
-              whileHover={{ zIndex: 100, scale: comp.scale * 1.05 }}
+              whileHover={{ zIndex: 80, scale: comp.scale * 1.05 }}
               className="group cursor-grab active:cursor-grabbing"
             >
               {/* Breathing Layer (Floating Y-Axis only, No Rotation) */}
@@ -346,7 +346,7 @@ export default function HardwareDeck() {
                 <motion.div 
                   initial={{ rotate: 0, scale: 1 / comp.scale }}
                   animate={{ rotate: 0, scale: 1 / comp.scale }}
-                  className="absolute top-0 right-0 p-2 bg-black/95 backdrop-blur-2xl border border-[#c2000b]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-mono text-[11px] text-white tracking-[0.2em] shadow-[0_0_20px_rgba(194,0,11,0.4)] uppercase whitespace-nowrap z-50 pointer-events-none origin-top-right"
+                  className="absolute top-0 right-0 p-2 bg-[var(--deck-label-bg)] backdrop-blur-2xl border border-[var(--deck-accent)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-mono text-[11px] text-[var(--deck-label-text)] tracking-[0.2em] shadow-[0_0_20px_rgba(194,0,11,0.4)] uppercase whitespace-nowrap z-50 pointer-events-none origin-top-right"
                 >
                    {comp.label}
                 </motion.div>

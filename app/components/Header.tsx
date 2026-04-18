@@ -16,7 +16,7 @@ export default function Header() {
   const { theme, toggleTheme, mounted } = useTheme();
 
   return (
-    <header className="fixed top-0 left-0 w-full h-16 md:h-20 z-[110] flex items-center bg-transparent pointer-events-none">
+    <header className="fixed top-0 left-0 w-full h-16 md:h-20 z-[200] flex items-center bg-transparent pointer-events-none">
       <div className="mx-auto w-full max-w-[1440px] px-8 md:px-16 flex items-center justify-between pointer-events-auto">
         {/* Logo Section - Flush with steel */}
         <Link href="/" className="flex items-center gap-4 group">

@@ -8,7 +8,9 @@
   --accent: #c2000b;
   --chassis-gray: #ffffff;
   --chassis-metal: #f8f8f8;
-  --chassis-highlight: #ffffff;
+  --chassis-highlight: #dcdcdc;
+  --chassis-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.1);
+  --chassis-border: rgba(0, 0, 0, 0.1);
   
   --scrollbar-track: #f0f0f0;
   --scrollbar-thumb: #d0d0d0;
@@ -25,6 +27,8 @@
   --deck-secondary: #f0f0f0;
   --deck-gold: #d4af37;
   --deck-procie: #347a4f;
+  --deck-label-bg: rgba(255, 255, 255, 0.95);
+  --deck-label-text: #000000;
 }
 
 .dark {
@@ -34,6 +38,8 @@
   --chassis-gray: #121212;
   --chassis-metal: #080808;
   --chassis-highlight: #1f1f1f;
+  --chassis-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.5);
+  --chassis-border: rgba(0, 0, 0, 0.5);
   
   --scrollbar-track: #050100;
   --scrollbar-thumb: #1a0000;
@@ -50,6 +56,8 @@
   --deck-secondary: #1a1a1a;
   --deck-gold: #d4af37;
   --deck-procie: #347a4f;
+  --deck-label-bg: rgba(0, 0, 0, 0.95);
+  --deck-label-text: #ffffff;
 }
 
 @theme inline {
@@ -115,7 +123,7 @@ html, body {
 .chassis-steel {
   background: linear-gradient(135deg, var(--chassis-gray), var(--chassis-metal));
   border: 1px solid var(--chassis-highlight);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.5);
+  box-shadow: var(--chassis-shadow);
 }
 
 .chassis-mesh {

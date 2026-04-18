@@ -10,11 +10,6 @@ export default function HeroHome() {
       {/* Background Ambience */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#fdfdfd] via-transparent to-[#fdfdfd] dark:from-black dark:to-black z-0 pointer-events-none transition-colors"></div>
       
-      {/* Scattered Hardware Debris Field */}
-      <div className="absolute inset-0 z-[5] pointer-events-none">
-         <HardwareDeck />
-      </div>
-
       <div className="max-w-[1440px] mx-auto px-8 md:px-16 relative z-10 flex flex-col items-center pointer-events-none w-full">
         
         {/* Hero Text */}
@@ -58,6 +53,9 @@ export default function HeroHome() {
         </div>
 
       </div>
+
+      {/* Scattered Hardware Debris Field - Placed after Hero Text to assist stacking */}
+      <HardwareDeck />
 
       {/* Aesthetic Accents (Terminal Debris) */}
       <div className="absolute bottom-12 left-12 hidden lg:block z-10">

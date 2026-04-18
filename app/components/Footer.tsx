@@ -39,7 +39,7 @@ import LightningScreen from "./lightning-screen";
 
 export default function Footer() {
   return (
-    <footer className="w-full chassis-steel pt-16 pb-16 px-6 md:px-16 relative z-[110] border-t-2 border-black/10 dark:border-black/50">
+    <footer className="w-full chassis-steel pt-16 pb-16 px-6 md:px-16 relative z-[110] border-t-2 border-[var(--chassis-border)]">
       {/* Structural Hardware Detail (The "Seam") */}
       <div className="absolute top-4 left-6 hex-screw scale-75"></div>
       <div className="absolute top-4 right-6 hex-screw scale-75"></div>
@@ -105,7 +105,7 @@ export default function Footer() {
 
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="pt-8 border-t border-black/10 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-4">
              <div className="w-8 h-2 bg-gray-900 rounded-sm"></div>
              <p className="text-gray-600 text-[9px] font-mono tracking-widest uppercase">
@@ -114,7 +114,7 @@ export default function Footer() {
           </div>
           <div className="flex gap-8">
             {["Security", "Status", "Sitemap"].map(link => (
-              <a key={link} href="#" className="text-gray-600 hover:text-white text-[10px] uppercase font-bold tracking-tighter">{link}</a>
+              <a key={link} href="#" className="text-gray-600 hover:text-black dark:hover:text-white text-[10px] uppercase font-bold tracking-tighter">{link}</a>
             ))}
           </div>
         </div>
