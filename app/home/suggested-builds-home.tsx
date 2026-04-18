@@ -58,7 +58,7 @@ export default function SuggestedBuildsHome() {
             <motion.div
               key={idx}
               whileHover={{ y: -10 }}
-              className="reveal flex flex-col bg-black/[0.03] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 rounded-3xl p-8 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-all group overflow-hidden relative"
+              className="reveal flex flex-col bg-white dark:bg-white/[0.03] border border-black/5 dark:border-white/5 rounded-3xl p-8 hover:shadow-xl dark:hover:bg-white/[0.06] transition-all group overflow-hidden relative shadow-sm"
             >
               {/* Card Background Decoration */}
               <div className="absolute top-0 right-0 p-4 font-mono text-[120px] leading-none text-black dark:text-white opacity-[0.02] select-none pointer-events-none group-hover:opacity-[0.05] transition-opacity">
