@@ -12,6 +12,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
+        <Link href="/" className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-[#c2000b] transition-colors mb-4">
+          <Icon icon="mdi:arrow-left" className="text-sm" />
+          Back to Home
+        </Link>
         {/* Terminal-style card */}
         <div className="border border-[var(--chassis-border)] bg-[var(--chassis-gray)] shadow-lg">
           {/* Title bar */}
@@ -28,7 +32,7 @@ export default function LoginPage() {
 
           <div className="p-8">
             {/* Logo */}
-            <div className="flex flex-col items-center mb-8">
+            <Link href="/" className="flex flex-col items-center mb-8 group">
               <div className="relative h-10 w-10 mb-3">
                 <Image src="/rigko-logo.svg" alt="Rigko" fill className="object-contain" />
               </div>
@@ -38,7 +42,7 @@ export default function LoginPage() {
               <p className="text-xs text-gray-500 dark:text-gray-400 font-mono mt-1">
                 authenticate to continue
               </p>
-            </div>
+            </Link>
 
             {/* Error */}
             {state?.error && (

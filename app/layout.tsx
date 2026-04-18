@@ -31,7 +31,7 @@ export default function RootLayout({
         <RevealObserver />
         <ChassisFrame />
         <ThemeProvider>
-          <div className="flex-1 w-full pt-16 md:pt-20">
+          <div className="flex-1 w-full">
             {children}
           </div>
         </ThemeProvider>

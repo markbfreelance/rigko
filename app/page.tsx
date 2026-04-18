@@ -8,7 +8,7 @@ import BackgroundTerminalText from "./components/background-terminal-text";
 
 export default function Home() {
   return (
-    <>
+    <div className="pt-16 md:pt-20">
       <Header>
         <HeaderAuth />
       </Header>
@@ -21,6 +21,6 @@ export default function Home() {
         <GettingStartedHome />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
