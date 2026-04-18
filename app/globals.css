@@ -169,16 +169,32 @@ html, body {
   animation: glyph-flicker 2s steps(2) infinite;
 }
 
-/* Vignette Effect */
+/* Vignette Effect - Theme aware and mobile responsive */
 .vignette {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 200px rgba(0,0,0,0.95) inset;
+  box-shadow: 0 0 200px rgba(0,0,0,0.8) inset;
   pointer-events: none;
   z-index: 100;
+  transition: box-shadow 0.5s ease;
+}
+
+.dark .vignette {
+  box-shadow: 0 0 200px rgba(0,0,0,0.95) inset;
+}
+
+@media (max-width: 768px) {
+  /* Reduced for mobile light mode */
+  .vignette {
+    box-shadow: 0 0 50px rgba(0,0,0,0.1) inset;
+  }
+  /* Reduced for mobile dark mode */
+  .dark .vignette {
+    box-shadow: 0 0 100px rgba(0,0,0,0.6) inset;
+  }
 }
 
 /* Screen Flicker */
