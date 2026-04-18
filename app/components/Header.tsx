@@ -12,7 +12,7 @@ const navLinks = [
   { label: "PH Prices", href: "#" },
 ];
 
-export default function Header() {
+export default function Header({ children }: { children?: React.ReactNode }) {
   const { theme, toggleTheme, mounted } = useTheme();
 
   return (
@@ -82,13 +82,7 @@ export default function Header() {
             </button>
           )}
 
-            <button className="group relative">
-            <div className="absolute inset-0 bg-[#c2000b]/50 blur-xl group-hover:bg-[#ff0000]/70 transition-all rounded-full"></div>
-            <div className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b] text-black dark:text-white pl-4 pr-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]">
-              <Icon icon="mdi:power" className="text-sm" />
-              <span>START BUILDING</span>
-            </div>
-          </button>
+            {children}
 
           </div>
         </div>
