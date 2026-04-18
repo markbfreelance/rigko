@@ -38,7 +38,7 @@ const builds = [
 
 export default function SuggestedBuildsHome() {
   return (
-    <section className="w-full bg-[#f9f9f9] dark:bg-black py-24 px-4 md:px-12 relative transition-colors">
+    <section className="w-full bg-[#f9f9f9] dark:bg-black py-24 px-4 md:px-12 relative z-20 transition-colors">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}

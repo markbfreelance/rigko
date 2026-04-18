@@ -31,12 +31,12 @@ export default function HeroHome() {
               Next-Gen Assembly
             </div>
             
-            <h1 className="text-6xl md:text-9xl font-bold tracking-tight text-black dark:text-white mb-6 leading-tight select-none pointer-events-auto transition-colors">
+            <h1 className="text-6xl md:text-9xl font-bold tracking-tight text-black/90 dark:text-white mb-6 leading-tight select-none pointer-events-auto transition-colors">
               CUSTOM RIG?<br />
               <span className="text-[#c2000b] pr-[0.1em]">YOUR RIG.</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed uppercase tracking-[0.2em] font-medium opacity-80 mb-12 pointer-events-auto transition-colors">
+            <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed uppercase tracking-[0.2em] font-medium opacity-100 md:opacity-80 mb-12 pointer-events-auto transition-colors [text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff,_0_0_8px_#fff] md:[text-shadow:none] dark:[text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_0_8px_#000]">
               NO. 1 PC BUILDING PLATFORM IN SOUTHEAST ASIA
             </p>
 
@@ -56,6 +56,13 @@ export default function HeroHome() {
 
       {/* Scattered Hardware Debris Field - Placed after Hero Text to assist stacking */}
       <HardwareDeck />
+      
+      {/* Mobile-specific Bokeh Blur Overlay (Blurs parts near edges, keeps center clear) */}
+      {/* Mobile-specific Bokeh Blur Overlay (Blurs parts near edges, keeps center clear) */}
+      <div className="absolute inset-0 md:hidden dark:hidden z-[8] pointer-events-none [backdrop-filter:blur(1px)] [mask-image:radial-gradient(circle_at_center,transparent_10%,black_10%)] [-webkit-mask-image:radial-gradient(circle_at_center,transparent_10%,black_10%)]"></div>
+      
+      {/* Dark Mode Vignette (Maintain shadow for industrial feel) */}
+      <div className="absolute inset-0 hidden dark:block md:dark:hidden shadow-[inset_0_0_200px_rgba(0,0,0,0.5)] z-[8] pointer-events-none"></div>
 
       {/* Aesthetic Accents (Terminal Debris) */}
       <div className="absolute bottom-12 left-12 hidden lg:block z-10">
