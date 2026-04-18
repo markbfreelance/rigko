@@ -17,6 +17,14 @@
   --mesh-dot: #d0d0d0;
   
   --crt-scanline: rgba(0, 0, 0, 0.02);
+
+  /* Hardware Deck Theme */
+  --deck-pcb: #ffffff;
+  --deck-stroke: #e5e5e5;
+  --deck-accent: #c2000b;
+  --deck-secondary: #f0f0f0;
+  --deck-gold: #d4af37;
+  --deck-procie: #347a4f;
 }
 
 .dark {
@@ -34,6 +42,14 @@
   --mesh-dot: #222222;
   
   --crt-scanline: rgba(0, 0, 0, 0.25);
+
+  /* Hardware Deck Theme */
+  --deck-pcb: #0f0f0f;
+  --deck-stroke: #333333;
+  --deck-accent: #c2000b;
+  --deck-secondary: #1a1a1a;
+  --deck-gold: #d4af37;
+  --deck-procie: #347a4f;
 }
 
 @theme inline {

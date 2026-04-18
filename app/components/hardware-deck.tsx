@@ -24,11 +24,11 @@ const components = [
     rotation: -2,
     icon: (
       <svg viewBox="0 0 120 160" className="w-full h-full drop-shadow-2xl">
-        <rect x="10" y="10" width="100" height="140" rx="4" fill="#0f0f0f" stroke="#333" strokeWidth="1" />
-        <circle cx="30" cy="40" r="15" fill="none" stroke="#c2000b" strokeWidth="0.8" opacity="0.6" className="animate-pulse" />
-        <circle cx="30" cy="80" r="15" fill="none" stroke="#c2000b" strokeWidth="0.8" opacity="0.6" className="animate-pulse" />
-        <circle cx="30" cy="120" r="15" fill="none" stroke="#c2000b" strokeWidth="0.8" opacity="0.6" className="animate-pulse" />
-        <rect x="108" y="15" width="2" height="130" fill="#c2000b" opacity="0.8" className="shadow-[0_0_15px_#c2000b] animate-pulse" />
+        <rect x="10" y="10" width="100" height="140" rx="4" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <circle cx="30" cy="40" r="15" fill="none" stroke="var(--deck-accent)" strokeWidth="0.8" opacity="0.6" className="animate-pulse" />
+        <circle cx="30" cy="80" r="15" fill="none" stroke="var(--deck-accent)" strokeWidth="0.8" opacity="0.6" className="animate-pulse" />
+        <circle cx="30" cy="120" r="15" fill="none" stroke="var(--deck-accent)" strokeWidth="0.8" opacity="0.6" className="animate-pulse" />
+        <rect x="108" y="15" width="2" height="130" fill="var(--deck-accent)" opacity="0.8" className="shadow-[0_0_15px_var(--deck-accent)] animate-pulse" />
       </svg>
     )
   },
@@ -43,25 +43,25 @@ const components = [
     icon: (
       <svg viewBox="0 0 100 120" className="w-full h-full">
         {/* PCB Base */}
-        <rect x="5" y="5" width="90" height="110" rx="2" fill="#0c0c0c" stroke="#333" strokeWidth="1" />
+        <rect x="5" y="5" width="90" height="110" rx="2" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="1" />
         {/* CPU Socket Area */}
-        <rect x="30" y="25" width="40" height="40" rx="1" fill="#151515" stroke="#444" strokeWidth="0.5" />
+        <rect x="30" y="25" width="40" height="40" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
         {/* VRM Heatsinks */}
-        <rect x="25" y="15" width="50" height="8" rx="1" fill="#1a1a1a" />
-        <rect x="15" y="25" width="10" height="40" rx="1" fill="#1a1a1a" />
+        <rect x="25" y="15" width="50" height="8" rx="1" fill="var(--deck-secondary)" />
+        <rect x="15" y="25" width="10" height="40" rx="1" fill="var(--deck-secondary)" />
         {/* RAM Slots */}
-        <g stroke="#333" strokeWidth="0.5">
-          <rect x="75" y="20" width="2" height="50" fill="#111" />
-          <rect x="80" y="20" width="2" height="50" fill="#111" />
-          <rect x="85" y="20" width="2" height="50" fill="#111" />
-          <rect x="90" y="20" width="2" height="50" fill="#111" />
+        <g stroke="var(--deck-stroke)" strokeWidth="0.5">
+          <rect x="75" y="20" width="2" height="50" fill="var(--deck-secondary)" />
+          <rect x="80" y="20" width="2" height="50" fill="var(--deck-secondary)" />
+          <rect x="85" y="20" width="2" height="50" fill="var(--deck-secondary)" />
+          <rect x="90" y="20" width="2" height="50" fill="var(--deck-secondary)" />
         </g>
         {/* PCIe Slots */}
-        <rect x="15" y="75" width="70" height="4" rx="0.5" fill="#1a1a1a" stroke="#222" />
-        <rect x="15" y="90" width="70" height="4" rx="0.5" fill="#1a1a1a" stroke="#222" />
+        <rect x="15" y="75" width="70" height="4" rx="0.5" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" />
+        <rect x="15" y="90" width="70" height="4" rx="0.5" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" />
         {/* PCH Lighting */}
-        <rect x="65" y="80" width="20" height="20" rx="1" fill="#111" />
-        <rect x="70" y="85" width="10" height="10" fill="#c2000b" opacity="0.6" className="animate-pulse shadow-[0_0_10px_#c2000b]" />
+        <rect x="65" y="80" width="20" height="20" rx="1" fill="var(--deck-secondary)" />
+        <rect x="70" y="85" width="10" height="10" fill="var(--deck-accent)" opacity="0.6" className="animate-pulse shadow-[0_0_10px_var(--deck-accent)]" />
       </svg>
     )
   },
@@ -77,9 +77,9 @@ const components = [
     rotation: -5,
     icon: (
       <svg viewBox="0 0 120 50" className="w-full h-full">
-        <path d="M5 35h110V15l-10-5H15l-10 5z" fill="#0f0f0f" stroke="#333" strokeWidth="1" />
-        <rect x="15" y="11" width="90" height="4" fill="#c2000b" className="animate-pulse" />
-        <rect x="10" y="36" width="100" height="3" fill="#d4af37" opacity="0.8" />
+        <path d="M5 35h110V15l-10-5H15l-10 5z" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <rect x="15" y="11" width="90" height="4" fill="var(--deck-accent)" className="animate-pulse" />
+        <rect x="10" y="36" width="100" height="3" fill="var(--deck-gold)" opacity="0.8" />
       </svg>
     )
   },
@@ -93,9 +93,9 @@ const components = [
     rotation: 5,
     icon: (
       <svg viewBox="0 0 120 60" className="w-full h-full drop-shadow-xl">
-        <path d="M5 45 L115 45 L115 20 L90 10 L30 10 L5 20 Z" fill="#0c0c0c" stroke="#333" strokeWidth="1" />
-        <path d="M5 20 L30 10 L90 10 L115 20 L115 15 L90 5 L30 5 L5 15 Z" fill="#c2000b" className="animate-pulse shadow-[0_0_20px_#c2000b]" />
-        <rect x="15" y="46" width="90" height="3" fill="#d4af37" opacity="0.8" />
+        <path d="M5 45 L115 45 L115 20 L90 10 L30 10 L5 20 Z" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <path d="M5 20 L30 10 L90 10 L115 20 L115 15 L90 5 L30 5 L5 15 Z" fill="var(--deck-accent)" className="animate-pulse shadow-[0_0_20px_var(--deck-accent)]" />
+        <rect x="15" y="46" width="90" height="3" fill="var(--deck-gold)" opacity="0.8" />
       </svg>
     )
   },
@@ -111,18 +111,18 @@ const components = [
     rotation: 90,
     icon: (
       <svg viewBox="0 0 160 80" className="w-full h-full drop-shadow-2xl">
-        <rect x="5" y="15" width="150" height="50" rx="2" fill="#0a0a0a" stroke="#333" strokeWidth="1" />
-        <path d="M10 20h140 v40 h-140z" fill="#111" />
-        <path d="M15 20v40 M25 20v40 M35 20v40 M125 20v40 M135 20v40 M145 20v40" stroke="#222" strokeWidth="0.5" />
-        <circle cx="40" cy="40" r="18" fill="#050505" stroke="#444" strokeWidth="0.5" />
-        <circle cx="40" cy="40" r="12" fill="none" stroke="#c2000b" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
-        <circle cx="80" cy="40" r="18" fill="#050505" stroke="#444" strokeWidth="0.5" />
-        <circle cx="80" cy="40" r="12" fill="none" stroke="#c2000b" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
-        <circle cx="120" cy="40" r="18" fill="#050505" stroke="#444" strokeWidth="0.5" />
-        <circle cx="120" cy="40" r="12" fill="none" stroke="#c2000b" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
-        <rect x="30" y="17" width="100" height="1.5" fill="#c2000b" className="animate-pulse shadow-[0_0_10px_#c2000b]" />
-        <rect x="15" y="65" width="50" height="4" fill="#d4af37" stroke="#b8860b" strokeWidth="0.5" />
-        <path d="M17 65v4 M21 65v4 M25 65v4 M55 65v4 M59 65v4" stroke="#000" strokeWidth="0.2" opacity="0.4" />
+        <rect x="5" y="15" width="150" height="50" rx="2" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <path d="M10 20h140 v40 h-140z" fill="var(--deck-secondary)" />
+        <path d="M15 20v40 M25 20v40 M35 20v40 M125 20v40 M135 20v40 M145 20v40" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="40" cy="40" r="18" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="40" cy="40" r="12" fill="none" stroke="var(--deck-accent)" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
+        <circle cx="80" cy="40" r="18" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="80" cy="40" r="12" fill="none" stroke="var(--deck-accent)" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
+        <circle cx="120" cy="40" r="18" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="120" cy="40" r="12" fill="none" stroke="var(--deck-accent)" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
+        <rect x="30" y="17" width="100" height="1.5" fill="var(--deck-accent)" className="animate-pulse shadow-[0_0_10px_var(--deck-accent)]" />
+        <rect x="15" y="65" width="50" height="4" fill="var(--deck-gold)" stroke="var(--deck-gold)" strokeWidth="0.5" opacity="0.8" />
+        <path d="M17 65v4 M21 65v4 M25 65v4 M55 65v4 M59 65v4" stroke="black" strokeWidth="0.2" opacity="0.4" />
       </svg>
     )
   },
@@ -136,15 +136,15 @@ const components = [
     rotation: 0,
     icon: (
       <svg viewBox="0 0 100 100" className="w-full h-full">
-        <rect x="5" y="5" width="90" height="90" rx="4" fill="#0f0f0f" stroke="#333" strokeWidth="1" />
-        <circle cx="50" cy="45" r="35" fill="#050505" stroke="#222" strokeWidth="0.5" />
-        <circle cx="50" cy="45" r="30" fill="none" stroke="#c2000b" strokeWidth="0.5" opacity="0.3" className="animate-pulse" />
-        <path d="M25 45h50 M50 20v50 M30 30l40 40 M30 60l40-40" stroke="#333" strokeWidth="0.5" opacity="0.5" />
-        <rect x="15" y="75" width="10" height="10" rx="1" fill="#151515" stroke="#333" strokeWidth="0.5" />
-        <rect x="30" y="75" width="10" height="10" rx="1" fill="#151515" stroke="#333" strokeWidth="0.5" />
-        <rect x="45" y="75" width="10" height="10" rx="1" fill="#151515" stroke="#333" strokeWidth="0.5" />
-        <rect x="60" y="75" width="10" height="10" rx="1" fill="#151515" stroke="#333" strokeWidth="0.5" />
-        <text x="50" y="48" fontSize="8" textAnchor="middle" fill="#c2000b" opacity="0.8" className="font-mono font-bold">PWR_C1</text>
+        <rect x="5" y="5" width="90" height="90" rx="4" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <circle cx="50" cy="45" r="35" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="50" cy="45" r="30" fill="none" stroke="var(--deck-accent)" strokeWidth="0.5" opacity="0.3" className="animate-pulse" />
+        <path d="M25 45h50 M50 20v50 M30 30l40 40 M30 60l40-40" stroke="var(--deck-stroke)" strokeWidth="0.5" opacity="0.5" />
+        <rect x="15" y="75" width="10" height="10" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <rect x="30" y="75" width="10" height="10" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <rect x="45" y="75" width="10" height="10" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <rect x="60" y="75" width="10" height="10" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <text x="50" y="48" fontSize="8" textAnchor="middle" fill="var(--deck-accent)" opacity="0.8" className="font-mono font-bold">PWR_C1</text>
       </svg>
     )
   },
@@ -162,33 +162,33 @@ const components = [
     icon: (
       <svg viewBox="0 0 120 40" className="w-full h-full drop-shadow-lg">
         {/* PCB Board */}
-        <rect x="5" y="12" width="110" height="16" rx="1" fill="#0c0e0c" stroke="#222" strokeWidth="0.5" />
+        <rect x="5" y="12" width="110" height="16" rx="1" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
         
         {/* Gold Pins Connector */}
         <g transform="translate(108, 14)">
           {[...Array(8)].map((_, i) => (
-            <rect key={i} x={0} y={i * 1.5} width="4" height="0.8" fill="#d4af37" opacity="0.9" />
+            <rect key={i} x={0} y={i * 1.5} width="4" height="0.8" fill="var(--deck-gold)" opacity="0.9" />
           ))}
         </g>
-
+ 
         {/* Mounting Notch */}
-        <circle cx="8" cy="20" r="2.5" fill="#000" />
-        <rect x="5" y="18.5" width="4" height="3" fill="#000" />
-
+        <circle cx="8" cy="20" r="2.5" fill="black" />
+        <rect x="5" y="18.5" width="4" height="3" fill="black" />
+ 
         {/* Controller Chip */}
-        <rect x="85" y="14" width="12" height="12" rx="0.5" fill="#151515" stroke="#333" strokeWidth="0.5" />
-        <rect x="87" y="16" width="8" height="8" fill="none" stroke="#c2000b" strokeWidth="0.2" opacity="0.4" />
-
+        <rect x="85" y="14" width="12" height="12" rx="0.5" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <rect x="87" y="16" width="8" height="8" fill="none" stroke="var(--deck-accent)" strokeWidth="0.2" opacity="0.4" />
+ 
         {/* NAND Flash Chips */}
-        <rect x="35" y="14" width="18" height="12" rx="0.5" fill="#111" stroke="#333" strokeWidth="0.5" />
-        <rect x="58" y="14" width="18" height="12" rx="0.5" fill="#111" stroke="#333" strokeWidth="0.5" />
+        <rect x="35" y="14" width="18" height="12" rx="0.5" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <rect x="58" y="14" width="18" height="12" rx="0.5" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
         
         {/* Circuit Traces */}
-        <path d="M20 18h10 M20 22h10 M80 20h5" stroke="#d4af37" strokeWidth="0.2" opacity="0.3" />
-
+        <path d="M20 18h10 M20 22h10 M80 20h5" stroke="var(--deck-gold)" strokeWidth="0.2" opacity="0.3" />
+ 
         {/* Label and Activity LED */}
-        <rect x="30" y="13" width="50" height="2" fill="#c2000b" opacity="0.8" className="animate-pulse" />
-        <circle cx="102" cy="20" r="1.5" fill="#c2000b" className="animate-pulse shadow-[0_0_8px_#c2000b]" />
+        <rect x="30" y="13" width="50" height="2" fill="var(--deck-accent)" opacity="0.8" className="animate-pulse" />
+        <circle cx="102" cy="20" r="1.5" fill="var(--deck-accent)" className="animate-pulse shadow-[0_0_8px_var(--deck-accent)]" />
       </svg>
     )
   },
@@ -203,11 +203,11 @@ const components = [
     rotation: -15,
     icon: (
       <svg viewBox="0 0 100 120" className="w-full h-full">
-        <rect x="15" y="15" width="70" height="90" rx="3" fill="#0a1a10" stroke="#000" strokeWidth="1" />
-        <g fill="#2a2a2a" stroke="none">
+        <rect x="15" y="15" width="70" height="90" rx="3" fill="var(--deck-procie)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <g fill="var(--deck-secondary)" stroke="none">
            <rect x="23" y="20" width="54" height="80" rx="4" />
-           <rect x="18" y="45" width="64" height="30" rx="2" fill="#2a2a2a" />
-           <path d="M25 22h50 M25 98h50" stroke="#444" strokeWidth="0.5" opacity="0.3" />
+           <rect x="18" y="45" width="64" height="30" rx="2" fill="var(--deck-secondary)" />
+           <path d="M25 22h50 M25 98h50" stroke="var(--deck-stroke)" strokeWidth="0.5" opacity="0.3" />
         </g>
       </svg>
     )
@@ -223,9 +223,9 @@ const components = [
     rotation: 10,
     icon: (
       <svg viewBox="0 0 100 100" className="w-full h-full">
-        <rect x="19" y="19" width="62" height="62" rx="4" fill="#0a1a10" stroke="#000" strokeWidth="1" />
-        <path d="M19 19 L27 19 L19 27 Z" fill="#d4af37" opacity="0.6" />
-        <g fill="#2a2a2a" stroke="none">
+        <rect x="19" y="19" width="62" height="62" rx="4" fill="var(--deck-procie)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <path d="M19 19 L27 19 L19 27 Z" fill="var(--deck-gold)" opacity="0.6" />
+        <g fill="var(--deck-secondary)" stroke="none">
            <rect x="30" y="30" width="40" height="40" />
            <rect x="45" y="22" width="10" height="10" />
            <rect x="45" y="68" width="10" height="10" />
@@ -236,7 +236,7 @@ const components = [
            <path d="M22 66 V70 Q22 78 30 78 H34 V66 Z" />
            <path d="M66 66 V78 H70 Q78 78 78 70 V66 Z" />
         </g>
-        <g fill="#444" opacity="0.6">
+        <g fill="var(--deck-stroke)" opacity="0.6">
            <circle cx="20" cy="38" r="0.8" /><circle cx="23" cy="38" r="0.8" />
            <circle cx="20" cy="41" r="0.8" /><circle cx="23" cy="41" r="0.8" />
            <circle cx="20" cy="59" r="0.8" /><circle cx="23" cy="59" r="0.8" />
@@ -261,18 +261,18 @@ const components = [
     icon: (
       <svg viewBox="0 0 140 140" className="w-full h-full">
         {/* Radiator Unit */}
-        <rect x="20" y="10" width="100" height="35" rx="2" fill="#0f0f0f" stroke="#333" strokeWidth="1" />
-        <rect x="23" y="12.5" width="30" height="30" rx="1" fill="#050505" stroke="#222" strokeWidth="0.5" />
-        <circle cx="38" cy="27.5" r="12" fill="none" stroke="#c2000b" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
-        <rect x="55" y="12.5" width="30" height="30" rx="1" fill="#050505" stroke="#222" strokeWidth="0.5" />
-        <circle cx="70" cy="27.5" r="12" fill="none" stroke="#c2000b" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
-        <rect x="87" y="12.5" width="30" height="30" rx="1" fill="#050505" stroke="#222" strokeWidth="0.5" />
-        <circle cx="102" cy="27.5" r="12" fill="none" stroke="#c2000b" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
+        <rect x="20" y="10" width="100" height="35" rx="2" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="1" />
+        <rect x="23" y="12.5" width="30" height="30" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="38" cy="27.5" r="12" fill="none" stroke="var(--deck-accent)" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
+        <rect x="55" y="12.5" width="30" height="30" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="70" cy="27.5" r="12" fill="none" stroke="var(--deck-accent)" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
+        <rect x="87" y="12.5" width="30" height="30" rx="1" fill="var(--deck-secondary)" stroke="var(--deck-stroke)" strokeWidth="0.5" />
+        <circle cx="102" cy="27.5" r="12" fill="none" stroke="var(--deck-accent)" strokeWidth="0.5" opacity="0.4" className="animate-pulse" />
         {/* Sleeved Tubes & Pump */}
-        <path d="M38 42.5 Q38 65 60 80" fill="none" stroke="#1a1a1a" strokeWidth="6" />
-        <path d="M102 42.5 Q102 65 80 80" fill="none" stroke="#1a1a1a" strokeWidth="6" />
-        <rect x="45" y="80" width="50" height="50" rx="6" fill="#0a0a0a" stroke="#444" strokeWidth="2" />
-        <circle cx="70" cy="105" r="15" fill="none" stroke="#c2000b" strokeWidth="1" className="animate-pulse" />
+        <path d="M38 42.5 Q38 65 60 80" fill="none" stroke="var(--deck-secondary)" strokeWidth="6" />
+        <path d="M102 42.5 Q102 65 80 80" fill="none" stroke="var(--deck-secondary)" strokeWidth="6" />
+        <rect x="45" y="80" width="50" height="50" rx="6" fill="var(--deck-pcb)" stroke="var(--deck-stroke)" strokeWidth="2" />
+        <circle cx="70" cy="105" r="15" fill="none" stroke="var(--deck-accent)" strokeWidth="1" className="animate-pulse" />
       </svg>
     )
   },
@@ -337,7 +337,7 @@ export default function HardwareDeck() {
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)] dark:invert-0 invert dark:hue-rotate-0 hue-rotate-180"
+                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)]"
                 >
                    {comp.icon}
                 </motion.div>
