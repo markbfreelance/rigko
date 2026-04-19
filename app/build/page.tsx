@@ -124,6 +124,8 @@ export default function BuildPage() {
   const [selectedParts, setSelectedParts] = useState<Record<string, any>>({});
 
   const [isHudOpen, setIsHudOpen] = useState(false);
+  const [isSelectingMode, setIsSelectingMode] = useState(false);
+  const [expandedCat, setExpandedCat] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   
   const totalPrice = Object.values(selectedParts).reduce((acc, part) => acc + (part?.price || 0), 0);
@@ -221,6 +223,11 @@ export default function BuildPage() {
       if (currentIndex < CATEGORIES.length - 1) {
         setTimeout(() => setActiveCategory(CATEGORIES[currentIndex + 1].id), 300);
       }
+      
+      // On mobile, return to the master index after selection
+      if (window.innerWidth < 1024) {
+        setTimeout(() => setIsSelectingMode(false), 400); // Slight delay for feedback
+      }
     }
   };
 
@@ -252,41 +259,226 @@ export default function BuildPage() {
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#050100] transition-colors overflow-x-hidden is-builder-page">
       <Header />
       
-      <main className="pt-16 md:pt-28 pb-32 px-4 md:px-12 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
+      <main className="pt-24 md:pt-28 pb-32 px-4 md:px-12 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
         
-        {/* Mobile Category Navigation (Horizontal Grid - 2 Rows) */}
-        <div className="lg:hidden -mx-4 px-4 mb-6 sticky top-16 z-[140] bg-[#f4f4f4]/80 dark:bg-[#050100]/80 backdrop-blur-md border-b border-black/5 dark:border-white/5 py-3 grid grid-cols-4 gap-1.5">
-          {CATEGORIES.map(cat => {
-            const isCompleted = !!selectedParts[cat.id];
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`flex flex-col items-center justify-center gap-1.5 py-2.5 rounded-xl border text-[8px] font-black uppercase tracking-tighter transition-all ${
-                  activeCategory === cat.id 
-                  ? "bg-[#c2000b] text-white border-[#c2000b] shadow-lg shadow-[#c2000b]/20" 
-                  : isCompleted
-                  ? "bg-white dark:bg-[#111111] border-[#c2000b]/30 text-black dark:text-white"
-                  : "bg-white dark:bg-[#111111] border-black/5 dark:border-white/5 text-gray-400"
-                }`}
+        {/* Mobile View Switching: Index vs Catalog */}
+        <div className="lg:hidden">
+          <AnimatePresence mode="wait">
+            {!isSelectingMode ? (
+              /* Master Assembly Index checklist */
+              <motion.div
+                key="mobile-index"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-3"
               >
-                <Icon 
-                  icon={isCompleted ? "solar:check-read-linear" : "lucide:plus"} 
-                  className={`text-[12px] ${
-                    activeCategory === cat.id 
-                    ? "text-white" 
-                    : isCompleted 
-                    ? "text-[#c2000b]" 
-                    : "text-gray-400 opacity-50"
-                  }`} 
-                />
-                <span className="truncate w-full px-1 text-center">{cat.name}</span>
-              </button>
-            );
-          })}
+                <div className="mb-6">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] px-2 mb-4">ADD YOUR PARTS</h2>
+                  <div className="space-y-2">
+                    {CATEGORIES.map((cat, idx) => {
+                      const selectedPart = selectedParts[cat.id];
+                      const isExpanded = expandedCat === cat.id;
+
+                      return (
+                        <div key={cat.id} className="w-full flex flex-col rounded-xl border border-black/5 dark:border-white/5 chassis-steel backdrop-blur-md transition-all overflow-hidden">
+                          {/* Row Header */}
+                          <div 
+                            onClick={() => setExpandedCat(isExpanded ? null : cat.id)}
+                            className="w-full flex items-center justify-between p-4 cursor-pointer active:bg-black/5 dark:active:bg-white/5 transition-colors"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${
+                                selectedPart ? "bg-[#c2000b]/10 border-[#c2000b]/30 text-[#c2000b]" : "bg-black/10 dark:bg-white/5 border-white/5 text-gray-400"
+                              }`}>
+                                <Icon icon={cat.icon} className="text-lg" />
+                              </div>
+                              <div className="text-[11px] font-bold text-black dark:text-white uppercase tracking-tighter">
+                                {cat.name}
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-3">
+                              {selectedPart && !isExpanded && (
+                                <div className="text-[9px] font-black text-[#c2000b] uppercase truncate max-w-[120px]">{selectedPart.name}</div>
+                              )}
+                              <Icon 
+                                icon="solar:alt-arrow-down-linear" 
+                                className={`text-gray-400 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} 
+                              />
+                            </div>
+                          </div>
+
+                          {/* Expanded Content */}
+                          <AnimatePresence>
+                            {isExpanded && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="bg-black/[0.02] dark:bg-white/[0.02] border-t border-black/5 dark:border-white/5"
+                              >
+                                <div className="p-4 flex items-center justify-between gap-4">
+                                  <div className="flex-1">
+                                    {selectedPart ? (
+                                      <div className="space-y-1">
+                                        <div className="text-[11px] font-black text-[#c2000b] uppercase leading-tight mb-1">{selectedPart.name}</div>
+                                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                                          <div className="text-[8px] font-mono text-gray-500 uppercase tracking-widest bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/5 dark:border-white/5">
+                                            {selectedPart.brand}
+                                          </div>
+                                          <div className="text-[8px] font-mono text-gray-500 uppercase tracking-widest">
+                                            {cat.id === "cpu" && `${selectedPart.cores}C/${selectedPart.threads}T // ${selectedPart.socket}`}
+                                            {cat.id === "mobo" && `${selectedPart.chipset} // ${selectedPart.form_factor}`}
+                                            {cat.id === "ram" && `${selectedPart.capacity}GB // ${selectedPart.speed}MHz`}
+                                            {cat.id === "gpu" && `${selectedPart.vram}GB VRAM`}
+                                            {cat.id === "storage" && `${selectedPart.capacity}GB // ${selectedPart.type}`}
+                                            {cat.id === "psu" && `${selectedPart.wattage}W // ${selectedPart.efficiency_rating}`}
+                                            {cat.id === "cooler" && `${selectedPart.type} COOLING`}
+                                          </div>
+                                          <div className="text-[8px] font-mono text-[#c2000b] font-bold uppercase">
+                                            ₱{selectedPart.price.toLocaleString()}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div className="text-[9px] font-mono text-gray-400 uppercase italic">Empty_Slot // Awaiting_Assembly</div>
+                                    )}
+                                  </div>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveCategory(cat.id);
+                                      setIsSelectingMode(true);
+                                    }}
+                                    className={`px-6 py-2 rounded-full text-[9px] font-black uppercase tracking-tighter transition-all ${
+                                      selectedPart
+                                      ? "bg-black/5 dark:bg-white/5 text-gray-500 border border-white/10"
+                                      : "bg-[#c2000b] text-white shadow-lg shadow-[#c2000b]/20"
+                                    }`}
+                                  >
+                                    {selectedPart ? "CHANGE" : `ADD_${cat.name}`}
+                                  </button>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              /* Selection Mode / Part Catalog */
+              <motion.div
+                key="mobile-catalog"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="space-y-6"
+              >
+                {/* Back Link */}
+                <button 
+                  onClick={() => setIsSelectingMode(false)}
+                  className="flex items-center gap-3 text-gray-500 hover:text-[#c2000b] transition-colors group mb-4"
+                >
+                  <div className="w-8 h-8 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center group-hover:border-[#c2000b]/50 group-hover:bg-[#c2000b]/10">
+                    <Icon icon="solar:arrow-left-linear" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-widest">RETURN_TO_INDEX</span>
+                </button>
+
+                <div className="flex flex-col gap-4">
+                  <h1 className="text-2xl font-black text-black dark:text-white uppercase tracking-tighter shrink-0">
+                    Select_{activeCategory}
+                  </h1>
+                  
+                  <div className="relative w-full">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                      <Icon icon="solar:magnifer-linear" className="text-lg" />
+                    </div>
+                    <input 
+                      type="text"
+                      placeholder={`Search_${activeCategory}...`}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full pl-12 pr-6 py-2.5 text-[11px] font-mono uppercase tracking-widest text-black dark:text-white focus:outline-none focus:border-[#c2000b]/50 placeholder:text-gray-500 transition-all shadow-[inset_0_2px_6px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_2px_6px_rgba(0,0,0,0.4)]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 pt-4">
+                  <AnimatePresence mode="wait">
+                    {(PARTS[activeCategory as keyof typeof PARTS] || [])
+                      .filter(part => 
+                        part.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                        (part.brand && part.brand.toLowerCase().includes(searchQuery.toLowerCase()))
+                      )
+                      .map((part, idx) => {
+                      const { compatible, reason, warning } = checkCompatibility(activeCategory, part);
+                      const isSelected = selectedParts[activeCategory]?.id === part.id;
+                      
+                      return (
+                        <motion.div
+                          key={part.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ delay: idx * 0.05 }}
+                          className={`group relative p-4 rounded-2xl border transition-all ${
+                            isSelected 
+                            ? "bg-[#c2000b]/5 border-[#c2000b] shadow-[0_0_20px_rgba(194,0,11,0.1)]" 
+                            : !compatible
+                            ? "bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/5 opacity-60 grayscale"
+                            : "bg-white dark:bg-[#111111] border-black/5 dark:border-white/5 hover:border-[#c2000b]/30"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-[10px] font-mono text-[#c2000b] font-bold">{part.brand}</span>
+                                {!compatible && (
+                                  <span className="px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-500 text-[8px] font-bold uppercase tracking-tighter border border-orange-500/20">
+                                    INCOMPATIBLE
+                                  </span>
+                                )}
+                              </div>
+                              <h3 className="text-sm font-black text-black dark:text-white uppercase tracking-tighter leading-tight mb-2">
+                                {part.name}
+                              </h3>
+                              
+                              {/* Price and Action */}
+                              <div className="flex items-center justify-between mt-4">
+                                <div className="text-lg font-black text-[#c2000b] tracking-tighter">
+                                  ₱{part.price.toLocaleString()}
+                                </div>
+                                <button 
+                                  onClick={() => handleSelect(activeCategory, part)}
+                                  disabled={!compatible}
+                                  className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-lg transition-all ${
+                                    isSelected 
+                                    ? "bg-black text-white shadow-black/20" 
+                                    : "bg-[#c2000b] text-white shadow-[#c2000b]/20 hover:scale-105 active:scale-95"
+                                  }`}
+                                >
+                                  {isSelected ? "REMOVE" : "SELECT_PART"}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         
-        <div className="flex flex-col lg:flex-row gap-8 h-full">
+        {/* Desktop Layout (Maintains original side-by-side) */}
+        <div className="hidden lg:flex flex-row gap-8 h-full">
           
           {/* Left: Category Sidebar (Desktop Only) */}
           <div className="hidden lg:block w-64 flex-shrink-0">
