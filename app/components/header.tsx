@@ -20,7 +20,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 left-0 w-full z-[1000] pointer-events-none -mb-16 md:-mb-20 pt-[env(safe-area-inset-top)]">
+    <header className="fixed top-0 left-0 w-full z-[1000] pointer-events-none pt-[env(safe-area-inset-top)]">
       {/* Industrial Shroud - The visual background of the header, restricted to h-16/20 */}
       <div className="absolute top-0 left-0 w-full h-[calc(4rem+env(safe-area-inset-top))] md:h-[calc(5rem+env(safe-area-inset-top))] chassis-steel backdrop-blur-md border-b border-black/5 dark:border-white/5 pointer-events-auto" />
       
