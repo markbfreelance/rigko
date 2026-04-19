@@ -65,6 +65,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans), ui-sans-serif, system-ui;
   --font-mono: var(--font-mono), ui-monospace, monospace;
+  --breakpoint-xs: 480px;
 }
 
 /* Custom Scrollbar - Rigko Industrial Red (Square & Sharp) */

@@ -16,9 +16,8 @@ export default function AuthNav({ user }: AuthNavProps) {
     return (
       <Link
         href="/login"
-        className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b] text-black dark:text-white pl-4 pr-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]"
+        className="relative flex items-center bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b]/50 hover:border-[#c2000b] text-black dark:text-white px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]"
       >
-        <Icon icon="solar:login-3-bold" className="text-sm" />
         <span>LOGIN</span>
       </Link>
     );

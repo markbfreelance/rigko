@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "./theme-provider";
 import { Icon } from "@iconify/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { label: "Build a Rig", href: "/build" },
@@ -14,10 +16,11 @@ const navLinks = [
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   const { theme, toggleTheme, mounted } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 w-full h-16 md:h-20 z-[200] flex items-center bg-transparent pointer-events-none">
-      <div className="mx-auto w-full max-w-[1440px] px-8 md:px-16 flex items-center justify-between pointer-events-auto">
+      <div className="mx-auto w-full max-w-[1440px] px-4 md:px-16 flex items-center justify-between pointer-events-auto">
         {/* Logo Section - Flush with steel */}
         <Link href="/" className="flex items-center gap-4 group">
           <div className="relative h-7 w-7">
@@ -82,18 +85,85 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             </button>
           )}
 
-            {children}
-            <Link href="/build" className="group relative">
-              <div className="absolute inset-0 bg-[#c2000b]/50 blur-xl group-hover:bg-[#ff0000]/70 transition-all rounded-full"></div>
-              <div className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b] text-black dark:text-white pl-4 pr-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]">
-                <Icon icon="solar:hammer-bold" className="text-sm" />
-                <span>START BUILDING</span>
-              </div>
-            </Link>
+            <div className="hidden sm:flex items-center gap-3">
+              {children}
+              <Link href="/build" className="group relative">
+                <div className="absolute inset-0 bg-[#c2000b]/50 blur-xl group-hover:bg-[#ff0000]/70 transition-all rounded-full"></div>
+                <div className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b] text-black dark:text-white pl-4 pr-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]">
+                  <Icon icon="solar:hammer-bold" className="text-sm" />
+                  <span className="hidden xs:inline">START BUILDING</span>
+                  <span className="xs:hidden">BUILD</span>
+                </div>
+              </Link>
+            </div>
 
+            {/* Mobile Menu Toggle */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden flex items-center justify-center w-10 h-10 border border-[#c2000b]/20 hover:border-[#c2000b] bg-white dark:bg-black text-[#c2000b] transition-all rounded-full shadow-[inset_0_0_10px_rgba(194,0,11,0.1)]"
+            >
+              <Icon icon={isMenuOpen ? "solar:close-circle-bold" : "solar:hamburger-menu-bold"} className="text-xl" />
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[190] pointer-events-auto"
+            />
+            {/* Drawer Content */}
+            <motion.div 
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-[#050100] border-l-2 border-[#c2000b]/30 z-[201] pointer-events-auto p-12 flex flex-col pt-24"
+            >
+              <div className="absolute top-0 inset-x-0 h-32 chassis-mesh opacity-10 pointer-events-none"></div>
+              
+              <nav className="flex flex-col gap-8 mb-auto">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-lg font-black tracking-widest text-gray-400 dark:text-gray-500 hover:text-[#c2000b] dark:hover:text-[#c2000b] transition-all uppercase"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="flex flex-col gap-4 mt-auto">
+                <div className="sm:hidden flex flex-col gap-4">
+                  {children}
+                  <Link 
+                    href="/build" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center justify-center gap-3 bg-[#c2000b] text-white px-8 py-4 rounded-full text-xs font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(194,0,11,0.3)]"
+                  >
+                    <Icon icon="solar:hammer-bold" className="text-lg" />
+                    START BUILDING
+                  </Link>
+                </div>
+                
+                <div className="pt-8 border-t border-black/5 dark:border-white/5">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#c2000b] opacity-50 block mb-4">sys://nav/v2.0.4</span>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
