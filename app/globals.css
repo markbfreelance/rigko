@@ -108,7 +108,7 @@ html, body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 120;
+  z-index: 90;
 }
 
 .crt-overlay::before {
