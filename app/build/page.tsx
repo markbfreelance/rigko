@@ -396,7 +396,7 @@ export default function BuildPage() {
 
           {/* Right: Live Assembly Preview */}
           <div className="w-full lg:w-[400px] flex-shrink-0">
-           <div className="sticky top-28 bg-white dark:bg-[#111111] border-2 border-[#c2000b]/20 rounded-[3rem] p-8 aspect-[3/4] overflow-hidden flex flex-col group shadow-2xl">
+           <div className="sticky top-28 bg-white dark:bg-[#111111] border-2 border-[#c2000b]/20 rounded-[3rem] p-8 h-[calc(100vh-14rem)] overflow-hidden flex flex-col group shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)] dark:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.9)]">
                <div className="absolute inset-0 chassis-mesh opacity-5"></div>
                <div className="absolute inset-0 hardware-grid opacity-10"></div>
                

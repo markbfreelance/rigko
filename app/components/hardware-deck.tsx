@@ -285,14 +285,19 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
       <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-none">
         {components.map((comp, idx) => {
           const isActive = !activeIds || activeIds.includes(comp.id);
+          const baseScale = variant === "build" ? 0.65 : 1; // Scale down for builder
           
+          // Compressor for narrow container on the Build page
+          const xCompress = variant === "build" ? 0.6 : 1;
+          const nudgeScale = variant === "build" ? 0.5 : 1;
+
           // Calculate Center-Relative Position using Row-Specific Config
           const rowConfig = LAYOUT.ROWS[comp.row as keyof typeof LAYOUT.ROWS];
-          const xDist = (comp as any).x_override || rowConfig.x;
+          const xDist = ((comp as any).x_override || rowConfig.x) * xCompress;
 
           const finalX = comp.side === "left" 
-            ? 50 - xDist + (comp.nudge?.x || 0)
-            : 50 + xDist + (comp.nudge?.x || 0);
+            ? 50 - xDist + ((comp.nudge?.x || 0) * nudgeScale)
+            : 50 + xDist + ((comp.nudge?.x || 0) * nudgeScale);
             
           return (
             <motion.div
@@ -300,7 +305,7 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
               initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", zIndex: 5 }}
               animate={{ 
                 opacity: isActive ? 1 : (variant === "build" ? 0.05 : 1), 
-                scale: isActive ? comp.scale : (variant === "build" ? comp.scale * 0.8 : comp.scale), 
+                scale: isActive ? comp.scale * baseScale : (variant === "build" ? comp.scale * 0.8 * baseScale : comp.scale), 
                 x: "-50%", y: "-50%", zIndex: 5 
               }}
               transition={{ 
@@ -316,7 +321,7 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                 height: "280px",
                 pointerEvents: "auto"
               }}
-              whileHover={{ zIndex: 80, scale: comp.scale * 1.05 }}
+              whileHover={{ zIndex: 80, scale: comp.scale * 1.05 * baseScale }}
               className="group cursor-grab active:cursor-grabbing"
             >
               {/* Breathing Layer (Floating Y-Axis only, No Rotation) */}
@@ -350,8 +355,8 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
     
                 {/* Label Overlay - Absolute Scale & Rotation Lock */}
                 <motion.div 
-                  initial={{ rotate: 0, scale: 1 / comp.scale }}
-                  animate={{ rotate: 0, scale: 1 / comp.scale }}
+                  initial={{ rotate: 0, scale: 1 / (comp.scale * baseScale) }}
+                  animate={{ rotate: 0, scale: 1 / (comp.scale * baseScale) }}
                   className="absolute top-0 right-0 p-2 bg-[var(--deck-label-bg)] backdrop-blur-2xl border border-[var(--deck-accent)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-mono text-[11px] text-[var(--deck-label-text)] tracking-[0.2em] shadow-[0_0_20px_rgba(194,0,11,0.4)] uppercase whitespace-nowrap z-50 pointer-events-none origin-top-right"
                 >
                    {comp.label}
