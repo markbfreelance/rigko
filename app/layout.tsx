@@ -7,10 +7,35 @@ import ChassisFrame from "./components/chassis-frame";
 import { Analytics } from "@vercel/analytics/next";
 
 // REFRESH_TRIGGER: kebab-case transition complete
+const siteUrl = "https://rigko.com";
+const description =
+  "Compare PC component prices across Southeast Asian retailers. Build your dream rig with real-time price tracking and compatibility checking.";
+
 export const metadata: Metadata = {
   title: "Rigko — Premium PC Part Picker & Builder",
-  description:
-    "Compare PC component prices across Southeast Asian retailers. Build your dream rig with real-time price tracking and compatibility checking.",
+  description,
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Rigko — Build Your Dream Rig",
+    description,
+    url: siteUrl,
+    siteName: "Rigko",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Rigko — Premium PC Part Picker & Builder",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rigko — Build Your Dream Rig",
+    description,
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
