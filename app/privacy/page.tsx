@@ -1,6 +1,6 @@
-import Header from "@/app/components/Header";
+import Header from "@/app/components/header";
 import HeaderAuth from "@/app/components/header-auth";
-import Footer from "@/app/components/Footer";
+import Footer from "@/app/components/footer";
 
 export const metadata = {
   title: "Privacy Policy — Rigko",
