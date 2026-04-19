@@ -409,18 +409,17 @@ export default function BuildPage() {
            >
                {/* Red Geometric Border (Underlay) */}
                <div 
-                 className="absolute inset-0 bg-[#c2000b]/40 z-0"
+                 className="absolute inset-0 bg-[#c2000b]/60 z-0"
                  style={{ 
-                   clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% calc(50% + 60px), 30px calc(50% + 30px), 30px calc(50% - 30px), 0% calc(50% - 60px))" 
+                   clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 76%, 22px 71%, 22px 29%, 0% 24%)" 
                  }}
                ></div>
 
                {/* Black Cockpit Background (Main Layer) */}
                <div 
-                 className="absolute z-0 bg-white dark:bg-[#111111] overflow-hidden"
+                 className="absolute inset-0 bg-white dark:bg-[#111111] overflow-hidden z-0"
                  style={{
-                   top: "1px", left: "1px", right: "1px", bottom: "1px",
-                   clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% calc(50% + 59px), 29px calc(50% + 29px), 29px calc(50% - 29px), 0% calc(50% - 59px))" 
+                   clipPath: "polygon(2px 2px, calc(100% - 2px) 2px, calc(100% - 2px) calc(100% - 2px), 2px calc(100% - 2px), 2px 75%, 20px 70%, 20px 30%, 2px 25%)" 
                  }}
                >
                  <div className="absolute inset-0 chassis-mesh opacity-5"></div>
