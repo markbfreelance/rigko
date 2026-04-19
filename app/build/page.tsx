@@ -403,42 +403,65 @@ export default function BuildPage() {
 
           {/* Right: Live Assembly Preview */}
           <div className="w-full lg:w-[400px] flex-shrink-0">
-           <div className="sticky top-28 bg-white dark:bg-[#111111] border-2 border-[#c2000b]/20 rounded-[3rem] p-8 h-[calc(100vh-14rem)] overflow-hidden flex flex-col group shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)] dark:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.9)]">
-               <div className="absolute inset-0 chassis-mesh opacity-5"></div>
-               <div className="absolute inset-0 hardware-grid opacity-10"></div>
+           <div 
+             className="sticky top-28 h-[calc(100vh-14rem)] flex flex-col group"
+             style={{ filter: "drop-shadow(0px 10px 20px rgba(0,0,0,0.5))" }}
+           >
+               {/* Red Geometric Border (Underlay) */}
+               <div 
+                 className="absolute inset-0 bg-[#c2000b]/40 z-0"
+                 style={{ 
+                   clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% calc(50% + 60px), 30px calc(50% + 30px), 30px calc(50% - 30px), 0% calc(50% - 60px))" 
+                 }}
+               ></div>
+
+               {/* Black Cockpit Background (Main Layer) */}
+               <div 
+                 className="absolute z-0 bg-white dark:bg-[#111111] overflow-hidden"
+                 style={{
+                   top: "1px", left: "1px", right: "1px", bottom: "1px",
+                   clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% calc(50% + 59px), 29px calc(50% + 29px), 29px calc(50% - 29px), 0% calc(50% - 59px))" 
+                 }}
+               >
+                 <div className="absolute inset-0 chassis-mesh opacity-5"></div>
+                 <div className="absolute inset-0 hardware-grid opacity-10"></div>
+               </div>
                
-               <div className="relative z-10 mb-4">
-                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">Virtual_Assembly_Render</h2>
-                 <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
-               </div>
+               {/* Internal Content (Pushed inward to clear the notch) */}
+               <div className="relative z-10 p-8 pl-12 h-full flex flex-col pointer-events-none">
+                 
+                 <div className="relative z-10 mb-4 flex-shrink-0">
+                   <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">Virtual_Assembly_Render</h2>
+                   <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
+                 </div>
 
-               <div className="flex-1 relative -mx-12 -my-10">
-                  <HardwareDeck activeIds={getActiveIds()} variant="build" />
-               </div>
+                 <div className="flex-1 relative -mx-10 -my-10 pointer-events-auto">
+                    <HardwareDeck activeIds={getActiveIds()} variant="build" />
+                 </div>
 
-               {/* Parts Summary List */}
-               <div className="relative z-10 flex-shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4">
-                  <div className="space-y-2">
-                    {Object.entries(selectedParts).map(([catId, part]) => {
-                      if (!part) return null;
-                      const category = CATEGORIES.find(c => c.id === catId);
-                      return (
-                        <div key={catId} className="flex justify-between items-center text-[9px] font-mono group/item">
-                          <div className="flex items-center gap-2">
-                            <span className="text-gray-400 dark:text-gray-500 uppercase w-16 shrink-0">{category?.name}</span>
-                            <span className="text-black dark:text-white font-bold truncate max-w-[150px]">{part.name}</span>
+                 {/* Parts Summary List */}
+                 <div className="relative z-10 flex-shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4 pointer-events-auto">
+                    <div className="space-y-2">
+                      {Object.entries(selectedParts).map(([catId, part]) => {
+                        if (!part) return null;
+                        const category = CATEGORIES.find(c => c.id === catId);
+                        return (
+                          <div key={catId} className="flex justify-between items-center text-[9px] font-mono group/item">
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-400 dark:text-gray-500 uppercase w-16 shrink-0">{category?.name}</span>
+                              <span className="text-black dark:text-white font-bold truncate max-w-[150px]">{part.name}</span>
+                            </div>
+                            <span className="text-[#c2000b] font-black shrink-0">₱{part.price.toLocaleString()}</span>
                           </div>
-                          <span className="text-[#c2000b] font-black shrink-0">₱{part.price.toLocaleString()}</span>
-                        </div>
-                      );
-                    })}
-                    {Object.values(selectedParts).filter(Boolean).length === 0 && (
-                      <p className="text-[9px] font-mono text-gray-400 dark:text-gray-600 uppercase italic opacity-50">Empty_Manifest // Waiting_For_Input</p>
-                    )}
-                  </div>
-               </div>
+                        );
+                      })}
+                      {Object.values(selectedParts).filter(Boolean).length === 0 && (
+                        <p className="text-[9px] font-mono text-gray-400 dark:text-gray-600 uppercase italic opacity-50">Empty_Manifest // Waiting_For_Input</p>
+                      )}
+                    </div>
+                 </div>
 
-               <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto">
+                 <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto flex-shrink-0 pointer-events-auto">
                   <div className="flex justify-between items-end mb-2">
                     <span className="text-[10px] font-mono text-gray-500 uppercase">Estimated_Total</span>
                     <span className="text-2xl font-black text-black dark:text-white tracking-tighter">₱{totalPrice.toLocaleString()}</span>
@@ -451,6 +474,7 @@ export default function BuildPage() {
                       className="h-full bg-[#c2000b] rounded-full"
                     />
                   </div>
+                 </div>
                </div>
             </div>
           </div>
