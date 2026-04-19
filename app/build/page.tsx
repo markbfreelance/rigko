@@ -495,12 +495,12 @@ export default function BuildPage() {
       </main>
 
       {/* Persistent Build Terminal (Bottom Bar) */}
-      <div className="fixed bottom-0 left-0 w-full z-[150] bg-[#f4f4f4]/80 dark:bg-[#111111]/80 backdrop-blur-md border-t border-black/10 dark:border-white/10 px-8 py-4">
+      <div className="fixed bottom-0 left-0 w-full z-[150] chassis-steel backdrop-blur-md border-t border-black/10 dark:border-white/10 px-8 py-4">
         {/* Industrial Bezel Screws */}
-        <div className="absolute top-2 left-2 hex-screw scale-50 opacity-30"></div>
-        <div className="absolute top-2 right-2 hex-screw scale-50 opacity-30"></div>
-        <div className="absolute bottom-2 left-2 hex-screw scale-50 opacity-30"></div>
-        <div className="absolute bottom-2 right-2 hex-screw scale-50 opacity-30"></div>
+        <div className="absolute top-2 left-2 hex-screw scale-75"></div>
+        <div className="absolute top-2 right-2 hex-screw scale-75"></div>
+        <div className="absolute bottom-2 left-2 hex-screw scale-75"></div>
+        <div className="absolute bottom-2 right-2 hex-screw scale-75"></div>
 
         <div className="max-w-[1440px] mx-auto flex items-center justify-between relative z-10">
           <div className="flex gap-12">
