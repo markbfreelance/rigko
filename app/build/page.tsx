@@ -396,20 +396,42 @@ export default function BuildPage() {
 
           {/* Right: Live Assembly Preview */}
           <div className="w-full lg:w-[400px] flex-shrink-0">
-            <div className="sticky top-28 bg-white dark:bg-black border-2 border-[#c2000b]/20 rounded-[3rem] p-8 aspect-[3/4] overflow-hidden flex flex-col group shadow-2xl">
+           <div className="sticky top-28 bg-white dark:bg-[#111111] border-2 border-[#c2000b]/20 rounded-[3rem] p-8 aspect-[3/4] overflow-hidden flex flex-col group shadow-2xl">
                <div className="absolute inset-0 chassis-mesh opacity-5"></div>
                <div className="absolute inset-0 hardware-grid opacity-10"></div>
                
-               <div className="relative z-10 mb-8">
+               <div className="relative z-10 mb-4">
                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">Virtual_Assembly_Render</h2>
                  <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
                </div>
 
-               <div className="flex-1 relative -mx-12 -my-20">
+               <div className="flex-1 relative -mx-12 -my-10">
                   <HardwareDeck activeIds={getActiveIds()} variant="build" />
                </div>
 
-               <div className="relative z-10 pt-8 border-t border-black/5 dark:border-white/5 mt-auto">
+               {/* Parts Summary List */}
+               <div className="relative z-10 flex-shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4">
+                  <div className="space-y-2">
+                    {Object.entries(selectedParts).map(([catId, part]) => {
+                      if (!part) return null;
+                      const category = CATEGORIES.find(c => c.id === catId);
+                      return (
+                        <div key={catId} className="flex justify-between items-center text-[9px] font-mono group/item">
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-400 dark:text-gray-500 uppercase w-16 shrink-0">{category?.name}</span>
+                            <span className="text-black dark:text-white font-bold truncate max-w-[150px]">{part.name}</span>
+                          </div>
+                          <span className="text-[#c2000b] font-black shrink-0">₱{part.price.toLocaleString()}</span>
+                        </div>
+                      );
+                    })}
+                    {Object.values(selectedParts).filter(Boolean).length === 0 && (
+                      <p className="text-[9px] font-mono text-gray-400 dark:text-gray-600 uppercase italic opacity-50">Empty_Manifest // Waiting_For_Input</p>
+                    )}
+                  </div>
+               </div>
+
+               <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto">
                   <div className="flex justify-between items-end mb-2">
                     <span className="text-[10px] font-mono text-gray-500 uppercase">Estimated_Total</span>
                     <span className="text-2xl font-black text-black dark:text-white tracking-tighter">₱{totalPrice.toLocaleString()}</span>
@@ -466,7 +488,6 @@ export default function BuildPage() {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 }
