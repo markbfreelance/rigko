@@ -38,7 +38,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             </span>
           </div>
         </Link>
-
+        
         {/* Desktop Nav - Etched into Shroud */}
         <nav className="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-1">
           {navLinks.map((link) => (
@@ -52,7 +52,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
           ))}
         </nav>
 
-        {/* Action Button - The "Power Button" */}
+        {/* Action Buttons */}
         <div className="flex items-center gap-8">
           {/* I/O Port Accents */}
           <div className="hidden md:flex gap-3 opacity-40">
@@ -100,9 +100,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             {/* Mobile Menu Toggle */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-10 h-10 border border-[#c2000b]/20 hover:border-[#c2000b] bg-white dark:bg-black text-[#c2000b] transition-all rounded-full shadow-[inset_0_0_10px_rgba(194,0,11,0.1)]"
+              className="lg:hidden flex items-center justify-center w-10 h-10 border-2 border-[#c2000b]/50 hover:border-[#c2000b] bg-white dark:bg-black text-[#c2000b] transition-all rounded-full shadow-[0_0_15px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.3)]"
             >
-              <Icon icon={isMenuOpen ? "solar:close-circle-bold" : "solar:hamburger-menu-bold"} className="text-xl" />
+              <Icon 
+                icon={isMenuOpen ? "solar:close-circle-linear" : "solar:hamburger-menu-linear"} 
+                className="text-xl drop-shadow-[0_0_8px_rgba(194,0,11,0.8)]" 
+              />
             </button>
           </div>
         </div>
@@ -126,7 +129,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-[#050100] border-l-2 border-[#c2000b]/30 z-[201] pointer-events-auto p-12 flex flex-col pt-24"
+              className="fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-[#050100] border-l-2 border-[#c2000b]/30 z-[201] pointer-events-auto p-12 flex flex-col pt-24 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]"
             >
               <div className="absolute top-0 inset-x-0 h-32 chassis-mesh opacity-10 pointer-events-none"></div>
               
@@ -143,13 +146,13 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                 ))}
               </nav>
 
-              <div className="flex flex-col gap-4 mt-auto">
-                <div className="sm:hidden flex flex-col gap-4">
-                  {children}
+              <div className="flex flex-col gap-6 mt-auto">
+                <div className="sm:hidden flex flex-col gap-4 items-center">
+                  <div className="w-full flex justify-center scale-95">{children}</div>
                   <Link 
                     href="/build" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-center gap-3 bg-[#c2000b] text-white px-8 py-4 rounded-full text-xs font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(194,0,11,0.3)]"
+                    className="flex items-center justify-center gap-3 bg-[#c2000b] text-white px-6 py-3 rounded-full text-[11px] font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(194,0,11,0.3)] w-full active:scale-95 transition-transform"
                   >
                     <Icon icon="solar:hammer-bold" className="text-lg" />
                     START BUILDING
