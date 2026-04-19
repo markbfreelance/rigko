@@ -407,6 +407,7 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                 height: "280px",
                 pointerEvents: "auto"
               }}
+              whileHover={{ zIndex: 80, scale: comp.scale * 1.05 }}
               className="group/part cursor-grab active:cursor-grabbing"
             >
               <motion.div
