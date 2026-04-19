@@ -28,13 +28,13 @@ const steps = [
 
 export default function GettingStartedHome() {
   return (
-    <section className="w-full bg-[#fdfdfd] dark:bg-[#0a0a0a] py-32 px-4 md:px-12 relative z-20 overflow-hidden transition-colors">
+    <section className="w-full bg-[#fdfdfd] dark:bg-[#0a0a0a] py-24 md:py-32 relative z-20 overflow-hidden transition-colors">
       
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-8 md:px-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-24 relative z-10">
         
         {/* Left Side: Illustration / Abstract */}
-        <div className="reveal w-full lg:w-1/2 flex justify-center lg:justify-start order-2 lg:order-1">
-          <div className="relative w-full max-w-[450px] aspect-square rounded-[3rem] bg-gradient-to-br from-[#c2000b]/20 to-transparent border border-[#c2000b]/10 flex items-center justify-center group overflow-hidden">
+        <div className="reveal w-full lg:w-1/2 flex justify-center order-2 lg:order-1">
+          <div className="relative w-full max-w-[320px] md:max-w-[450px] aspect-square rounded-[3rem] bg-gradient-to-br from-[#c2000b]/20 to-transparent border border-[#c2000b]/10 flex items-center justify-center group overflow-hidden">
              <div className="absolute inset-0 hardware-grid opacity-20"></div>
              
              {/* Center Iconography */}
@@ -58,9 +58,9 @@ export default function GettingStartedHome() {
         </div>
 
         {/* Right Side: content */}
-        <div className="reveal w-full lg:w-1/2 order-1 lg:order-2">
+        <div className="reveal w-full lg:w-1/2 order-1 lg:order-2 text-center lg:text-left">
           <div className="text-[#c2000b] text-xs font-bold tracking-widest uppercase mb-4">Precision Engineering</div>
-          <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-white mb-10 leading-tight tracking-tight transition-colors">INTELLIGENT_BUILDING_PROCESS</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-black dark:text-white mb-10 leading-tight tracking-tight transition-colors break-all sm:break-normal">BUILD_PROCESS</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10">
             {steps.map((step, idx) => (
@@ -78,7 +78,7 @@ export default function GettingStartedHome() {
             ))}
           </div>
 
-          <div className="mt-16 pt-10 border-t border-black/10 dark:border-white/5 flex items-center gap-8 transition-colors">
+          <div className="mt-12 md:mt-16 pt-8 md:pt-10 border-t border-black/10 dark:border-white/5 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 transition-colors">
             <div className="flex -space-x-3">
                {[1,2,3].map(i => (
                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-black bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[10px] font-bold text-black dark:text-white transition-colors">U{i}</div>

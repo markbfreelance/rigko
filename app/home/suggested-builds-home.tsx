@@ -38,14 +38,14 @@ const builds = [
 
 export default function SuggestedBuildsHome() {
   return (
-    <section className="w-full bg-[#f9f9f9] dark:bg-black py-24 px-4 md:px-12 relative z-20 transition-colors">
-      <div className="max-w-7xl mx-auto">
+    <section className="w-full bg-[#f9f9f9] dark:bg-black py-24 relative z-20 transition-colors">
+      <div className="max-w-[1440px] mx-auto px-8 md:px-16">
         
         {/* Section Header */}
         <div className="reveal flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 px-4">
           <div>
             <div className="text-[#c2000b] text-xs font-bold tracking-widest uppercase mb-3">Curated Configurations</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-white tracking-tight transition-colors">FEATURED_BUILDS</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-black dark:text-white tracking-tight transition-colors">FEATURED_BUILDS</h2>
           </div>
           <button className="flex items-center gap-2 text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white transition-colors text-sm font-medium">
             VIEW_ALL_MODELS <Icon icon="solar:arrow-right-linear" />
