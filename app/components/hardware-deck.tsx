@@ -279,7 +279,7 @@ const components = [
   },
 ];
 
-export default function HardwareDeck({ activeIds, variant = "idle" }: { activeIds?: string[], variant?: "idle" | "build" }) {
+export default function HardwareDeck({ activeIds, variant = "idle", partNames }: { activeIds?: string[], variant?: "idle" | "build", partNames?: Record<string, string> }) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // State to hold persistent random coordinates so they don't re-roll on every activeIds update
@@ -368,8 +368,8 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                       transform: `translateX(-50%) rotate(${-placed.rotation}deg) scale(${1 / (comp.scale * baseScale)})`,
                     }}
                   >
-                    <div className="px-2 py-1 bg-black/80 dark:bg-white/10 backdrop-blur-md border border-[#c2000b]/60 text-[9px] font-mono uppercase tracking-[0.2em] text-white shadow-[0_0_12px_rgba(194,0,11,0.4)]">
-                      {comp.label}
+                    <div className="px-2 py-1 bg-white/90 dark:bg-black/80 backdrop-blur-md border border-[#c2000b]/60 text-[9px] font-mono uppercase tracking-[0.2em] text-black dark:text-white shadow-[0_0_12px_rgba(194,0,11,0.3)]">
+                      {partNames?.[comp.id] ?? comp.label}
                     </div>
                   </div>
                   {comp.icon}

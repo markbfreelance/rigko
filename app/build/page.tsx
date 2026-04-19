@@ -435,7 +435,20 @@ export default function BuildPage() {
                  </div>
 
                  <div className="flex-1 relative -mx-10 -my-10 pointer-events-auto">
-                    <HardwareDeck activeIds={getActiveIds()} variant="build" />
+                    <HardwareDeck 
+                      activeIds={getActiveIds()} 
+                      variant="build"
+                      partNames={{
+                        ...(selectedParts["case"]    ? { CHASSIS:    selectedParts["case"]!.name }    : {}),
+                        ...(selectedParts["mobo"]    ? { MOBO:       selectedParts["mobo"]!.name }    : {}),
+                        ...(selectedParts["cpu"]     ? { [selectedParts["cpu"]!.brand === "AMD" ? "RYZEN_CORE" : "INTEL_CORE"]: selectedParts["cpu"]!.name } : {}),
+                        ...(selectedParts["gpu"]     ? { GRAPHICS:   selectedParts["gpu"]!.name }    : {}),
+                        ...(selectedParts["ram"]     ? { [selectedParts["ram"]!.type === "DDR4" ? "RAM_1" : "RAM_2"]: selectedParts["ram"]!.name } : {}),
+                        ...(selectedParts["psu"]     ? { ENERGY:     selectedParts["psu"]!.name }    : {}),
+                        ...(selectedParts["storage"] ? { DATA_1:     selectedParts["storage"]!.name } : {}),
+                        ...(selectedParts["cooler"]  ? { THERMAL:    selectedParts["cooler"]!.name }  : {}),
+                      }}
+                    />
                  </div>
 
                  {/* Parts Summary List */}
