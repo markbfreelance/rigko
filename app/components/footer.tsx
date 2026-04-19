@@ -107,7 +107,12 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-black/10 dark:border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-             <div className="w-8 h-2 bg-gray-900 rounded-sm shrink-0"></div>
+             {/* Industrial I/O Ports */}
+             <div className="flex gap-2 opacity-50">
+               <div className="w-3 h-3 rounded-full io-port"></div>
+               <div className="w-3 h-3 rounded-full io-port"></div>
+               <div className="w-5 h-2 rounded-sm io-port self-center"></div>
+             </div>
              <p className="text-gray-600 text-[9px] font-mono tracking-widest uppercase">
               VERSION: 1.0.4-STABLE // BUILD_CYCLE: {new Date().getFullYear()}
             </p>

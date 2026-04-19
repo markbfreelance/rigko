@@ -284,6 +284,13 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
   
   // State to hold persistent random coordinates so they don't re-roll on every activeIds update
   const [placedParts, setPlacedParts] = useState<Record<string, { x: number, y: number, rotation: number }>>({});
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   useEffect(() => {
     if (variant !== "build" || !activeIds) return;
@@ -344,18 +351,18 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
                 initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", rotate: placed.rotation }}
                 animate={{ 
                   opacity: 1, 
-                  scale: comp.scale * baseScale, 
+                  scale: comp.scale * (isMobile ? 0.45 : 0.65), 
                   x: "-50%", y: "-50%", rotate: placed.rotation, zIndex: zIndexBase 
                 }}
-                whileHover={{ scale: comp.scale * 1.05 * baseScale }}
-                whileDrag={{ zIndex: 200, scale: comp.scale * 1.1 * baseScale, cursor: "grabbing" }}
+                whileHover={{ scale: comp.scale * 1.05 * (isMobile ? 0.45 : 0.65) }}
+                whileDrag={{ zIndex: 200, scale: comp.scale * 1.1 * (isMobile ? 0.45 : 0.65), cursor: "grabbing" }}
                 style={{
                   position: "absolute",
                   top: `${placed.y}%`,
                   left: `${placed.x}%`,
-                  width: "280px",
-                  height: "280px",
-                  pointerEvents: "none", // Prevent wrapper from capturing empty space
+                  width: isMobile ? "180px" : "280px",
+                  height: isMobile ? "180px" : "280px",
+                  pointerEvents: "none", 
                 }}
                 className="cursor-grab drop-shadow-[0_20px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)]"
               >

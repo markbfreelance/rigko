@@ -20,7 +20,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full h-16 md:h-20 z-[200] flex items-center bg-transparent pointer-events-none">
+    <header className="fixed top-0 left-0 w-full h-16 md:h-20 z-[200] flex items-center chassis-steel backdrop-blur-md border-b border-black/5 dark:border-white/5 pointer-events-none">
       <div className="mx-auto w-full max-w-[1440px] px-4 md:px-16 flex items-center justify-between pointer-events-auto">
         {/* Logo Section - Flush with steel */}
         <Link href="/" className="flex items-center gap-4 group">
@@ -55,12 +55,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-8">
-          {/* I/O Port Accents */}
-          <div className="hidden md:flex gap-3 opacity-40">
-            <div className="w-4 h-4 rounded-full io-port"></div>
-            <div className="w-4 h-4 rounded-full io-port"></div>
-            <div className="w-6 h-2 rounded-sm io-port"></div>
-          </div>
+
 
           <div className="flex items-center gap-3">
           {mounted && (
@@ -120,7 +115,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[190] pointer-events-auto"
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[210] pointer-events-auto"
             />
             {/* Drawer Content */}
             <motion.div 
@@ -128,7 +123,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[320px] z-[201] pointer-events-auto flex flex-col pt-24"
+              className="fixed top-0 right-0 h-full w-[320px] z-[220] pointer-events-auto flex flex-col pt-24"
               style={{ filter: "drop-shadow(-10px 0 20px rgba(0,0,0,0.5))" }}
             >
               {/* Internal Mobile Close Button - Physical Top Right */}

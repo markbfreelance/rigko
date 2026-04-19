@@ -10,14 +10,14 @@ import HardwareDeck from "../components/hardware-deck";
 
 // Mock Data with Master Schema Technical Fields
 const CATEGORIES = [
-  { id: "cpu", name: "Processor", icon: "solar:cpu-bold" },
-  { id: "mobo", name: "Motherboard", icon: "solar:server-bold" },
-  { id: "ram", name: "Memory", icon: "solar:graph-bold" },
-  { id: "gpu", name: "Graphics Card", icon: "solar:monitor-bold" },
-  { id: "storage", name: "Storage", icon: "solar:ssd-round-bold" },
-  { id: "psu", name: "Power Supply", icon: "solar:plug-circle-bold" },
-  { id: "case", name: "Chassis", icon: "solar:case-bold" },
-  { id: "cooler", name: "Cooling", icon: "solar:snowflake-bold" },
+  { id: "cpu", name: "procie", icon: "solar:cpu-bold" },
+  { id: "mobo", name: "mobo", icon: "solar:server-bold" },
+  { id: "ram", name: "ram", icon: "solar:graph-bold" },
+  { id: "gpu", name: "gpu", icon: "solar:monitor-bold" },
+  { id: "storage", name: "storage", icon: "solar:ssd-round-bold" },
+  { id: "psu", name: "psu", icon: "solar:plug-circle-bold" },
+  { id: "case", name: "case", icon: "solar:case-bold" },
+  { id: "cooler", name: "cooling", icon: "solar:snowflake-bold" },
 ];
 
 const PARTS: Record<string, any[]> = {
@@ -123,6 +123,7 @@ export default function BuildPage() {
   const [activeCategory, setActiveCategory] = useState("cpu");
   const [selectedParts, setSelectedParts] = useState<Record<string, any>>({});
   const [isGuidedMode, setIsGuidedMode] = useState(true);
+  const [isHudOpen, setIsHudOpen] = useState(false);
   
   const totalPrice = Object.values(selectedParts).reduce((acc, part) => acc + (part?.price || 0), 0);
   const totalWattage = Object.values(selectedParts).reduce((acc, part) => {
@@ -249,12 +250,30 @@ export default function BuildPage() {
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#050100] transition-colors overflow-x-hidden is-builder-page">
       <Header />
       
-      <main className="pt-24 md:pt-28 pb-32 px-4 md:px-12 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
+      <main className="pt-20 md:pt-28 pb-32 px-4 md:px-12 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
+        
+        {/* Mobile Category Navigation (Horizontal Scroll) */}
+        <div className="lg:hidden -mx-4 px-4 mb-6 sticky top-16 z-[140] bg-[#f4f4f4]/80 dark:bg-[#050100]/80 backdrop-blur-md border-b border-black/5 dark:border-white/5 py-4 overflow-x-auto custom-scrollbar no-scrollbar flex gap-2">
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-tighter transition-all ${
+                activeCategory === cat.id 
+                ? "bg-[#c2000b] text-white border-[#c2000b] shadow-lg shadow-[#c2000b]/20" 
+                : "bg-white dark:bg-[#111111] border-black/5 dark:border-white/5 text-gray-500"
+              }`}
+            >
+              <Icon icon={cat.icon} className={activeCategory === cat.id ? "text-white" : "text-[#c2000b]"} />
+              {cat.name}
+            </button>
+          ))}
+        </div>
         
         <div className="flex flex-col lg:flex-row gap-8 h-full">
           
-          {/* Left: Category Sidebar */}
-          <div className="w-full lg:w-64 flex-shrink-0">
+          {/* Left: Category Sidebar (Desktop Only) */}
+          <div className="hidden lg:block w-64 flex-shrink-0">
             <div className="sticky top-28 space-y-2">
               <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] mb-6 px-4">Assembly_Index</h2>
               {CATEGORIES.map(cat => (
@@ -320,20 +339,20 @@ export default function BuildPage() {
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ delay: idx * 0.05 }}
                       onClick={() => handleSelect(activeCategory, part)}
-                      className={`cursor-pointer group relative p-6 rounded-3xl border-2 transition-all ${
+                      className={`cursor-pointer group relative p-4 md:p-6 rounded-3xl border-2 transition-all ${
                         isSelected
                         ? "bg-white dark:bg-[#111111] border-[#c2000b] shadow-2xl scale-[1.02]"
                         : !compatible
                         ? "bg-gray-50 dark:bg-white/5 border-transparent opacity-40 grayscale cursor-not-allowed"
                         : warning
-                        ? "bg-white dark:bg-[#111111] border-yellow-500/50 hover:border-yellow-500 shadow-lg shadow-yellow-500/5"
+                        ? "bg-white dark:bg-[#111111] border-yellow-500/50 hover:border-yellow-500 shadow-lg shadow-yellow-500/5 transition-colors"
                         : "bg-white dark:bg-[#111111] border-black/5 dark:border-white/5 hover:border-black/20 dark:hover:border-white/20"
                       }`}
                     >
                       {/* Warning/Error Badges */}
                       {(!compatible || (warning && !isSelected)) && (
                         <div className="absolute inset-x-0 -top-3 z-20 flex justify-center">
-                           <div className={`backdrop-blur-md text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border flex items-center gap-2 shadow-xl ${
+                           <div className={`backdrop-blur-md text-white text-[8px] md:text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border flex items-center gap-2 shadow-xl ${
                              !compatible ? "bg-black/90 border-red-500/50" : "bg-yellow-600/90 border-yellow-400/50"
                            }`}>
                               <Icon icon={!compatible ? "solar:danger-bold" : "solar:shield-warning-bold"} className={!compatible ? "text-[#c2000b]" : "text-white"} />
@@ -401,8 +420,9 @@ export default function BuildPage() {
             </div>
           </div>
 
-          {/* Right: Live Assembly Preview */}
-          <div className="w-full lg:w-[400px] flex-shrink-0">
+          
+          {/* Right: Live Assembly Preview (Desktop Only) */}
+          <div className="hidden lg:block w-[400px] flex-shrink-0">
            <div 
              className="sticky top-28 h-[calc(100vh-14rem)] flex flex-col group"
              style={{ filter: "drop-shadow(0px 10px 20px rgba(0,0,0,0.5))" }}
@@ -493,6 +513,133 @@ export default function BuildPage() {
         </div>
 
       </main>
+      
+      {/* Mobile Render HUD Drawer */}
+      <AnimatePresence>
+        {isHudOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsHudOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[210] lg:hidden"
+            />
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-[320px] z-[220] lg:hidden flex flex-col"
+              style={{ filter: "drop-shadow(-10px 0 20px rgba(0,0,0,0.5))" }}
+            >
+              <div className="relative w-full h-full flex flex-col group">
+                {/* Red Geometric Border (Underlay) - Side Notch */}
+                <div 
+                  className="absolute inset-0 bg-[#c2000b] z-0"
+                  style={{ 
+                    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 75%, 18px 70%, 18px 30%, 0% 25%)" 
+                  }}
+                ></div>
+
+                {/* Black Cockpit Background (Main Layer) - Side Notch */}
+                <div 
+                  className="absolute inset-0 bg-white dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#080808] overflow-hidden z-0"
+                  style={{
+                    clipPath: "polygon(2px 0%, 100% 0%, 100% 100%, 2px 100%, 2px 75%, 20px 70%, 20px 30%, 2px 25%)" 
+                  }}
+                >
+                  <div className="absolute inset-0 chassis-mesh opacity-5"></div>
+                  <div className="absolute inset-0 hardware-grid opacity-10"></div>
+                </div>
+
+                {/* Drawer Content */}
+                <div className="relative z-10 flex flex-col h-full pl-12 pr-6 pt-24 pb-12">
+                   <div className="relative z-10 mb-2 flex-shrink-0">
+                     <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">Virtual_Assembly_HUD</h2>
+                     <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
+                   </div>
+                   
+                   {/* Assembly Render Viewport */}
+                   <div className="flex-1 relative -mx-14 -my-4">
+                     <HardwareDeck 
+                       activeIds={getActiveIds()} 
+                       variant="build"
+                       partNames={{
+                         ...(selectedParts["case"]    ? { CHASSIS:    selectedParts["case"]!.name }    : {}),
+                         ...(selectedParts["mobo"]    ? { MOBO:       selectedParts["mobo"]!.name }    : {}),
+                         ...(selectedParts["cpu"]     ? { [selectedParts["cpu"]!.brand === "AMD" ? "RYZEN_CORE" : "INTEL_CORE"]: selectedParts["cpu"]!.name } : {}),
+                         ...(selectedParts["gpu"]     ? { GRAPHICS:   selectedParts["gpu"]!.name }    : {}),
+                         ...(selectedParts["ram"]     ? { [selectedParts["ram"]!.type === "DDR4" ? "RAM_1" : "RAM_2"]: selectedParts["ram"]!.name } : {}),
+                         ...(selectedParts["psu"]     ? { ENERGY:     selectedParts["psu"]!.name }    : {}),
+                         ...(selectedParts["storage"] ? { DATA_1:     selectedParts["storage"]!.name } : {}),
+                         ...(selectedParts["cooler"]  ? { THERMAL:    selectedParts["cooler"]!.name }  : {}),
+                       }}
+                     />
+                   </div>
+
+                   {/* List Summary */}
+                   <div className="relative z-10 flex-shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4">
+                      <div className="space-y-2">
+                        {Object.entries(selectedParts).map(([catId, part]) => {
+                          if (!part) return null;
+                          const category = CATEGORIES.find(c => c.id === catId);
+                          return (
+                            <div key={catId} className="flex justify-between items-center text-[9px] font-mono group/item">
+                              <div className="flex items-center gap-2">
+                                <span className="text-gray-400 dark:text-gray-500 uppercase w-12 shrink-0">{category?.name}</span>
+                                <span className="text-black dark:text-white font-bold truncate max-w-[120px]">{part.name}</span>
+                              </div>
+                              <span className="text-[#c2000b] font-black shrink-0 ml-2">₱{part.price.toLocaleString()}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                   </div>
+
+                   {/* Total Block */}
+                   <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto flex-shrink-0">
+                      <div className="flex justify-between items-end mb-2">
+                        <span className="text-[10px] font-mono text-gray-500 uppercase">Estimated_Total</span>
+                        <span className="text-xl font-black text-black dark:text-white tracking-tighter">₱{totalPrice.toLocaleString()}</span>
+                      </div>
+                      <div className="w-full bg-black/5 dark:bg-white/10 h-1 rounded-full overflow-hidden">
+                        <motion.div 
+                          key="hud-progress-bar"
+                          initial={{ width: 0 }}
+                          animate={{ width: "65%" }}
+                          className="h-full bg-[#c2000b] rounded-full"
+                        />
+                      </div>
+                   </div>
+                </div>
+
+                {/* Close Drawer Button - Top Right match */}
+                <button 
+                  onClick={() => setIsHudOpen(false)}
+                  className="absolute top-6 right-8 w-10 h-10 flex items-center justify-center rounded-full bg-[#ededed] dark:bg-[var(--chassis-metal)] text-black dark:text-white shadow-[inset_0_4px_8px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.1)] z-[210] active:scale-95 transition-all"
+                >
+                  <Icon icon="lucide:x" className="text-xl" />
+                </button>
+              </div>
+            </motion.div>
+
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile HUD Toggle Button */}
+      <div className="fixed bottom-24 right-4 z-[160] lg:hidden">
+         <button
+           onClick={() => setIsHudOpen(true)}
+           className="w-14 h-14 rounded-full bg-[#c2000b] text-white flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-transform border-4 border-[#050100]"
+         >
+            <Icon icon="solar:globus-linear" className="text-xl mb-0.5 animate-spin-slow" />
+            <span className="text-[7px] font-black uppercase tracking-tighter">HUD</span>
+         </button>
+      </div>
 
       {/* Persistent Build Terminal (Bottom Bar) */}
       <div className="fixed bottom-0 left-0 w-full z-[150] chassis-steel backdrop-blur-md border-t border-black/10 dark:border-white/10 px-8 py-4">
@@ -502,38 +649,41 @@ export default function BuildPage() {
         <div className="absolute bottom-2 left-2 hex-screw scale-75"></div>
         <div className="absolute bottom-2 right-2 hex-screw scale-75"></div>
 
-        <div className="max-w-[1440px] mx-auto flex items-center justify-between relative z-10">
-          <div className="flex gap-12">
-            <div>
-              <div className="text-[9px] font-mono text-gray-500 uppercase mb-1">Components</div>
-              <div className="text-base font-black text-black dark:text-white uppercase tracking-tighter">
-                {Object.values(selectedParts).filter(Boolean).length} / {CATEGORIES.length}
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between relative z-10 gap-x-4">
+          <div className="flex gap-6 md:gap-12 flex-1 min-w-0">
+            <div className="min-w-0">
+              <div className="text-[9px] font-mono text-gray-500 uppercase mb-1">Items</div>
+              <div className="text-sm md:text-base font-black text-black dark:text-white uppercase tracking-tighter">
+                {Object.values(selectedParts).filter(Boolean).length}/{CATEGORIES.length}
               </div>
             </div>
-            <div>
-              <div className="text-[9px] font-mono text-gray-500 uppercase mb-1">Power_Draw</div>
-              <div className="text-base font-black text-black dark:text-white uppercase tracking-tighter flex items-center gap-2">
-                {totalWattage} <span className="text-[10px]">WATT</span>
+            <div className="min-w-0">
+              <div className="text-[9px] font-mono text-gray-500 uppercase mb-1">Energy</div>
+              <div className="text-sm md:text-base font-black text-black dark:text-white uppercase tracking-tighter flex items-center gap-1 md:gap-2">
+                {totalWattage}W
               </div>
             </div>
-            <div>
-              <div className="text-[9px] font-mono text-gray-500 uppercase mb-1">System_Health</div>
-              <div className={`text-base font-black uppercase tracking-tighter flex items-center gap-2 ${
-                Object.keys(selectedParts).length > 3 ? "text-green-500" : "text-[#c2000b]"
-              }`}>
-                <Icon icon={Object.keys(selectedParts).length > 3 ? "solar:shield-check-bold" : "solar:shield-warning-bold"} className={Object.keys(selectedParts).length > 3 ? "animate-none" : "animate-pulse"} />
-                {Object.keys(selectedParts).length > 4 ? "STABLE" : "INCOMPLETE"}
+            <div className="hidden xs:block min-w-0">
+              <div className="text-[9px] font-mono text-gray-500 uppercase mb-1">Total</div>
+              <div className="text-sm md:text-base font-black text-black dark:text-white tracking-tighter truncate">
+                ₱{totalPrice.toLocaleString()}
               </div>
             </div>
           </div>
 
-          <button className={`px-12 py-3 rounded-full font-black uppercase text-xs tracking-widest transition-all ${
-            totalPrice > 0 
-            ? "bg-[#c2000b] text-white shadow-xl shadow-[#c2000b]/30 hover:scale-105 active:scale-95" 
-            : "bg-gray-200 dark:bg-white/5 text-gray-400 cursor-not-allowed"
-          }`}>
-            Finalize_Configuration
-          </button>
+          <div className="flex items-center gap-4">
+            {/* Only show price on mobile if not in stats group */}
+            <div className="xs:hidden text-base font-black text-black dark:text-white tracking-tighter">
+              ₱{totalPrice.toLocaleString()}
+            </div>
+            <button className={`px-6 md:px-12 py-2.5 md:py-3 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest transition-all ${
+              totalPrice > 0 
+              ? "bg-[#c2000b] text-white shadow-xl shadow-[#c2000b]/30 hover:scale-105 active:scale-95" 
+              : "bg-gray-200 dark:bg-white/5 text-gray-400 cursor-not-allowed"
+            }`}>
+              {totalPrice > 0 ? "Finalize" : "Empty"}
+            </button>
+          </div>
         </div>
       </div>
 
