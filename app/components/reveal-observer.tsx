@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function RevealObserver() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -22,12 +25,21 @@ export default function RevealObserver() {
       });
     }, observerOptions);
 
-    document.querySelectorAll(".reveal").forEach((el) => {
-      observer.observe(el);
-    });
+    // Small delay ensures DOM is completely mounted after page transition
+    const timeout = setTimeout(() => {
+      document.querySelectorAll(".reveal").forEach((el) => {
+        // Quick visual fail-safe: don't double-animate elements already animated
+        if (!el.classList.contains("animate-enter")) {
+          observer.observe(el);
+        }
+      });
+    }, 50);
 
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      clearTimeout(timeout);
+      observer.disconnect();
+    };
+  }, [pathname]);
 
   return null;
 }
