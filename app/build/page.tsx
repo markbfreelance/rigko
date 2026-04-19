@@ -419,7 +419,7 @@ export default function BuildPage() {
                <div 
                  className="absolute inset-0 bg-white dark:bg-[#111111] overflow-hidden z-0"
                  style={{
-                   clipPath: "polygon(1.5px 1.5px, calc(100% - 1.5px) 1.5px, calc(100% - 1.5px) calc(100% - 1.5px), 1.5px calc(100% - 1.5px), 1.5px 75%, 19.5px 70%, 19.5px 30%, 1.5px 25%)" 
+                   clipPath: "polygon(2px 2px, calc(100% - 2px) 2px, calc(100% - 2px) calc(100% - 2px), 2px calc(100% - 2px), 2px 75%, 20px 70%, 20px 30%, 2px 25%)" 
                  }}
                >
                  <div className="absolute inset-0 chassis-mesh opacity-5"></div>
