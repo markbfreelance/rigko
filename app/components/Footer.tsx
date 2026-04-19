@@ -39,16 +39,16 @@ import LightningScreen from "./lightning-screen";
 
 export default function Footer() {
   return (
-    <footer className="w-full chassis-steel pt-16 pb-16 px-6 md:px-16 relative z-[110] border-t-2 border-[var(--chassis-border)]">
+    <footer className="w-full chassis-steel pt-16 pb-16 relative z-[110] border-t-2 border-[var(--chassis-border)]">
       {/* Structural Hardware Detail (The "Seam") */}
       <div className="absolute top-4 left-6 hex-screw scale-75"></div>
       <div className="absolute top-4 right-6 hex-screw scale-75"></div>
 
-      <div className="max-w-[1440px] mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12 pt-12">
+      <div className="max-w-[1440px] mx-auto px-8 md:px-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-12 mb-12 pt-12">
           
           {/* LCD Status Screen - Left Panel */}
-          <div className="lg:col-span-2 relative group">
+          <div className="md:col-span-3 lg:col-span-2 relative group">
             <div className="absolute -inset-1 bg-black rounded-lg border-t border-l border-white/5 border-b border-r border-white/10 shadow-2xl"></div>
             <div className="relative bg-[#050100] border-2 border-black rounded-md overflow-hidden shadow-[0_0_40px_rgba(194,0,11,0.1)] p-8">
               {/* High-Voltage Lightning Backdrop */}
@@ -89,7 +89,7 @@ export default function Footer() {
           </div>
 
           {footerLinks.map(group => (
-            <div key={group.title}>
+            <div key={group.title} className="min-w-0 text-center lg:text-left">
               <h4 className="text-gray-500 dark:text-gray-400 font-black text-[10px] uppercase mb-6 tracking-[0.2em] transition-colors">{group.title}</h4>
               <ul className="space-y-3">
                 {group.links.map(link => (
@@ -105,14 +105,14 @@ export default function Footer() {
 
         </div>
 
-        <div className="pt-8 border-t border-black/10 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="pt-8 border-t border-black/10 dark:border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-             <div className="w-8 h-2 bg-gray-900 rounded-sm"></div>
+             <div className="w-8 h-2 bg-gray-900 rounded-sm shrink-0"></div>
              <p className="text-gray-600 text-[9px] font-mono tracking-widest uppercase">
               VERSION: 1.0.4-STABLE // BUILD_CYCLE: {new Date().getFullYear()}
             </p>
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-6 sm:gap-8 flex-wrap justify-center">
             {["Security", "Status", "Sitemap"].map(link => (
               <a key={link} href="#" className="text-gray-600 hover:text-black dark:hover:text-white text-[10px] uppercase font-bold tracking-tighter">{link}</a>
             ))}
