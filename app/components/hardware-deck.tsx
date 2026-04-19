@@ -296,8 +296,8 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
       activeIds.forEach(id => {
         if (!updated[id]) {
           updated[id] = {
-            x: Math.random() * 60 + 20, // 20% to 80% left
-            y: Math.random() * 60 + 20, // 20% to 80% top
+            x: Math.random() * 20 + 40, // perfectly center-clustered (40% to 60%)
+            y: Math.random() * 20 + 40, // vertically centered drop
             rotation: (Math.random() - 0.5) * 60 // -30 to 30 degrees rotation
           };
           changed = true;
@@ -339,7 +339,7 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                 key={comp.id}
                 drag
                 dragConstraints={containerRef}
-                dragElastic={0.1}
+                dragElastic={0.2}
                 dragMomentum={false}
                 initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", rotate: placed.rotation }}
                 animate={{ 
