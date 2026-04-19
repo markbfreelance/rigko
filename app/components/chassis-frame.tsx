@@ -16,14 +16,14 @@ export default function ChassisFrame() {
       {/* Top Frame Bezel (Navbar Shroud) */}
       <div className="absolute top-0 left-0 w-full h-16 md:h-20 chassis-steel border-b-2 border-[var(--chassis-border)] z-20">
         <div className="absolute inset-0 chassis-mesh opacity-10"></div>
-        {/* Corner Screws */}
-        <div className="absolute top-4 left-4 hex-screw scale-75"></div>
-        <div className="absolute top-4 right-4 hex-screw scale-75"></div>
+        {/* Corner Screws - Hidden on mobile for cleaner logo space */}
+        <div className="absolute top-4 left-4 hex-screw scale-75 hidden md:block"></div>
+        <div className="absolute top-4 right-4 hex-screw scale-75 hidden md:block"></div>
         
-        {/* Top Vent Details */}
-        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-1 opacity-20">
+        {/* Top Vent Details - Smaller on mobile */}
+        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5 md:gap-1 opacity-20">
           {[...Array(20)].map((_, i) => (
-            <div key={i} className="w-4 h-1 bg-black/60 dark:bg-black rounded-full"></div>
+            <div key={i} className="w-2 md:w-3 h-0.5 md:h-1 bg-black/60 dark:bg-black rounded-full"></div>
           ))}
         </div>
       </div>

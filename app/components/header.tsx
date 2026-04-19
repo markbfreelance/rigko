@@ -8,6 +8,7 @@ import { Icon } from "@iconify/react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Build a Rig", href: "/build" },
   { label: "Marketplace", href: "#" },
   { label: "Guides", href: "#" },
@@ -65,10 +66,9 @@ export default function Header({ children }: { children?: React.ReactNode }) {
           {mounted && (
             <button 
               onClick={toggleTheme}
-              className="relative flex items-center w-12 h-6 bg-white dark:bg-[#050100] border-2 border-[#c2000b]/50 hover:border-[#c2000b] rounded-full transition-all group cursor-pointer"
+              className="relative flex items-center w-12 h-6 bg-[#ededed] dark:bg-[var(--chassis-metal)] shadow-[inset_0_1px_4px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_2px_6px_rgba(0,0,0,0.8),0_1px_0_rgba(255,255,255,0.05)] rounded-full transition-all group cursor-pointer"
               aria-label="Toggle Theme"
             >
-              <div className="absolute inset-0 bg-[#c2000b]/0 blur-md group-hover:bg-[#ff0000]/30 transition-all rounded-full pointer-events-none"></div>
               
               {/* Internal Track Icons */}
               <div className="absolute inset-0 w-full flex items-center justify-between px-1.5 text-[10px] text-black/50 dark:text-white/30 pointer-events-none transition-colors">
@@ -88,8 +88,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             <div className="hidden sm:flex items-center gap-3">
               {children}
               <Link href="/build" className="group relative">
-                <div className="absolute inset-0 bg-[#c2000b]/50 blur-xl group-hover:bg-[#ff0000]/70 transition-all rounded-full"></div>
-                <div className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b] text-black dark:text-white pl-4 pr-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]">
+                <div className="relative flex items-center gap-2 bg-[#c2000b] text-white border-2 border-[#c2000b] pl-4 pr-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#a10009] transition-all shadow-[inset_0_2px_6px_rgba(0,0,0,0.3)]">
                   <Icon icon="solar:hammer-bold" className="text-sm" />
                   <span className="hidden xs:inline">START BUILDING</span>
                   <span className="xs:hidden">BUILD</span>
@@ -100,11 +99,11 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             {/* Mobile Menu Toggle */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-10 h-10 border-2 border-[#c2000b]/50 hover:border-[#c2000b] bg-white dark:bg-black text-[#c2000b] transition-all rounded-full shadow-[0_0_15px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.3)]"
+              className="lg:hidden flex items-center justify-center w-10 h-10 bg-[#c2000b] text-white border-2 border-[#c2000b] rounded-full transition-all active:scale-95 shadow-[inset_0_2px_6px_rgba(0,0,0,0.3)]"
             >
               <Icon 
-                icon={isMenuOpen ? "solar:close-circle-linear" : "solar:hamburger-menu-linear"} 
-                className="text-xl drop-shadow-[0_0_8px_rgba(194,0,11,0.8)]" 
+                icon={isMenuOpen ? "lucide:x" : "solar:hamburger-menu-linear"} 
+                className="text-xl" 
               />
             </button>
           </div>
@@ -129,38 +128,63 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-[#050100] border-l-2 border-[#c2000b]/30 z-[201] pointer-events-auto p-12 flex flex-col pt-24 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]"
+              className="fixed top-0 right-0 h-full w-[320px] z-[201] pointer-events-auto flex flex-col pt-24"
+              style={{ filter: "drop-shadow(-10px 0 20px rgba(0,0,0,0.5))" }}
             >
-              <div className="absolute top-0 inset-x-0 h-32 chassis-mesh opacity-10 pointer-events-none"></div>
-              
-              <nav className="flex flex-col gap-8 mb-auto">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-black tracking-widest text-gray-400 dark:text-gray-500 hover:text-[#c2000b] dark:hover:text-[#c2000b] transition-all uppercase"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
+              {/* Internal Mobile Close Button - Physical Top Right */}
+              <button 
+                onClick={() => setIsMenuOpen(false)}
+                className="absolute top-6 right-12 flex items-center justify-center w-10 h-10 bg-[#ededed] dark:bg-[var(--chassis-metal)] text-black dark:text-white rounded-full transition-all active:scale-95 shadow-[inset_0_4px_8px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.1)] z-[210]"
+                aria-label="Close Menu"
+              >
+                <Icon icon="lucide:x" className="text-xl" />
+              </button>
 
-              <div className="flex flex-col gap-6 mt-auto">
-                <div className="sm:hidden flex flex-col gap-4 w-full">
-                  <div className="w-full">{children}</div>
-                  <Link 
-                    href="/build" 
-                    onClick={() => setIsMenuOpen(false)}
-                    className="relative flex items-center justify-center bg-[#c2000b] text-white px-6 py-3 border-2 border-[#c2000b] rounded-full text-[11px] font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(194,0,11,0.3)] w-full active:scale-95 transition-transform"
-                  >
-                    <Icon icon="solar:hammer-bold" className="absolute left-6 text-lg" />
-                    START BUILDING
-                  </Link>
-                </div>
-                
-                <div className="pt-8 border-t border-black/5 dark:border-white/5">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#c2000b] opacity-50 block mb-4">sys://nav/v2.0.4</span>
+              {/* Red Geometric Border (Underlay) - Only Left Edge Glow */}
+              <div 
+                className="absolute inset-0 bg-[#c2000b] z-0"
+                style={{ 
+                  clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 75%, 18px 70%, 18px 30%, 0% 25%)" 
+                }}
+              ></div>
+
+              {/* Main Background Layer - Overlaps Top, Right, Bottom perfectly */}
+              <div 
+                className="absolute inset-0 bg-white dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#080808] z-0"
+                style={{
+                  clipPath: "polygon(2px 0%, 100% 0%, 100% 100%, 2px 100%, 2px 75%, 20px 70%, 20px 30%, 2px 25%)" 
+                }}
+              >
+                <div className="absolute top-0 inset-x-0 h-32 chassis-mesh opacity-10 pointer-events-none"></div>
+              </div>
+              
+              <div className="relative z-10 flex flex-col h-full p-12 pl-16">
+                <nav className="flex flex-col gap-8 mb-auto items-end">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="text-lg font-black tracking-widest text-gray-400 dark:text-gray-500 hover:text-[#c2000b] dark:hover:text-[#c2000b] transition-all uppercase text-right"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </nav>
+
+                <div className="flex flex-col gap-6 mt-auto">
+                  <div className="sm:hidden flex flex-col gap-4 items-center w-full">
+                    <div className="w-full">{children}</div>
+                    <Link 
+                      href="/build" 
+                      onClick={() => setIsMenuOpen(false)}
+                      className="relative flex items-center justify-center bg-[#c2000b] text-white px-6 py-3 border-2 border-[#c2000b] rounded-full text-[11px] font-black uppercase tracking-widest shadow-[inset_0_2px_6px_rgba(0,0,0,0.3)] w-full active:scale-95 transition-transform"
+                    >
+                      <Icon icon="solar:hammer-bold" className="absolute left-6 text-lg" />
+                      START BUILDING
+                    </Link>
+                  </div>
+                  
                 </div>
               </div>
             </motion.div>
