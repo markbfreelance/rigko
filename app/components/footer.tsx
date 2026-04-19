@@ -39,7 +39,7 @@ import LightningScreen from "./lightning-screen";
 
 export default function Footer() {
   return (
-    <footer className="w-full chassis-steel pt-16 pb-[calc(4rem+env(safe-area-inset-bottom))] relative z-[110] border-t-2 border-[var(--chassis-border)]">
+    <footer className="w-full chassis-steel pt-16 pb-24 lg:pb-16 relative z-[110] border-t-2 border-[var(--chassis-border)]">
       {/* Structural Hardware Detail (The "Seam") */}
       <div className="absolute top-4 left-6 hex-screw scale-75"></div>
       <div className="absolute top-4 right-6 hex-screw scale-75"></div>
