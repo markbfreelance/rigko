@@ -263,7 +263,7 @@ export default function BuildPage() {
                   <Icon icon={cat.icon} className={`text-xl ${activeCategory === cat.id ? "text-white" : "text-[#c2000b]/60"}`} />
                   <span className="text-xs font-bold uppercase tracking-tighter">{cat.name}</span>
                   {selectedParts[cat.id] && (
-                    <Icon icon="solar:check-circle-bold" className="ml-auto text-white" />
+                    <Icon icon="solar:check-circle-bold" className={`ml-auto text-xl transition-colors ${activeCategory === cat.id ? "text-white" : "text-[#c2000b]"}`} />
                   )}
                 </button>
               ))}
