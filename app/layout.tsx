@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeProvider from "./components/theme-provider";
 import RevealObserver from "./components/reveal-observer";
 import ChassisFrame from "./components/chassis-frame";
+import { Analytics } from "@vercel/analytics/next";
 
 // REFRESH_TRIGGER: kebab-case transition complete
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
             {children}
           </div>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
