@@ -40,8 +40,6 @@ import LightningScreen from "./lightning-screen";
 export default function Footer() {
   return (
     <footer className="w-full chassis-steel pt-16 pb-24 lg:pb-16 relative z-[110] border-t-2 border-[var(--chassis-border)]">
-      {/* iOS Overscroll Buffer - Fills the void below the footer when rubber-banding */}
-      <div className="absolute top-full left-0 w-full h-[150vh] chassis-steel z-[-1] pointer-events-none" />
       
       {/* Structural Hardware Detail (The "Seam") */}
       <div className="absolute top-4 left-6 hex-screw scale-75"></div>

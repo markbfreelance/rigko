@@ -69,7 +69,10 @@
 }
 
 /* Custom Scrollbar - Rigko Industrial Red (Square & Sharp) */
-html, body {
+html {
+  background: var(--chassis-metal);
+}
+body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
