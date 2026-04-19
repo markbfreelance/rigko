@@ -8,10 +8,11 @@ import BackgroundTerminalText from "./components/background-terminal-text";
 
 export default function Home() {
   return (
-    <div className="pt-16 md:pt-20">
+    <>
       <Header>
         <HeaderAuth />
       </Header>
+      <div className="pt-16 md:pt-20 w-full min-h-full flex flex-col">
       <main className="flex-1 relative flex flex-col bg-transparent">
         {/* Analog Texture Backdrops */}
         <BackgroundTerminalText />
@@ -20,7 +21,8 @@ export default function Home() {
         <SuggestedBuildsHome />
         <GettingStartedHome />
       </main>
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 }

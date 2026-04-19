@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { outfit, geistMono } from "./fonts";
 import "./globals.css";
 import ThemeProvider from "./components/theme-provider";
@@ -11,6 +11,13 @@ import { Analytics } from "@vercel/analytics/next";
 const siteUrl = "https://rigko.com";
 const description =
   "Compare PC component prices across Southeast Asian retailers. Build your dream rig with real-time price tracking and compatibility checking.";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "Rigko — Premium PC Part Picker & Builder",
