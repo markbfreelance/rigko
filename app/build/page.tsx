@@ -250,24 +250,38 @@ export default function BuildPage() {
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#050100] transition-colors overflow-x-hidden is-builder-page">
       <Header />
       
-      <main className="pt-20 md:pt-28 pb-32 px-4 md:px-12 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
+      <main className="pt-16 md:pt-28 pb-32 px-4 md:px-12 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
         
-        {/* Mobile Category Navigation (Horizontal Scroll) */}
-        <div className="lg:hidden -mx-4 px-4 mb-6 sticky top-16 z-[140] bg-[#f4f4f4]/80 dark:bg-[#050100]/80 backdrop-blur-md border-b border-black/5 dark:border-white/5 py-4 overflow-x-auto custom-scrollbar no-scrollbar flex gap-2">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-tighter transition-all ${
-                activeCategory === cat.id 
-                ? "bg-[#c2000b] text-white border-[#c2000b] shadow-lg shadow-[#c2000b]/20" 
-                : "bg-white dark:bg-[#111111] border-black/5 dark:border-white/5 text-gray-500"
-              }`}
-            >
-              <Icon icon={cat.icon} className={activeCategory === cat.id ? "text-white" : "text-[#c2000b]"} />
-              {cat.name}
-            </button>
-          ))}
+        {/* Mobile Category Navigation (Horizontal Grid - 2 Rows) */}
+        <div className="lg:hidden -mx-4 px-4 mb-6 sticky top-16 z-[140] bg-[#f4f4f4]/80 dark:bg-[#050100]/80 backdrop-blur-md border-b border-black/5 dark:border-white/5 py-3 grid grid-cols-4 gap-1.5">
+          {CATEGORIES.map(cat => {
+            const isCompleted = !!selectedParts[cat.id];
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`flex flex-col items-center justify-center gap-1.5 py-2.5 rounded-xl border text-[8px] font-black uppercase tracking-tighter transition-all ${
+                  activeCategory === cat.id 
+                  ? "bg-[#c2000b] text-white border-[#c2000b] shadow-lg shadow-[#c2000b]/20" 
+                  : isCompleted
+                  ? "bg-white dark:bg-[#111111] border-[#c2000b]/30 text-black dark:text-white"
+                  : "bg-white dark:bg-[#111111] border-black/5 dark:border-white/5 text-gray-400"
+                }`}
+              >
+                <Icon 
+                  icon={isCompleted ? "solar:check-read-linear" : "lucide:plus"} 
+                  className={`text-[12px] ${
+                    activeCategory === cat.id 
+                    ? "text-white" 
+                    : isCompleted 
+                    ? "text-[#c2000b]" 
+                    : "text-gray-400 opacity-50"
+                  }`} 
+                />
+                <span className="truncate w-full px-1 text-center">{cat.name}</span>
+              </button>
+            );
+          })}
         </div>
         
         <div className="flex flex-col lg:flex-row gap-8 h-full">
