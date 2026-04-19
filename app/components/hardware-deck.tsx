@@ -355,11 +355,12 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                   left: `${placed.x}%`,
                   width: "280px",
                   height: "280px",
-                  pointerEvents: "auto",
+                  pointerEvents: "none", // Prevent wrapper from capturing empty space
                 }}
                 className="cursor-grab drop-shadow-[0_20px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)]"
               >
-                <div className="w-full h-full flex items-center justify-center p-2">
+                {/* [&>svg]:pointer-events-auto relegates all hit-detection explicitly to the painted SVG vectors! */}
+                <div className="w-full h-full flex items-center justify-center p-2 pointer-events-none [&>svg]:pointer-events-auto">
                    {comp.icon}
                 </div>
               </motion.div>
