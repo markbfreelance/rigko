@@ -147,8 +147,8 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               </nav>
 
               <div className="flex flex-col gap-6 mt-auto">
-                <div className="sm:hidden flex flex-col gap-4 items-center w-full">
-                  <div className="w-full scale-95">{children}</div>
+                <div className="sm:hidden flex flex-col gap-4 w-full">
+                  <div className="w-full">{children}</div>
                   <Link 
                     href="/build" 
                     onClick={() => setIsMenuOpen(false)}
