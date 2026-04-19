@@ -6,7 +6,7 @@ import { useTheme } from "./theme-provider";
 import { Icon } from "@iconify/react";
 
 const navLinks = [
-  { label: "Build a Rig", href: "#" },
+  { label: "Build a Rig", href: "/build" },
   { label: "Marketplace", href: "#" },
   { label: "Guides", href: "#" },
   { label: "PH Prices", href: "#" },
@@ -39,13 +39,13 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         {/* Desktop Nav - Etched into Shroud */}
         <nav className="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-1">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
               href={link.href}
               className="px-6 py-2 text-[11px] font-bold text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -82,6 +82,13 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             </button>
           )}
 
+            <Link href="/build" className="group relative">
+              <div className="absolute inset-0 bg-[#c2000b]/50 blur-xl group-hover:bg-[#ff0000]/70 transition-all rounded-full"></div>
+              <div className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b] text-black dark:text-white pl-4 pr-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]">
+                <Icon icon="mdi:power" className="text-sm" />
+                <span>START BUILDING</span>
+              </div>
+            </Link>
             {children}
 
           </div>

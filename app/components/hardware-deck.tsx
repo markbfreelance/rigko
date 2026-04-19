@@ -278,12 +278,14 @@ const components = [
   },
 ];
 
-export default function HardwareDeck() {
+export default function HardwareDeck({ activeIds, variant = "idle" }: { activeIds?: string[], variant?: "idle" | "build" }) {
   return (
     <div className="absolute inset-0 pointer-events-none">
       {/* Max-Width Assembly Container (Matched to Header max-w-7xl) */}
       <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-none">
         {components.map((comp, idx) => {
+          const isActive = !activeIds || activeIds.includes(comp.id);
+          
           // Calculate Center-Relative Position using Row-Specific Config
           const rowConfig = LAYOUT.ROWS[comp.row as keyof typeof LAYOUT.ROWS];
           const xDist = (comp as any).x_override || rowConfig.x;
@@ -296,10 +298,14 @@ export default function HardwareDeck() {
             <motion.div
               key={comp.id + idx}
               initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", zIndex: 5 }}
-              animate={{ opacity: 1, scale: comp.scale, x: "-50%", y: "-50%", zIndex: 5 }}
+              animate={{ 
+                opacity: isActive ? 1 : (variant === "build" ? 0.05 : 1), 
+                scale: isActive ? comp.scale : (variant === "build" ? comp.scale * 0.8 : comp.scale), 
+                x: "-50%", y: "-50%", zIndex: 5 
+              }}
               transition={{ 
                 duration: 1.2, 
-                delay: idx * 0.08,
+                delay: variant === "build" ? 0 : idx * 0.08,
                 ease: [0.22, 1, 0.36, 1]
               }}
               style={{
