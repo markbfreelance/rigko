@@ -328,6 +328,12 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
             const placed = placedParts[comp.id];
             if (!placed) return null; // Avoid render before effect triggers
 
+            // Semantic layering so parts logically stack (e.g., RAM always over PSU/Mobo)
+            const zIndexBase = ({
+               CHASSIS: 1, MOBO: 2, ENERGY: 4, DATA_1: 5, INTEL_CORE: 6, RYZEN_CORE: 6, 
+               RAM_1: 8, RAM_2: 8, GRAPHICS: 10, THERMAL: 12
+            } as Record<string, number>)[comp.id] || 10;
+
             return (
               <motion.div
                 key={comp.id}
@@ -339,7 +345,7 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                 animate={{ 
                   opacity: 1, 
                   scale: comp.scale * baseScale, 
-                  x: "-50%", y: "-50%", rotate: placed.rotation, zIndex: 10 
+                  x: "-50%", y: "-50%", rotate: placed.rotation, zIndex: zIndexBase 
                 }}
                 whileHover={{ scale: comp.scale * 1.05 * baseScale }}
                 whileDrag={{ zIndex: 200, scale: comp.scale * 1.1 * baseScale, cursor: "grabbing" }}
