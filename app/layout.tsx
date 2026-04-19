@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeProvider from "./components/theme-provider";
 import RevealObserver from "./components/reveal-observer";
 import ChassisFrame from "./components/chassis-frame";
+import VisualEffects from "./components/visual-effects";
 import { Analytics } from "@vercel/analytics/next";
 
 // REFRESH_TRIGGER: kebab-case transition complete
@@ -50,10 +51,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body 
-        className="min-h-screen w-full flex flex-col antialiased selection:bg-[#c2000b] selection:text-white scanlines relative"
+        className="min-h-screen w-full flex flex-col antialiased selection:bg-[#c2000b] selection:text-white relative"
         suppressHydrationWarning
       >
-        <div className="vignette"></div>
+        <VisualEffects />
         <RevealObserver />
         <ChassisFrame />
         <ThemeProvider>

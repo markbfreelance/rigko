@@ -103,8 +103,15 @@ html, body {
   background: var(--scrollbar-track) !important;
 }
 
-/* Scanlines Overlay (The "Texture") */
-.scanlines::before {
+/* CRT Overlay (The "Texture") */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 120;
+}
+
+.crt-overlay::before {
   content: " ";
   display: block;
   position: absolute;
@@ -114,7 +121,6 @@ html, body {
   right: 0;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, var(--crt-scanline) 50%), 
               linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 90;
   background-size: 100% 4px, 6px 100%;
   pointer-events: none;
 }
@@ -180,6 +186,12 @@ html, body {
   pointer-events: none;
   z-index: 10;
   transition: box-shadow 0.5s ease;
+}
+
+/* Hide global effects on builder page to ensure technical clarity */
+html:has(.is-builder-page) .vignette,
+html:has(.is-builder-page) .scanlines::before {
+  display: none !important;
 }
 
 .dark .vignette {

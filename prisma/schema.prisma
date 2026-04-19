@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../app/generated/prisma"
 }
 
@@ -23,4 +23,143 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model Cpu {
+  id                 String   @id @default(cuid())
+  name               String
+  brand              String   // AMD / Intel
+  socket             String   // AM4, AM5, LGA1700
+  cores              Int
+  threads            Int
+  base_clock         Float
+  boost_clock        Float
+  tdp                Int      // Watts
+  integrated_graphics Boolean
+  generation         String
+  price              Float
+  shopeeUrl          String?
+
+  @@map("cpus")
+}
+
+model Motherboard {
+  id           String @id @default(cuid())
+  name         String
+  brand        String
+  socket       String
+  chipset      String
+  form_factor  String // ATX, mATX, ITX
+  ram_type     String // DDR4 / DDR5
+  ram_slots    Int
+  max_ram      Int    // GB
+  pcie_version String
+  m2_slots     Int
+  sata_ports   Int
+  wifi         Boolean
+  price        Float
+  shopeeUrl    String?
+
+  @@map("motherboards")
+}
+
+model Ram {
+  id          String @id @default(cuid())
+  name        String
+  brand       String
+  type        String // DDR4 / DDR5
+  capacity    Int    // GB
+  speed       Int    // MHz
+  sticks      Int
+  cas_latency Int
+  price       Float
+  shopeeUrl   String?
+
+  @@map("rams")
+}
+
+model Gpu {
+  id             String @id @default(cuid())
+  name           String
+  brand          String // NVIDIA / AMD
+  vram           Int    // GB
+  length         Int    // mm
+  power_draw     Int    // watts
+  pcie_version   String
+  recommended_psu Int    // watts
+  price          Float
+  shopeeUrl      String?
+
+  @@map("gpus")
+}
+
+model Storage {
+  id          String @id @default(cuid())
+  name        String
+  brand       String
+  type        String // HDD / SSD
+  interface   String // SATA / NVMe
+  capacity    Int    // GB
+  read_speed  Int    // MB/s
+  write_speed Int    // MB/s
+  price       Float
+  shopeeUrl   String?
+
+  @@map("storages")
+}
+
+model Psu {
+  id                String @id @default(cuid())
+  name              String
+  brand             String
+  wattage           Int
+  efficiency_rating String // 80+ Gold, etc.
+  modular           String // full / semi / none
+  form_factor       String // ATX / SFX
+  price             Float
+  shopeeUrl         String?
+
+  @@map("psus")
+}
+
+model Cooler {
+  id             String @id @default(cuid())
+  name           String
+  brand          String
+  type           String   // air / liquid
+  socket_support String   // Comma separated AM4, AM5, etc
+  height         Int?     // mm (air)
+  radiator_size  Int?     // 120, 240, 360 (liquid)
+  price          Float
+  shopeeUrl      String?
+
+  @@map("coolers")
+}
+
+model Case {
+  id                 String @id @default(cuid())
+  name               String
+  brand              String
+  form_factor_support String // Comma separated ATX, mATX, ITX
+  max_gpu_length     Int    // mm
+  max_cooler_height  Int    // mm
+  psu_support        String // ATX / SFX
+  fan_slots          Int
+  price              Float
+  shopeeUrl          String?
+
+  @@map("cases")
+}
+
+model CaseFan {
+  id        String @id @default(cuid())
+  name      String
+  brand     String
+  size      Int    // 120, 140
+  rpm       Int
+  airflow   Float  // CFM
+  price     Float
+  shopeeUrl String?
+
+  @@map("case_fans")
 }
