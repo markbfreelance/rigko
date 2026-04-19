@@ -361,8 +361,13 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
               >
                 {/* Delegate hit-detection strictly to the inner ink paths */}
                 <div className="group/part w-full h-full flex flex-col items-center justify-center p-2 pointer-events-none [&_svg]:pointer-events-none [&_svg_*]:pointer-events-auto relative">
-                  {/* Floating hover label */}
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover/part:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  {/* Floating hover label — counter-rotated and counter-scaled to always appear upright at full size */}
+                  <div 
+                    className="absolute -top-6 left-1/2 opacity-0 group-hover/part:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap origin-bottom"
+                    style={{
+                      transform: `translateX(-50%) rotate(${-placed.rotation}deg) scale(${1 / (comp.scale * baseScale)})`,
+                    }}
+                  >
                     <div className="px-2 py-1 bg-black/80 dark:bg-white/10 backdrop-blur-md border border-[#c2000b]/60 text-[9px] font-mono uppercase tracking-[0.2em] text-white shadow-[0_0_12px_rgba(194,0,11,0.4)]">
                       {comp.label}
                     </div>
