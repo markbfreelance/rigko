@@ -348,18 +348,19 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
                 dragConstraints={containerRef}
                 dragElastic={0.2}
                 dragMomentum={false}
-                initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", rotate: placed.rotation }}
+                initial={{ opacity: 0, scale: 0, rotate: placed.rotation }}
                 animate={{ 
                   opacity: 1, 
                   scale: comp.scale * (isMobile ? 0.45 : 0.65), 
-                  x: "-50%", y: "-50%", rotate: placed.rotation, zIndex: zIndexBase 
+                  rotate: placed.rotation, 
+                  zIndex: zIndexBase 
                 }}
                 whileHover={{ scale: comp.scale * 1.05 * (isMobile ? 0.45 : 0.65) }}
                 whileDrag={{ zIndex: 200, scale: comp.scale * 1.1 * (isMobile ? 0.45 : 0.65), cursor: "grabbing" }}
                 style={{
                   position: "absolute",
-                  top: `${placed.y}%`,
-                  left: `${placed.x}%`,
+                  top: `calc(${placed.y}% - ${isMobile ? "90px" : "140px"})`,
+                  left: `calc(${placed.x}% - ${isMobile ? "90px" : "140px"})`,
                   width: isMobile ? "180px" : "280px",
                   height: isMobile ? "180px" : "280px",
                   pointerEvents: "none", 

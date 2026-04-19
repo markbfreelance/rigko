@@ -122,8 +122,9 @@ const PARTS: Record<string, any[]> = {
 export default function BuildPage() {
   const [activeCategory, setActiveCategory] = useState("cpu");
   const [selectedParts, setSelectedParts] = useState<Record<string, any>>({});
-  const [isGuidedMode, setIsGuidedMode] = useState(true);
+
   const [isHudOpen, setIsHudOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   
   const totalPrice = Object.values(selectedParts).reduce((acc, part) => acc + (part?.price || 0), 0);
   const totalWattage = Object.values(selectedParts).reduce((acc, part) => {
@@ -213,8 +214,9 @@ export default function BuildPage() {
       [category]: prev[category]?.id === part.id ? null : part
     }));
 
-    // Auto-advance logic
-    if (isGuidedMode && part) {
+    // Auto-advance logic (Now default protocol)
+    const isSelecting = selectedParts[category]?.id !== part.id;
+    if (isSelecting && part) {
       const currentIndex = CATEGORIES.findIndex(c => c.id === category);
       if (currentIndex < CATEGORIES.length - 1) {
         setTimeout(() => setActiveCategory(CATEGORIES[currentIndex + 1].id), 300);
@@ -312,36 +314,33 @@ export default function BuildPage() {
 
           {/* Center: Part Catalog */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h1 className="text-3xl font-black text-black dark:text-white uppercase tracking-tighter">
-                  {isGuidedMode ? `Step_${CATEGORIES.findIndex(c => c.id === activeCategory) + 1}: ` : ""}Select_{activeCategory}
-                </h1>
-                <p className="text-[10px] font-mono text-gray-500 uppercase mt-1 tracking-widest">
-                  PH_LOCAL_INVENTORY // STATUS: LIVE_SYNC
-                </p>
-              </div>
-
-              {/* Mode Toggle */}
-              <div className="flex bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/10 dark:border-white/10">
-                <button 
-                  onClick={() => setIsGuidedMode(true)}
-                  className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase transition-all ${isGuidedMode ? "bg-white dark:bg-black text-[#c2000b] shadow-sm" : "text-gray-500"}`}
-                >
-                  Guided
-                </button>
-                <button 
-                  onClick={() => setIsGuidedMode(false)}
-                  className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase transition-all ${!isGuidedMode ? "bg-white dark:bg-black text-[#c2000b] shadow-sm" : "text-gray-500"}`}
-                >
-                  Free Build
-                </button>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+              <h1 className="text-xl md:text-3xl font-black text-black dark:text-white uppercase tracking-tighter shrink-0">
+                Select_{activeCategory}
+              </h1>
+              
+              <div className="relative flex-1 max-w-md">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                  <Icon icon="solar:magnifer-linear" className="text-lg" />
+                </div>
+                <input 
+                  type="text"
+                  placeholder={`Search_${activeCategory}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full pl-12 pr-6 py-2.5 text-[11px] font-mono uppercase tracking-widest text-black dark:text-white focus:outline-none focus:border-[#c2000b]/50 placeholder:text-gray-500 transition-all shadow-[inset_0_2px_6px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_2px_6px_rgba(0,0,0,0.4)]"
+                />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               <AnimatePresence mode="wait">
-                {(PARTS[activeCategory as keyof typeof PARTS] || []).map((part, idx) => {
+                {(PARTS[activeCategory as keyof typeof PARTS] || [])
+                  .filter(part => 
+                    part.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    (part.brand && part.brand.toLowerCase().includes(searchQuery.toLowerCase()))
+                  )
+                  .map((part, idx) => {
                   const { compatible, reason, warning } = checkCompatibility(activeCategory, part);
                   const isSelected = selectedParts[activeCategory]?.id === part.id;
                   
@@ -577,7 +576,7 @@ export default function BuildPage() {
                    </div>
                    
                    {/* Assembly Render Viewport */}
-                   <div className="flex-1 relative -mx-14 -my-4">
+                   <div className="flex-1 relative -ml-12 mr-0 -my-4">
                      <HardwareDeck 
                        activeIds={getActiveIds()} 
                        variant="build"
