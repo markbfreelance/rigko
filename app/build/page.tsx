@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Header from "../components/header";
@@ -127,6 +127,7 @@ export default function BuildPage() {
   const [isSelectingMode, setIsSelectingMode] = useState(false);
   const [expandedCats, setExpandedCats] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const mobileConstraintsRef = useRef<HTMLDivElement>(null);
   
   const totalPrice = Object.values(selectedParts).reduce((acc, part) => acc + (part?.price || 0), 0);
   const totalWattage = Object.values(selectedParts).reduce((acc, part) => {
@@ -274,7 +275,7 @@ export default function BuildPage() {
                 className="space-y-3"
               >
                 <div className="mb-6">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] px-2 mb-4">ADD YOUR PARTS</h2>
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] px-2 mb-4">SELECT YOUR PARTS</h2>
                   <div className="space-y-2">
                     {CATEGORIES.map((cat, idx) => {
                       const selectedPart = selectedParts[cat.id];
@@ -341,9 +342,7 @@ export default function BuildPage() {
                                           </div>
                                         </div>
                                       </div>
-                                    ) : (
-                                      <div className="text-[9px] font-mono text-gray-400 uppercase italic">Empty_Slot // Awaiting_Assembly</div>
-                                    )}
+                                    ) : null}
                                   </div>
                                   <button
                                     onClick={(e) => {
@@ -483,7 +482,7 @@ export default function BuildPage() {
           {/* Left: Category Sidebar (Desktop Only) */}
           <div className="hidden lg:block w-64 flex-shrink-0">
             <div className="sticky top-28 space-y-2">
-              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] mb-6 px-4">Assembly_Index</h2>
+              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] mb-6 px-4">SELECT YOUR PARTS</h2>
               {CATEGORIES.map(cat => (
                 <button
                   key={cat.id}
@@ -655,11 +654,11 @@ export default function BuildPage() {
                <div className="relative z-10 p-8 pl-12 h-full flex flex-col pointer-events-none">
                  
                  <div className="relative z-10 mb-4 flex-shrink-0">
-                   <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">Virtual_Assembly_Render</h2>
+                   <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">ASSEMBLY DESK</h2>
                    <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
                  </div>
 
-                 <div className="flex-1 relative -mx-10 -my-10 pointer-events-auto">
+                 <div className="flex-1 relative -mx-24 -my-16 pointer-events-auto">
                     <HardwareDeck 
                       activeIds={getActiveIds()} 
                       variant="build"
@@ -729,7 +728,7 @@ export default function BuildPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsHudOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[210] lg:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[1050] lg:hidden"
             />
             {/* Drawer */}
             <motion.div
@@ -737,7 +736,7 @@ export default function BuildPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[320px] z-[220] lg:hidden flex flex-col"
+              className="fixed top-0 right-0 h-full w-[320px] z-[1100] lg:hidden flex flex-col"
               style={{ filter: "drop-shadow(-10px 0 20px rgba(0,0,0,0.5))" }}
             >
               <div className="relative w-full h-full flex flex-col group">
@@ -762,16 +761,14 @@ export default function BuildPage() {
 
                 {/* Drawer Content */}
                 <div className="relative z-10 flex flex-col h-full pl-12 pr-6 pt-24 pb-12">
-                   <div className="relative z-10 mb-2 flex-shrink-0">
-                     <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">Virtual_Assembly_HUD</h2>
-                     <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
-                   </div>
-                   
-                   {/* Assembly Render Viewport */}
-                   <div className="flex-1 relative -ml-12 mr-0 -my-4">
+                   {/* Assembly Render Viewport - Strictly Contained Workstation */}
+                   <div ref={mobileConstraintsRef} className="flex-1 relative ml-12 mb-12 mt-8 pl-24 pr-12 pb-16">
                      <HardwareDeck 
                        activeIds={getActiveIds()} 
                        variant="build"
+                       dragConstraints={mobileConstraintsRef}
+                       dragElastic={0.15}
+                       dragMomentum={false}
                        partNames={{
                          ...(selectedParts["case"]    ? { CHASSIS:    selectedParts["case"]!.name }    : {}),
                          ...(selectedParts["mobo"]    ? { MOBO:       selectedParts["mobo"]!.name }    : {}),
@@ -821,13 +818,19 @@ export default function BuildPage() {
                    </div>
                 </div>
 
-                {/* Close Drawer Button - Top Right match */}
-                <button 
-                  onClick={() => setIsHudOpen(false)}
-                  className="absolute top-6 right-8 w-10 h-10 flex items-center justify-center rounded-full bg-[#ededed] dark:bg-[var(--chassis-metal)] text-black dark:text-white shadow-[inset_0_4px_8px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.1)] z-[210] active:scale-95 transition-all"
-                >
-                  <Icon icon="lucide:x" className="text-xl" />
-                </button>
+                {/* Close Drawer Button & Title Unified */}
+                <div className="absolute top-6 left-12 right-8 flex items-center justify-between z-[210]">
+                   <div>
+                     <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">ASSEMBLY DESK</h2>
+                     <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
+                   </div>
+                   <button 
+                     onClick={() => setIsHudOpen(false)}
+                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[#ededed] dark:bg-[var(--chassis-metal)] text-black dark:text-white shadow-[inset_0_4px_8px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.1)] active:scale-95 transition-all"
+                   >
+                     <Icon icon="lucide:x" className="text-xl" />
+                   </button>
+                </div>
               </div>
             </motion.div>
 

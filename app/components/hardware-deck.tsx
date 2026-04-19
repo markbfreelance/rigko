@@ -279,18 +279,22 @@ const components = [
   },
 ];
 
-export default function HardwareDeck({ activeIds, variant = "idle", partNames }: { activeIds?: string[], variant?: "idle" | "build", partNames?: Record<string, string> }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // State to hold persistent random coordinates so they don't re-roll on every activeIds update
+export default function HardwareDeck({ 
+  activeIds = [], 
+  variant = "idle",
+  partNames,
+  dragConstraints 
+}: { 
+  activeIds?: string[], 
+  variant?: "idle" | "build",
+  partNames?: Record<string, string>,
+  dragConstraints?: React.RefObject<HTMLDivElement>
+}) {
   const [placedParts, setPlacedParts] = useState<Record<string, { x: number, y: number, rotation: number }>>({});
-  const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  const internalRef = useRef<HTMLDivElement>(null);
+  const containerRef = dragConstraints || internalRef;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const baseScale = isMobile ? 0.55 : 0.65;
 
   useEffect(() => {
     if (variant !== "build" || !activeIds) return;
@@ -298,14 +302,17 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
     setPlacedParts(prev => {
       const updated = { ...prev };
       let changed = false;
-      
+
       // Spawn new items with random coordinates
       activeIds.forEach(id => {
         if (!updated[id]) {
+          const comp = components.find(c => c.id === id);
+          const layout = LAYOUT.ROWS[(comp?.row || 1) as keyof typeof LAYOUT.ROWS];
+          
           updated[id] = {
-            x: Math.random() * 20 + 40, // perfectly center-clustered (40% to 60%)
-            y: Math.random() * 20 + 40, // vertically centered drop
-            rotation: (Math.random() - 0.5) * 60 // -30 to 30 degrees rotation
+            x: (comp as any).x_override || layout.x + (Math.random() * 10 - 5),
+            y: layout.y + (Math.random() * 10 - 5),
+            rotation: (comp?.rotation || 0) + (Math.random() * 10 - 5)
           };
           changed = true;
         }
@@ -323,19 +330,17 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
     });
   }, [activeIds, variant]);
 
-  // If in builder mode, only map the physically added parts
+  // --- BUILD MODE RENDER ---
   if (variant === "build") {
     const builderComps = components.filter(c => activeIds?.includes(c.id));
-    const baseScale = 0.65; // User requested perfectly scaled
 
     return (
       <div className="absolute inset-0 pointer-events-none" ref={containerRef}>
         <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-none">
           {builderComps.map((comp) => {
             const placed = placedParts[comp.id];
-            if (!placed) return null; // Avoid render before effect triggers
+            if (!placed) return null;
 
-            // Semantic layering so parts logically stack (e.g., RAM always over PSU/Mobo)
             const zIndexBase = ({
                CHASSIS: 1, MOBO: 2, ENERGY: 4, DATA_1: 5, INTEL_CORE: 6, RYZEN_CORE: 6, 
                RAM_1: 8, RAM_2: 8, GRAPHICS: 10, THERMAL: 12
@@ -346,30 +351,28 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
                 key={comp.id}
                 drag
                 dragConstraints={containerRef}
-                dragElastic={0.2}
+                dragElastic={0.15}
                 dragMomentum={false}
                 initial={{ opacity: 0, scale: 0, rotate: placed.rotation }}
                 animate={{ 
                   opacity: 1, 
-                  scale: comp.scale * (isMobile ? 0.45 : 0.65), 
+                  scale: comp.scale * baseScale, 
                   rotate: placed.rotation, 
                   zIndex: zIndexBase 
                 }}
-                whileHover={{ scale: comp.scale * 1.05 * (isMobile ? 0.45 : 0.65) }}
-                whileDrag={{ zIndex: 200, scale: comp.scale * 1.1 * (isMobile ? 0.45 : 0.65), cursor: "grabbing" }}
+                whileHover={{ scale: comp.scale * 1.05 * baseScale }}
+                whileDrag={{ zIndex: 200, scale: comp.scale * 1.1 * baseScale, cursor: "grabbing" }}
                 style={{
                   position: "absolute",
-                  top: `calc(${placed.y}% - ${isMobile ? "90px" : "140px"})`,
-                  left: `calc(${placed.x}% - ${isMobile ? "90px" : "140px"})`,
-                  width: isMobile ? "180px" : "280px",
-                  height: isMobile ? "180px" : "280px",
+                  top: `calc(${placed.y}% - ${isMobile ? "100px" : "140px"})`,
+                  left: `calc(${placed.x}% - ${isMobile ? "100px" : "140px"})`,
+                  width: isMobile ? "200px" : "280px",
+                  height: isMobile ? "200px" : "280px",
                   pointerEvents: "none", 
                 }}
                 className="cursor-grab drop-shadow-[0_20px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)]"
               >
-                {/* Delegate hit-detection strictly to the inner ink paths */}
                 <div className="group/part w-full h-full flex flex-col items-center justify-center p-2 pointer-events-none [&_svg]:pointer-events-none [&_svg_*]:pointer-events-auto relative">
-                  {/* Floating hover label — counter-rotated and counter-scaled to always appear upright at full size */}
                   <div 
                     className="absolute -top-6 left-1/2 opacity-0 group-hover/part:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap origin-bottom"
                     style={{
@@ -390,8 +393,7 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
     );
   }
 
-  // --- LEGACY IDLE GRID LOGIC (Original Structure for Homepage) ---
-
+  // --- IDLE MODE RENDER (Original Homepage Grid) ---
   const getComponentGroups = () => {
     const activeComps = components.filter(c => !activeIds || activeIds.includes(c.id));
     const inactiveComps = components.filter(c => activeIds && !activeIds.includes(c.id));
@@ -404,7 +406,6 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
     <div className="absolute inset-0 pointer-events-none">
       <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-none">
         {displayComps.map((comp, idx) => {
-          const isActive = !activeIds || activeIds.includes(comp.id);
           const rowConfig = LAYOUT.ROWS[comp.row as keyof typeof LAYOUT.ROWS];
           const xDist = (comp as any).x_override || rowConfig.x;
           const finalX = comp.side === "left" ? 50 - xDist + (comp.nudge?.x || 0) : 50 + xDist + (comp.nudge?.x || 0);
@@ -414,8 +415,8 @@ export default function HardwareDeck({ activeIds, variant = "idle", partNames }:
               key={comp.id + idx}
               initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", zIndex: 5 }}
               animate={{ 
-                opacity: isActive ? 1 : 1, 
-                scale: isActive ? comp.scale : comp.scale, 
+                opacity: 1, 
+                scale: comp.scale, 
                 x: "-50%", y: "-50%", zIndex: 5 
               }}
               transition={{ duration: 1.2, delay: idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
