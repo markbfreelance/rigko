@@ -762,13 +762,11 @@ export default function BuildPage() {
                 {/* Drawer Content */}
                 <div className="relative z-10 flex flex-col h-full pl-12 pr-6 pt-24 pb-12">
                    {/* Assembly Render Viewport - Strictly Contained Workstation */}
-                   <div ref={mobileConstraintsRef} className="flex-1 relative ml-12 mb-12 mt-8 pl-24 pr-12 pb-16">
+                   <div ref={mobileConstraintsRef} className="flex-1 relative ml-12 mb-12 mt-8 pl-24 pr-12 pb-16 touch-none">
                      <HardwareDeck 
                        activeIds={getActiveIds()} 
                        variant="build"
                        dragConstraints={mobileConstraintsRef}
-                       dragElastic={0.15}
-                       dragMomentum={false}
                        partNames={{
                          ...(selectedParts["case"]    ? { CHASSIS:    selectedParts["case"]!.name }    : {}),
                          ...(selectedParts["mobo"]    ? { MOBO:       selectedParts["mobo"]!.name }    : {}),

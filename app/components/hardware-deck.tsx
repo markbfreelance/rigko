@@ -288,7 +288,7 @@ export default function HardwareDeck({
   activeIds?: string[], 
   variant?: "idle" | "build",
   partNames?: Record<string, string>,
-  dragConstraints?: React.RefObject<HTMLDivElement>
+  dragConstraints?: React.RefObject<HTMLDivElement | null>
 }) {
   const [placedParts, setPlacedParts] = useState<Record<string, { x: number, y: number, rotation: number }>>({});
   const internalRef = useRef<HTMLDivElement>(null);
@@ -372,7 +372,7 @@ export default function HardwareDeck({
                 }}
                 className="cursor-grab drop-shadow-[0_20px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)]"
               >
-                <div className="group/part w-full h-full flex flex-col items-center justify-center p-2 pointer-events-none [&_svg]:pointer-events-none [&_svg_*]:pointer-events-auto relative">
+                <div className="group/part w-full h-full flex flex-col items-center justify-center p-2 pointer-events-none [&_svg]:pointer-events-auto relative">
                   <div 
                     className="absolute -top-6 left-1/2 opacity-0 group-hover/part:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap origin-bottom"
                     style={{
