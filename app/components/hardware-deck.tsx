@@ -407,7 +407,7 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                 height: "280px",
                 pointerEvents: "auto"
               }}
-              className="group cursor-grab active:cursor-grabbing"
+              className="group/part cursor-grab active:cursor-grabbing"
             >
               <motion.div
                 animate={{ y: [0, -10, 0], x: [0, idx % 2 === 0 ? 3 : -3, 0] }}
@@ -418,13 +418,17 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                   initial={{ rotate: comp.rotation }}
                   animate={{ rotate: [comp.rotation, comp.rotation + 0.3, comp.rotation - 0.3, comp.rotation] }}
                   transition={{ duration: 8 + idx, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)]"
+                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover/part:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)]"
                 >
                    {comp.icon}
                 </motion.div>
-                <div className="absolute top-0 right-0 p-2 bg-[var(--deck-label-bg)] backdrop-blur-2xl border border-[var(--deck-accent)]/60 font-mono text-[11px] text-[var(--deck-label-text)] tracking-[0.2em] shadow-[0_0_20px_rgba(194,0,11,0.4)] uppercase whitespace-nowrap z-50 pointer-events-none origin-top-right">
+                <motion.div 
+                  initial={{ rotate: 0, scale: 1 / comp.scale }}
+                  animate={{ rotate: 0, scale: 1 / comp.scale }}
+                  className="absolute top-0 right-0 p-2 bg-[var(--deck-label-bg)] backdrop-blur-2xl border border-[var(--deck-accent)]/60 opacity-0 group-hover/part:opacity-100 transition-opacity duration-300 font-mono text-[11px] text-[var(--deck-label-text)] tracking-[0.2em] shadow-[0_0_20px_rgba(194,0,11,0.4)] uppercase whitespace-nowrap z-50 pointer-events-none origin-top-right"
+                >
                    {comp.label}
-                </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           );
