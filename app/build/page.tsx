@@ -222,7 +222,10 @@ export default function BuildPage() {
   };
 
   const getActiveIds = () => {
-    const ids = ["CHASSIS", "MOBO"];
+    const ids: string[] = [];
+    if (selectedParts["case"]) ids.push("CHASSIS");
+    if (selectedParts["mobo"]) ids.push("MOBO");
+    
     Object.entries(selectedParts).forEach(([cat, part]) => {
       if (!part) return;
       if (cat === "cpu") {
@@ -233,6 +236,10 @@ export default function BuildPage() {
         ids.push(part.type === "DDR4" ? "RAM_1" : "RAM_2");
       } else if (cat === "psu") {
         ids.push("ENERGY");
+      } else if (cat === "storage") {
+        ids.push("DATA_1");
+      } else if (cat === "cooler") {
+        ids.push("THERMAL");
       }
     });
     return ids;
