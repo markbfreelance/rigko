@@ -51,7 +51,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body 
-        className="min-h-screen w-full flex flex-col antialiased selection:bg-[#c2000b] selection:text-white relative"
+        className="min-h-dvh w-full flex flex-col antialiased selection:bg-[#c2000b] selection:text-white relative"
         suppressHydrationWarning
       >
         <VisualEffects />
