@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const LAYOUT = {
@@ -279,40 +280,119 @@ const components = [
 ];
 
 export default function HardwareDeck({ activeIds, variant = "idle" }: { activeIds?: string[], variant?: "idle" | "build" }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // State to hold persistent random coordinates so they don't re-roll on every activeIds update
+  const [placedParts, setPlacedParts] = useState<Record<string, { x: number, y: number, rotation: number }>>({});
+
+  useEffect(() => {
+    if (variant !== "build" || !activeIds) return;
+    
+    setPlacedParts(prev => {
+      const updated = { ...prev };
+      let changed = false;
+      
+      // Spawn new items with random coordinates
+      activeIds.forEach(id => {
+        if (!updated[id]) {
+          updated[id] = {
+            x: Math.random() * 60 + 20, // 20% to 80% left
+            y: Math.random() * 60 + 20, // 20% to 80% top
+            rotation: (Math.random() - 0.5) * 60 // -30 to 30 degrees rotation
+          };
+          changed = true;
+        }
+      });
+
+      // Erase items that were removed
+      Object.keys(updated).forEach(id => {
+         if (!activeIds.includes(id)) {
+            delete updated[id];
+            changed = true;
+         }
+      });
+
+      return changed ? updated : prev;
+    });
+  }, [activeIds, variant]);
+
+  // If in builder mode, only map the physically added parts
+  if (variant === "build") {
+    const builderComps = components.filter(c => activeIds?.includes(c.id));
+    const baseScale = 0.65; // User requested perfectly scaled
+
+    return (
+      <div className="absolute inset-0 pointer-events-none" ref={containerRef}>
+        <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-none">
+          {builderComps.map((comp) => {
+            const placed = placedParts[comp.id];
+            if (!placed) return null; // Avoid render before effect triggers
+
+            return (
+              <motion.div
+                key={comp.id}
+                drag
+                dragConstraints={containerRef}
+                dragElastic={0.1}
+                dragMomentum={false}
+                initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", rotate: placed.rotation }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: comp.scale * baseScale, 
+                  x: "-50%", y: "-50%", rotate: placed.rotation, zIndex: 10 
+                }}
+                whileHover={{ scale: comp.scale * 1.05 * baseScale }}
+                whileDrag={{ zIndex: 200, scale: comp.scale * 1.1 * baseScale, cursor: "grabbing" }}
+                style={{
+                  position: "absolute",
+                  top: `${placed.y}%`,
+                  left: `${placed.x}%`,
+                  width: "280px",
+                  height: "280px",
+                  pointerEvents: "auto",
+                }}
+                className="cursor-grab drop-shadow-[0_20px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)]"
+              >
+                <div className="w-full h-full flex items-center justify-center p-2">
+                   {comp.icon}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // --- LEGACY IDLE GRID LOGIC (Original Structure for Homepage) ---
+
+  const getComponentGroups = () => {
+    const activeComps = components.filter(c => !activeIds || activeIds.includes(c.id));
+    const inactiveComps = components.filter(c => activeIds && !activeIds.includes(c.id));
+    return [...inactiveComps, ...activeComps];
+  };
+
+  const displayComps = getComponentGroups();
+
   return (
     <div className="absolute inset-0 pointer-events-none">
-      {/* Max-Width Assembly Container (Matched to Header max-w-7xl) */}
       <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-none">
-        {components.map((comp, idx) => {
+        {displayComps.map((comp, idx) => {
           const isActive = !activeIds || activeIds.includes(comp.id);
-          const baseScale = variant === "build" ? 0.65 : 1; // Scale down for builder
-          
-          // Compressor for narrow container on the Build page
-          const xCompress = variant === "build" ? 0.6 : 1;
-          const nudgeScale = variant === "build" ? 0.5 : 1;
-
-          // Calculate Center-Relative Position using Row-Specific Config
           const rowConfig = LAYOUT.ROWS[comp.row as keyof typeof LAYOUT.ROWS];
-          const xDist = ((comp as any).x_override || rowConfig.x) * xCompress;
-
-          const finalX = comp.side === "left" 
-            ? 50 - xDist + ((comp.nudge?.x || 0) * nudgeScale)
-            : 50 + xDist + ((comp.nudge?.x || 0) * nudgeScale);
+          const xDist = (comp as any).x_override || rowConfig.x;
+          const finalX = comp.side === "left" ? 50 - xDist + (comp.nudge?.x || 0) : 50 + xDist + (comp.nudge?.x || 0);
             
           return (
             <motion.div
               key={comp.id + idx}
               initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%", zIndex: 5 }}
               animate={{ 
-                opacity: isActive ? 1 : (variant === "build" ? 0.05 : 1), 
-                scale: isActive ? comp.scale * baseScale : (variant === "build" ? comp.scale * 0.8 * baseScale : comp.scale), 
+                opacity: isActive ? 1 : 1, 
+                scale: isActive ? comp.scale : comp.scale, 
                 x: "-50%", y: "-50%", zIndex: 5 
               }}
-              transition={{ 
-                duration: 1.2, 
-                delay: variant === "build" ? 0 : idx * 0.08,
-                ease: [0.22, 1, 0.36, 1]
-              }}
+              transition={{ duration: 1.2, delay: idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: "absolute",
                 top: `${rowConfig.y + (comp.nudge?.y || 0)}%`,
@@ -321,46 +401,24 @@ export default function HardwareDeck({ activeIds, variant = "idle" }: { activeId
                 height: "280px",
                 pointerEvents: "auto"
               }}
-              whileHover={{ zIndex: 80, scale: comp.scale * 1.05 * baseScale }}
-              className="group/part cursor-grab active:cursor-grabbing"
+              className="group cursor-grab active:cursor-grabbing"
             >
-              {/* Breathing Layer (Floating Y-Axis only, No Rotation) */}
               <motion.div
-                animate={{ 
-                  y: [0, -10, 0],
-                  x: [0, idx % 2 === 0 ? 3 : -3, 0],
-                }}
-                transition={{
-                  duration: 8 + idx,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
+                animate={{ y: [0, -10, 0], x: [0, idx % 2 === 0 ? 3 : -3, 0] }}
+                transition={{ duration: 8 + idx, repeat: Infinity, ease: "easeInOut" }}
                 className="w-full h-full relative"
               >
-                {/* Visuals Layer (Rotated separately) */}
                 <motion.div 
                   initial={{ rotate: comp.rotation }}
-                  animate={{ 
-                    rotate: [comp.rotation, comp.rotation + 0.3, comp.rotation - 0.3, comp.rotation] 
-                  }}
-                  transition={{
-                    duration: 8 + idx,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover/part:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)]"
+                  animate={{ rotate: [comp.rotation, comp.rotation + 0.3, comp.rotation - 0.3, comp.rotation] }}
+                  transition={{ duration: 8 + idx, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-full h-full flex items-center justify-center p-2 transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(194,0,11,0.4)]"
                 >
                    {comp.icon}
                 </motion.div>
-    
-                {/* Label Overlay - Absolute Scale & Rotation Lock */}
-                <motion.div 
-                  initial={{ rotate: 0, scale: 1 / (comp.scale * baseScale) }}
-                  animate={{ rotate: 0, scale: 1 / (comp.scale * baseScale) }}
-                  className="absolute top-0 right-0 p-2 bg-[var(--deck-label-bg)] backdrop-blur-2xl border border-[var(--deck-accent)]/60 opacity-0 group-hover/part:opacity-100 transition-opacity duration-300 font-mono text-[11px] text-[var(--deck-label-text)] tracking-[0.2em] shadow-[0_0_20px_rgba(194,0,11,0.4)] uppercase whitespace-nowrap z-50 pointer-events-none origin-top-right"
-                >
+                <div className="absolute top-0 right-0 p-2 bg-[var(--deck-label-bg)] backdrop-blur-2xl border border-[var(--deck-accent)]/60 font-mono text-[11px] text-[var(--deck-label-text)] tracking-[0.2em] shadow-[0_0_20px_rgba(194,0,11,0.4)] uppercase whitespace-nowrap z-50 pointer-events-none origin-top-right">
                    {comp.label}
-                </motion.div>
+                </div>
               </motion.div>
             </motion.div>
           );
