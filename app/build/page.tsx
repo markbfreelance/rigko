@@ -125,7 +125,7 @@ export default function BuildPage() {
 
   const [isHudOpen, setIsHudOpen] = useState(false);
   const [isSelectingMode, setIsSelectingMode] = useState(false);
-  const [expandedCat, setExpandedCat] = useState<string | null>(null);
+  const [expandedCats, setExpandedCats] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   
   const totalPrice = Object.values(selectedParts).reduce((acc, part) => acc + (part?.price || 0), 0);
@@ -278,13 +278,13 @@ export default function BuildPage() {
                   <div className="space-y-2">
                     {CATEGORIES.map((cat, idx) => {
                       const selectedPart = selectedParts[cat.id];
-                      const isExpanded = expandedCat === cat.id;
+                      const isExpanded = expandedCats.includes(cat.id);
 
                       return (
                         <div key={cat.id} className="w-full flex flex-col rounded-xl border border-black/5 dark:border-white/5 chassis-steel backdrop-blur-md transition-all overflow-hidden">
                           {/* Row Header */}
                           <div 
-                            onClick={() => setExpandedCat(isExpanded ? null : cat.id)}
+                            onClick={() => setExpandedCats(prev => isExpanded ? prev.filter(id => id !== cat.id) : [...prev, cat.id])}
                             className="w-full flex items-center justify-between p-4 cursor-pointer active:bg-black/5 dark:active:bg-white/5 transition-colors"
                           >
                             <div className="flex items-center gap-4">
