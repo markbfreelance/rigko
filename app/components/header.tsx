@@ -147,14 +147,14 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               </nav>
 
               <div className="flex flex-col gap-6 mt-auto">
-                <div className="sm:hidden flex flex-col gap-4 items-center">
-                  <div className="w-full flex justify-center scale-95">{children}</div>
+                <div className="sm:hidden flex flex-col gap-4 items-center w-full">
+                  <div className="w-full scale-95">{children}</div>
                   <Link 
                     href="/build" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-center gap-3 bg-[#c2000b] text-white px-6 py-3 rounded-full text-[11px] font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(194,0,11,0.3)] w-full active:scale-95 transition-transform"
+                    className="relative flex items-center justify-center bg-[#c2000b] text-white px-6 py-3 border-2 border-[#c2000b] rounded-full text-[11px] font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(194,0,11,0.3)] w-full active:scale-95 transition-transform"
                   >
-                    <Icon icon="solar:hammer-bold" className="text-lg" />
+                    <Icon icon="solar:hammer-bold" className="absolute left-6 text-lg" />
                     START BUILDING
                   </Link>
                 </div>

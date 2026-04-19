@@ -16,7 +16,7 @@ export default function AuthNav({ user }: AuthNavProps) {
     return (
       <Link
         href="/login"
-        className="relative flex items-center bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b]/50 hover:border-[#c2000b] text-black dark:text-white px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]"
+        className="relative flex items-center justify-center w-full sm:w-auto bg-[#f5f5f5] dark:bg-black border-2 border-[#c2000b]/50 hover:border-[#c2000b] text-black dark:text-white px-6 py-3 sm:py-2 rounded-full text-[11px] font-black uppercase tracking-widest sm:tracking-tighter hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all shadow-[0_0_20px_rgba(194,0,11,0.2)] dark:shadow-[0_0_20px_rgba(194,0,11,0.4)]"
       >
         <span>LOGIN</span>
       </Link>
