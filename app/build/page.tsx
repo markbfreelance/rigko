@@ -466,54 +466,73 @@ export default function BuildPage() {
                     })}
                   </div>
 
-                  {/* Peripheral picker dropdown (Mobile) */}
-                  <AnimatePresence>
-                    {activePeripheral && (
-                      <motion.div
-                        key={`dropdown-${activePeripheral}`}
-                        initial={{ opacity: 0, y: -8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        className="mt-4 rounded-2xl border border-[#c2000b] bg-white dark:bg-[#111] overflow-hidden shadow-xl"
-                      >
-                        <div className="px-4 py-3 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
-                          <span className="text-[9px] font-black uppercase tracking-widest text-[#c2000b]">
-                            {PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
-                          </span>
-                          <button onClick={() => setActivePeripheral(null)} className="text-gray-400 hover:text-black dark:hover:text-white transition-colors">
-                            <Icon icon="solar:close-circle-linear" />
-                          </button>
-                        </div>
-                        <div className="p-2 space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar">
-                          {(PERIPHERALS[activePeripheral] || []).map((item: any) => (
-                            <button
-                              key={item.id}
-                              onClick={() => {
-                                setSelectedPeripherals(prev => ({ ...prev, [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item }));
+                    <AnimatePresence>
+                      {activePeripheral && (
+                        <motion.div
+                          key={`inline-picker-mobile-${activePeripheral}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                          className="mt-6 border-t border-black/10 dark:border-white/10 pt-6 overflow-hidden"
+                        >
+                          <div className="flex items-center justify-between mb-4 px-1">
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c2000b]">
+                              AVAILABLE_{PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
+                            </span>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 setActivePeripheral(null);
                               }}
-                              className={`w-full text-left p-2.5 rounded-xl border text-[10px] transition-all ${
-                                selectedPeripherals[activePeripheral]?.id === item.id
-                                  ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
-                                  : "border-black/5 dark:border-white/5 text-black dark:text-white hover:border-[#c2000b]/30"
-                              }`}
+                              className="text-[9px] font-mono text-gray-500 hover:text-[#c2000b] uppercase transition-colors"
                             >
-                              <div className="font-black uppercase tracking-tighter">{item.name}</div>
-                              <div className="font-mono text-gray-400 text-[8px] mt-0.5">
-                                {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
-                                {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
-                                {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
-                                {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
-                                {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
-                                {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
-                              </div>
-                              <div className="text-[#c2000b] font-black mt-1">₱{item.price.toLocaleString()}</div>
+                              [CLOSE]
                             </button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                          </div>
+                          
+                          <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+                            {(PERIPHERALS[activePeripheral as keyof typeof PERIPHERALS] || []).map((item: any) => {
+                              const isSelected = selectedPeripherals[activePeripheral]?.id === item.id;
+                              return (
+                                <button
+                                  key={item.id}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedPeripherals(prev => ({ 
+                                      ...prev, 
+                                      [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item 
+                                    }));
+                                  }}
+                                  className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                                    isSelected
+                                      ? "bg-[#c2000b]/5 border-[#c2000b] shadow-[0_0_15px_rgba(194,0,11,0.05)]"
+                                      : "bg-white/50 dark:bg-black/20 border-black/5 dark:border-white/5 hover:border-[#c2000b]/30"
+                                  }`}
+                                >
+                                  <div className="flex justify-between items-start mb-1">
+                                    <div className="font-black uppercase tracking-tighter text-[11px] leading-tight text-black dark:text-white">
+                                      {item.name}
+                                    </div>
+                                    <div className="text-[#c2000b] font-black text-[11px]">
+                                      ₱{item.price.toLocaleString()}
+                                    </div>
+                                  </div>
+                                  <div className="font-mono text-[8px] text-gray-500 uppercase tracking-widest leading-relaxed">
+                                    {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
+                                    {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
+                                    {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
+                                    {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
+                                    {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
+                                    {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                 </div>
               </div>
             </motion.div>
@@ -694,56 +713,75 @@ export default function BuildPage() {
                 })}
               </div>
 
-              {/* Peripheral picker dropdown */}
-              <AnimatePresence>
-                {activePeripheral && (
-                  <motion.div
-                    key={`dropdown-desktop-${activePeripheral}`}
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    className="mt-3 rounded-2xl border border-[#c2000b] bg-white dark:bg-[#111] overflow-hidden shadow-xl"
-                  >
-                    <div className="px-4 py-3 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-[#c2000b]">
-                        {PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
-                      </span>
-                      <button onClick={() => setActivePeripheral(null)} className="text-gray-400 hover:text-black dark:hover:text-white transition-colors">
-                        <Icon icon="solar:close-circle-linear" />
-                      </button>
-                    </div>
-                    <div className="p-2 space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar">
-                      {activePeripheral && (PERIPHERALS[activePeripheral] || []).map((item: any) => (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            setSelectedPeripherals(prev => ({ ...prev, [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item }));
-                            setActivePeripheral(null);
-                          }}
-                          className={`w-full text-left p-2.5 rounded-xl border text-[10px] transition-all ${
-                            selectedPeripherals[activePeripheral]?.id === item.id
-                              ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
-                              : "border-black/5 dark:border-white/5 text-black dark:text-white hover:border-[#c2000b]/30"
-                          }`}
+                    <AnimatePresence>
+                      {activePeripheral && (
+                        <motion.div
+                          key={`inline-picker-desktop-${activePeripheral}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                          className="mt-6 border-t border-black/10 dark:border-white/10 pt-6 overflow-hidden"
                         >
-                          <div className="font-black uppercase tracking-tighter">{item.name}</div>
-                          <div className="font-mono text-gray-400 text-[8px] mt-0.5">
-                            {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
-                            {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
-                            {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
-                            {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
-                            {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
-                            {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
+                          <div className="flex items-center justify-between mb-4 px-1">
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c2000b]">
+                              AVAILABLE_{PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
+                            </span>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActivePeripheral(null);
+                              }}
+                              className="text-[9px] font-mono text-gray-500 hover:text-[#c2000b] uppercase transition-colors"
+                            >
+                              [CLOSE]
+                            </button>
                           </div>
-                          <div className="text-[#c2000b] font-black mt-1">₱{item.price.toLocaleString()}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
+                          
+                          <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+                            {(PERIPHERALS[activePeripheral as keyof typeof PERIPHERALS] || []).map((item: any) => {
+                              const isSelected = selectedPeripherals[activePeripheral]?.id === item.id;
+                              return (
+                                <button
+                                  key={item.id}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedPeripherals(prev => ({ 
+                                      ...prev, 
+                                      [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item 
+                                    }));
+                                  }}
+                                  className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                                    isSelected
+                                      ? "bg-[#c2000b]/5 border-[#c2000b] shadow-[0_0_15px_rgba(194,0,11,0.05)]"
+                                      : "bg-white/50 dark:bg-black/20 border-black/5 dark:border-white/5 hover:border-[#c2000b]/30"
+                                  }`}
+                                >
+                                  <div className="flex justify-between items-start mb-1">
+                                    <div className="font-black uppercase tracking-tighter text-[11px] leading-tight text-black dark:text-white">
+                                      {item.name}
+                                    </div>
+                                    <div className="text-[#c2000b] font-black text-[11px]">
+                                      ₱{item.price.toLocaleString()}
+                                    </div>
+                                  </div>
+                                  <div className="font-mono text-[8px] text-gray-500 uppercase tracking-widest leading-relaxed">
+                                    {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
+                                    {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
+                                    {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
+                                    {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
+                                    {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
+                                    {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                </div>
+              </div>
         </div>
 
           {/* Center: Part Catalog */}
