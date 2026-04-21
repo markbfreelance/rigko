@@ -13,11 +13,18 @@ const CATEGORIES = [
   { id: "cpu", name: "procie", icon: "solar:cpu-bold" },
   { id: "mobo", name: "mobo", icon: "solar:server-bold" },
   { id: "ram", name: "ram", icon: "solar:graph-bold" },
-  { id: "gpu", name: "gpu", icon: "solar:monitor-bold" },
+  { id: "gpu", name: "gpu", icon: "ph:graphics-card-fill" },
   { id: "storage", name: "storage", icon: "solar:ssd-round-bold" },
   { id: "psu", name: "psu", icon: "solar:plug-circle-bold" },
   { id: "case", name: "case", icon: "solar:case-bold" },
   { id: "cooler", name: "cooling", icon: "solar:snowflake-bold" },
+];
+
+const PERIPHERAL_CATEGORIES = [
+  { id: "monitor", name: "monitor", icon: "solar:monitor-bold-duotone" },
+  { id: "keyboard", name: "keyboard", icon: "solar:keyboard-bold-duotone" },
+  { id: "mouse", name: "mouse", icon: "solar:mouse-bold-duotone" },
+  { id: "headset", name: "headset", icon: "solar:headphones-bold-duotone" },
 ];
 
 const PARTS: Record<string, any[]> = {
@@ -119,9 +126,46 @@ const PARTS: Record<string, any[]> = {
   ]
 };
 
+const PERIPHERALS: Record<string, any[]> = {
+  monitor: [
+    { id: "mon-1", name: "LG 24MK600M", brand: "LG", size: 24, resolution: "1080p", refresh_rate: 75, panel: "IPS", price: 7200 },
+    { id: "mon-2", name: "LG 27GP850-B", brand: "LG", size: 27, resolution: "1440p", refresh_rate: 180, panel: "Nano IPS", price: 22500 },
+    { id: "mon-3", name: "Samsung Odyssey G5", brand: "Samsung", size: 27, resolution: "1440p", refresh_rate: 165, panel: "VA", price: 17800 },
+    { id: "mon-4", name: "ASUS TUF VG27AQ", brand: "ASUS", size: 27, resolution: "1440p", refresh_rate: 165, panel: "IPS", price: 19500 },
+    { id: "mon-5", name: "MSI MAG274QRF-QD", brand: "MSI", size: 27, resolution: "1440p", refresh_rate: 165, panel: "QD-IPS", price: 21000 },
+    { id: "mon-6", name: "Gigabyte M28U", brand: "Gigabyte", size: 28, resolution: "4K", refresh_rate: 144, panel: "IPS", price: 29500 },
+  ],
+  keyboard: [
+    { id: "kb-1", name: "Redragon K552", brand: "Redragon", type: "Mechanical", switches: "Red", layout: "TKL", rgb: true, price: 1850 },
+    { id: "kb-2", name: "Keychron K8", brand: "Keychron", type: "Mechanical", switches: "Gateron Brown", layout: "TKL", rgb: false, price: 4200 },
+    { id: "kb-3", name: "Logitech G Pro X", brand: "Logitech", type: "Mechanical", switches: "GX Blue", layout: "TKL", rgb: true, price: 6800 },
+    { id: "kb-4", name: "HyperX Alloy FPS", brand: "HyperX", type: "Mechanical", switches: "Cherry MX Red", layout: "TKL", rgb: false, price: 5200 },
+    { id: "kb-5", name: "Ducky One 3", brand: "Ducky", type: "Mechanical", switches: "Cherry MX Brown", layout: "Full", rgb: true, price: 7500 },
+    { id: "kb-6", name: "AKKO 3068B", brand: "AKKO", type: "Mechanical", switches: "CS Jelly Pink", layout: "65%", rgb: true, price: 3800 },
+  ],
+  mouse: [
+    { id: "ms-1", name: "Logitech G102", brand: "Logitech", dpi: 8000, buttons: 6, weight: 85, wireless: false, price: 1050 },
+    { id: "ms-2", name: "Razer DeathAdder V3", brand: "Razer", dpi: 30000, buttons: 6, weight: 59, wireless: false, price: 3850 },
+    { id: "ms-3", name: "Logitech G Pro X Superlight 2", brand: "Logitech", dpi: 32000, buttons: 5, weight: 60, wireless: true, price: 8500 },
+    { id: "ms-4", name: "Zowie EC2-C", brand: "Zowie", dpi: 3200, buttons: 5, weight: 73, wireless: false, price: 4200 },
+    { id: "ms-5", name: "Pulsar X2", brand: "Pulsar", dpi: 26000, buttons: 6, weight: 52, wireless: true, price: 5800 },
+    { id: "ms-6", name: "SteelSeries Aerox 3", brand: "SteelSeries", dpi: 18000, buttons: 6, weight: 68, wireless: true, price: 4500 },
+  ],
+  headset: [
+    { id: "hs-1", name: "HyperX Cloud II", brand: "HyperX", driver: "53mm", connection: "USB", surround: "7.1", price: 4500 },
+    { id: "hs-2", name: "Logitech G435", brand: "Logitech", driver: "40mm", connection: "Wireless", surround: "None", price: 4200 },
+    { id: "hs-3", name: "SteelSeries Arctis Nova Pro", brand: "SteelSeries", driver: "40mm", connection: "Wireless", surround: "360°", price: 18500 },
+    { id: "hs-4", name: "Razer BlackShark V2 X", brand: "Razer", driver: "50mm", connection: "3.5mm", surround: "7.1", price: 3200 },
+    { id: "hs-5", name: "ASUS ROG Delta S", brand: "ASUS", driver: "50mm", connection: "USB-C", surround: "7.1", price: 9500 },
+    { id: "hs-6", name: "Audio-Technica ATH-GL3", brand: "Audio-Technica", driver: "45mm", connection: "3.5mm", surround: "None", price: 6800 },
+  ],
+};
+
 export default function BuildPage() {
   const [activeCategory, setActiveCategory] = useState("cpu");
   const [selectedParts, setSelectedParts] = useState<Record<string, any>>({});
+  const [selectedPeripherals, setSelectedPeripherals] = useState<Record<string, any>>({});
+  const [activePeripheral, setActivePeripheral] = useState<string | null>(null);
 
   const [isHudOpen, setIsHudOpen] = useState(false);
   const [isSelectingMode, setIsSelectingMode] = useState(false);
@@ -292,7 +336,7 @@ export default function BuildPage() {
                               <div className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${
                                 selectedPart ? "bg-[#c2000b]/10 border-[#c2000b]/30 text-[#c2000b]" : "bg-black/10 dark:bg-white/5 border-white/5 text-gray-400"
                               }`}>
-                                <Icon icon={cat.icon} className="text-lg" />
+                                {typeof cat.icon === 'string' && <Icon icon={cat.icon} className="text-lg" />}
                               </div>
                               <div className="text-[11px] font-bold text-black dark:text-white uppercase tracking-tighter">
                                 {cat.name}
@@ -317,7 +361,7 @@ export default function BuildPage() {
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
-                                className="bg-black/[0.02] dark:bg-white/[0.02] border-t border-black/5 dark:border-white/5"
+                                className="bg-black/2 dark:bg-white/2 border-t border-black/5 dark:border-white/5"
                               >
                                 <div className="p-4 flex items-center justify-between gap-4">
                                   <div className="flex-1">
@@ -367,6 +411,78 @@ export default function BuildPage() {
                     })}
                   </div>
                 </div>
+
+                {/* ── PERIPHERALS PEGBOARD ── */}
+                <div className="mt-8">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] px-2 mb-4">PERIPHERALS</h2>
+                  <div className="p-4 rounded-xl pegboard-mesh border border-black/10 dark:border-white/5 relative overflow-hidden">
+
+                    <div className="relative z-10 grid grid-cols-2 gap-3">
+                      {PERIPHERAL_CATEGORIES.map((pcat) => {
+                      const sel = selectedPeripherals[pcat.id];
+                      const isOpen = activePeripheral === pcat.id;
+                      return (
+                        <div key={pcat.id} className={`relative rounded-xl border transition-all overflow-hidden ${
+                          sel ? "border-[#c2000b] bg-[#c2000b]/10 shadow-[0_0_15px_rgba(194,0,11,0.2)]" : "border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/50 backdrop-blur-sm"
+                        }`}>
+                          <button
+                            onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
+                            className="w-full flex flex-col items-center gap-2 p-4 text-center relative group"
+                          >
+                            {/* Hook visual */}
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-3 bg-gray-400 dark:bg-gray-600 rounded-b-full"></div>
+                            
+                            <div className={`mt-2 w-10 h-10 rounded-lg flex items-center justify-center border-2 transition-all ${
+                              sel ? "bg-[#c2000b] border-white/20 text-white" : "bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
+                            }`}>
+                              <Icon icon={pcat.icon} className="text-xl" />
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-tighter text-black dark:text-white">{pcat.name}</span>
+                            {sel && <span className="text-[7px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate max-w-full px-1">{sel.name}</span>}
+                          </button>
+
+                          <AnimatePresence>
+                            {isOpen && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="border-t border-black/5 dark:border-white/5 col-span-2 bg-black/[0.02] dark:bg-white/[0.02]"
+                              >
+                                <div className="p-3 space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                                  {(PERIPHERALS[pcat.id] || []).map((item: any) => (
+                                    <button
+                                      key={item.id}
+                                      onClick={() => {
+                                        setSelectedPeripherals(prev => ({ ...prev, [pcat.id]: prev[pcat.id]?.id === item.id ? null : item }));
+                                        setActivePeripheral(null);
+                                      }}
+                                      className={`w-full text-left p-3 rounded-xl border text-[10px] transition-all ${
+                                        selectedPeripherals[pcat.id]?.id === item.id
+                                          ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
+                                          : "bg-white dark:bg-[#111] border-black/5 dark:border-white/5 text-black dark:text-white hover:border-[#c2000b]/30"
+                                      }`}
+                                    >
+                                      <div className="font-black uppercase tracking-tighter">{item.name}</div>
+                                      <div className="font-mono text-gray-400 text-[8px] mt-0.5">
+                                        {pcat.id === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
+                                        {pcat.id === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
+                                        {pcat.id === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
+                                        {pcat.id === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
+                                      </div>
+                                      <div className="text-[#c2000b] font-black mt-1">₱{item.price.toLocaleString()}</div>
+                                    </button>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
               </motion.div>
             ) : (
               /* Selection Mode / Part Catalog */
@@ -480,7 +596,7 @@ export default function BuildPage() {
         <div className="hidden lg:flex flex-row gap-8 h-full">
           
           {/* Left: Category Sidebar (Desktop Only) */}
-          <div className="hidden lg:block w-64 flex-shrink-0">
+          <div className="hidden lg:block w-64 shrink-0">
             <div className="sticky top-28 space-y-2">
               <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] mb-6 px-4">SELECT YOUR PARTS</h2>
               {CATEGORIES.map(cat => (
@@ -493,7 +609,9 @@ export default function BuildPage() {
                     : "bg-white dark:bg-[#111111] border-black/5 dark:border-white/5 text-gray-500 hover:border-[#c2000b]/50"
                   }`}
                 >
-                  <Icon icon={cat.icon} className={`text-xl ${activeCategory === cat.id ? "text-white" : "text-[#c2000b]/60"}`} />
+                  {typeof cat.icon === 'string' && (
+                    <Icon icon={cat.icon} className={`text-xl ${activeCategory === cat.id ? "text-white" : "text-[#c2000b]/60"}`} />
+                  )}
                   <span className="text-xs font-bold uppercase tracking-tighter">{cat.name}</span>
                   {selectedParts[cat.id] && (
                     <Icon icon="solar:check-circle-bold" className={`ml-auto text-xl transition-colors ${activeCategory === cat.id ? "text-white" : "text-[#c2000b]"}`} />
@@ -501,7 +619,87 @@ export default function BuildPage() {
                 </button>
               ))}
             </div>
+
+            <div className="mt-8">
+              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] mb-4 px-4">PERIPHERALS</h2>
+              <div className="p-4 rounded-xl pegboard-mesh border border-black/10 dark:border-white/10 relative overflow-hidden">
+
+                <div className="relative z-10 grid grid-cols-2 gap-3">
+                  {PERIPHERAL_CATEGORIES.map((pcat) => {
+                  const sel = selectedPeripherals[pcat.id];
+                  const isOpen = activePeripheral === pcat.id;
+                  return (
+                    <div key={pcat.id} className={`relative rounded-xl border transition-all overflow-hidden ${
+                      sel ? "border-[#c2000b] bg-[#c2000b]/10 shadow-[0_0_15px_rgba(194,0,11,0.2)]" : "border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/50 backdrop-blur-sm"
+                    }`}>
+                      <button
+                        onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
+                        className="w-full flex flex-col items-center gap-2 p-3 text-center relative group"
+                      >
+                        {/* Hook visual */}
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-2.5 bg-gray-400 dark:bg-gray-600 rounded-b-full"></div>
+
+                        <div className={`mt-1.5 w-9 h-9 rounded-lg flex items-center justify-center border-2 transition-all ${
+                          sel ? "bg-[#c2000b] border-white/20 text-white" : "bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
+                        }`}>
+                          <Icon icon={pcat.icon} className="text-xl" />
+                        </div>
+                        <span className="text-[8px] font-black uppercase tracking-tighter text-black dark:text-white">{pcat.name}</span>
+                        {sel && <span className="text-[7px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate max-w-full">{sel.name}</span>}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Peripheral picker dropdown */}
+              <AnimatePresence>
+                {activePeripheral && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="mt-3 rounded-2xl border border-[#c2000b]/30 bg-white dark:bg-[#111] overflow-hidden shadow-xl"
+                  >
+                    <div className="px-4 py-3 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
+                      <span className="text-[9px] font-black uppercase tracking-widest text-[#c2000b]">
+                        {PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
+                      </span>
+                      <button onClick={() => setActivePeripheral(null)} className="text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                        <Icon icon="solar:close-circle-linear" />
+                      </button>
+                    </div>
+                    <div className="p-2 space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar">
+                      {(PERIPHERALS[activePeripheral] || []).map((item: any) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setSelectedPeripherals(prev => ({ ...prev, [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item }));
+                            setActivePeripheral(null);
+                          }}
+                          className={`w-full text-left p-2.5 rounded-xl border text-[10px] transition-all ${
+                            selectedPeripherals[activePeripheral]?.id === item.id
+                              ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
+                              : "border-black/5 dark:border-white/5 text-black dark:text-white hover:border-[#c2000b]/30"
+                          }`}
+                        >
+                          <div className="font-black uppercase tracking-tighter">{item.name}</div>
+                          <div className="font-mono text-gray-400 text-[8px] mt-0.5">
+                            {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
+                            {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
+                            {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
+                            {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
+                          </div>
+                          <div className="text-[#c2000b] font-black mt-1">₱{item.price.toLocaleString()}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
+        </div>
 
           {/* Center: Part Catalog */}
           <div className="flex-1 min-w-0">
@@ -626,7 +824,7 @@ export default function BuildPage() {
 
           
           {/* Right: Live Assembly Preview (Desktop Only) */}
-          <div className="hidden lg:block w-[400px] flex-shrink-0">
+          <div className="hidden lg:block w-[400px] shrink-0">
            <div 
              className="sticky top-28 h-[calc(100vh-14rem)] flex flex-col group"
              style={{ filter: "drop-shadow(0px 10px 20px rgba(0,0,0,0.5))" }}
@@ -653,7 +851,7 @@ export default function BuildPage() {
                {/* Internal Content (Pushed inward to clear the notch) */}
                <div className="relative z-10 p-8 pl-12 h-full flex flex-col pointer-events-none">
                  
-                 <div className="relative z-10 mb-4 flex-shrink-0">
+                 <div className="relative z-10 mb-4 shrink-0">
                    <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">ASSEMBLY DESK</h2>
                    <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
                  </div>
@@ -676,7 +874,7 @@ export default function BuildPage() {
                  </div>
 
                  {/* Parts Summary List */}
-                 <div className="relative z-10 flex-shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4 pointer-events-auto">
+                 <div className="relative z-10 shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4 pointer-events-auto">
                     <div className="space-y-2">
                       {Object.entries(selectedParts).map(([catId, part]) => {
                         if (!part) return null;
@@ -697,7 +895,7 @@ export default function BuildPage() {
                     </div>
                  </div>
 
-                 <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto flex-shrink-0 pointer-events-auto">
+                 <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto shrink-0 pointer-events-auto">
                   <div className="flex justify-between items-end mb-2">
                     <span className="text-[10px] font-mono text-gray-500 uppercase">Estimated_Total</span>
                     <span className="text-2xl font-black text-black dark:text-white tracking-tighter">₱{totalPrice.toLocaleString()}</span>
@@ -781,7 +979,7 @@ export default function BuildPage() {
                    </div>
 
                    {/* List Summary */}
-                   <div className="relative z-10 flex-shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4">
+                   <div className="relative z-10 shrink-0 mt-2 mb-6 overflow-y-auto max-h-[140px] pr-2 custom-scrollbar border-t border-black/5 dark:border-white/5 pt-4">
                       <div className="space-y-2">
                         {Object.entries(selectedParts).map(([catId, part]) => {
                           if (!part) return null;
@@ -800,7 +998,7 @@ export default function BuildPage() {
                    </div>
 
                    {/* Total Block */}
-                   <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto flex-shrink-0">
+                   <div className="relative z-10 pt-6 border-t border-black/5 dark:border-white/5 mt-auto shrink-0">
                       <div className="flex justify-between items-end mb-2">
                         <span className="text-[10px] font-mono text-gray-500 uppercase">Estimated_Total</span>
                         <span className="text-xl font-black text-black dark:text-white tracking-tighter">₱{totalPrice.toLocaleString()}</span>
@@ -848,7 +1046,7 @@ export default function BuildPage() {
       </div>
 
       {/* Persistent Build Terminal (Bottom Bar) */}
-      <div className="fixed bottom-0 left-0 w-full z-[150] chassis-steel backdrop-blur-md border-t border-black/10 dark:border-white/10 px-8 py-4">
+      <div className="fixed bottom-0 left-0 w-full z-150 chassis-steel backdrop-blur-md border-t border-black/10 dark:border-white/10 px-8 py-4">
         {/* Industrial Bezel Screws */}
         <div className="absolute top-2 left-2 hex-screw scale-75"></div>
         <div className="absolute top-2 right-2 hex-screw scale-75"></div>
