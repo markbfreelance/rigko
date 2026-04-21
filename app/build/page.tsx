@@ -427,7 +427,9 @@ export default function BuildPage() {
                 {/* ── PERIPHERALS PEGBOARD ── */}
                 <div className="mt-8">
                   <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] px-2 mb-4">PERIPHERALS</h2>
-                  <div className="p-4 rounded-xl pegboard-mesh border border-black/10 dark:border-white/5 relative overflow-hidden">
+                  <div className="p-4 rounded-xl border border-[#e5e5e5] dark:border-[#222222] relative overflow-hidden isolate">
+                    {/* Pegboard Background Layer */}
+                    <div className="absolute inset-0 pegboard-mesh z-0 pointer-events-none"></div>
                     
                     <div className="relative z-10 grid grid-cols-3 gap-y-8 gap-x-4">
                       {PERIPHERAL_CATEGORIES.map((pcat) => {
@@ -649,7 +651,9 @@ export default function BuildPage() {
 
             <div className="mt-8">
               <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] mb-4 px-4">PERIPHERALS</h2>
-              <div className="p-4 rounded-xl pegboard-mesh border border-black/10 dark:border-white/10 relative overflow-hidden">
+              <div className="p-4 rounded-xl border border-[#e5e5e5] dark:border-[#222222] relative overflow-hidden isolate">
+                {/* Pegboard Background Layer */}
+                <div className="absolute inset-0 pegboard-mesh z-0 pointer-events-none"></div>
 
                 <div className="relative z-10 grid grid-cols-3 gap-y-8 gap-x-2">
                   {PERIPHERAL_CATEGORIES.map((pcat) => {
