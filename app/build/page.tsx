@@ -441,7 +441,7 @@ export default function BuildPage() {
                           onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
                           className="flex flex-col items-center gap-2 group relative"
                         >
-                          <div className={`relative w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all ${
+                          <div className={`relative w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
                             sel 
                             ? "bg-[#c2000b] border-[#ff4d4d] text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
                             : "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#222222] text-gray-400 group-hover:border-[#c2000b]/30"
@@ -665,7 +665,7 @@ export default function BuildPage() {
                       onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
                       className="flex flex-col items-center gap-2 group relative"
                     >
-                      <div className={`relative w-11 h-11 rounded-xl flex items-center justify-center border-2 transition-all ${
+                      <div className={`relative w-11 h-11 rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
                         sel 
                         ? "bg-[#c2000b] border-[#ff4d4d] text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
                         : "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#222222] text-gray-400 group-hover:border-[#c2000b]/30"
