@@ -428,75 +428,90 @@ export default function BuildPage() {
                 <div className="mt-8">
                   <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] px-2 mb-4">PERIPHERALS</h2>
                   <div className="p-4 rounded-xl pegboard-mesh border border-black/10 dark:border-white/5 relative overflow-hidden">
-
-                    <div className="relative z-10 grid grid-cols-2 gap-3">
+                    
+                    <div className="relative z-10 grid grid-cols-3 gap-y-8 gap-x-4">
                       {PERIPHERAL_CATEGORIES.map((pcat) => {
                       const sel = selectedPeripherals[pcat.id];
                       const isOpen = activePeripheral === pcat.id;
                       return (
-                        <div key={pcat.id} className={`relative rounded-xl border transition-all overflow-hidden ${
-                          sel ? "border-[#c2000b] bg-[#c2000b]/10 shadow-[0_0_15px_rgba(194,0,11,0.2)]" : "border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/50 backdrop-blur-sm"
-                        }`}>
-                          <button
-                            onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
-                            className="w-full flex flex-col items-center gap-2 p-4 text-center relative group"
-                          >
+                        <button 
+                          key={pcat.id} 
+                          onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
+                          className="flex flex-col items-center gap-2 group relative"
+                        >
+                          <div className={`relative w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all ${
+                            sel 
+                            ? "bg-[#c2000b] border-white/20 text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
+                            : "bg-white/80 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
+                          }`}>
                             {/* Hook visual */}
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-3 bg-gray-400 dark:bg-gray-600 rounded-b-full"></div>
-                            
-                            <div className={`mt-2 w-10 h-10 rounded-lg flex items-center justify-center border-2 transition-all ${
-                              sel ? "bg-[#c2000b] border-white/20 text-white" : "bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
-                            }`}>
-                              <Icon icon={pcat.icon} className="text-xl" />
-                            </div>
-                            <span className="text-[9px] font-black uppercase tracking-tighter text-black dark:text-white">{pcat.name}</span>
-                            {sel && <span className="text-[7px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate max-w-full px-1">{sel.name}</span>}
-                          </button>
-
-                          <AnimatePresence>
-                            {isOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="border-t border-black/5 dark:border-white/5 col-span-2 bg-black/[0.02] dark:bg-white/[0.02]"
-                              >
-                                <div className="p-3 space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
-                                  {(PERIPHERALS[pcat.id] || []).map((item: any) => (
-                                    <button
-                                      key={item.id}
-                                      onClick={() => {
-                                        setSelectedPeripherals(prev => ({ ...prev, [pcat.id]: prev[pcat.id]?.id === item.id ? null : item }));
-                                        setActivePeripheral(null);
-                                      }}
-                                      className={`w-full text-left p-3 rounded-xl border text-[10px] transition-all ${
-                                        selectedPeripherals[pcat.id]?.id === item.id
-                                          ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
-                                          : "bg-white dark:bg-[#111] border-black/5 dark:border-white/5 text-black dark:text-white hover:border-[#c2000b]/30"
-                                      }`}
-                                    >
-                                      <div className="font-black uppercase tracking-tighter">{item.name}</div>
-                                      <div className="font-mono text-gray-400 text-[8px] mt-0.5">
-                                        {pcat.id === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
-                                        {pcat.id === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
-                                        {pcat.id === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
-                                        {pcat.id === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
-                                      </div>
-                                      <div className="text-[#c2000b] font-black mt-1">₱{item.price.toLocaleString()}</div>
-                                    </button>
-                                  ))}
-                                </div>
-                              </motion.div>
+                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
+                            <Icon icon={pcat.icon} className="text-xl" />
+                          </div>
+                          <div className="flex flex-col items-center text-center">
+                            <span className="text-[7px] font-black uppercase tracking-widest text-black dark:text-white mb-0.5">{pcat.name}</span>
+                            {sel && (
+                              <span className="text-[6px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate w-full max-w-[52px]">
+                                {sel.name}
+                              </span>
                             )}
-                          </AnimatePresence>
-                        </div>
+                          </div>
+                        </button>
                       );
                     })}
                   </div>
+
+                  {/* Peripheral picker dropdown (Mobile) */}
+                  <AnimatePresence>
+                    {activePeripheral && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        className="mt-4 rounded-2xl border border-[#c2000b]/30 bg-white dark:bg-[#111] overflow-hidden shadow-xl"
+                      >
+                        <div className="px-4 py-3 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
+                          <span className="text-[9px] font-black uppercase tracking-widest text-[#c2000b]">
+                            {PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
+                          </span>
+                          <button onClick={() => setActivePeripheral(null)} className="text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                            <Icon icon="solar:close-circle-linear" />
+                          </button>
+                        </div>
+                        <div className="p-2 space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar">
+                          {(PERIPHERALS[activePeripheral] || []).map((item: any) => (
+                            <button
+                              key={item.id}
+                              onClick={() => {
+                                setSelectedPeripherals(prev => ({ ...prev, [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item }));
+                                setActivePeripheral(null);
+                              }}
+                              className={`w-full text-left p-2.5 rounded-xl border text-[10px] transition-all ${
+                                selectedPeripherals[activePeripheral]?.id === item.id
+                                  ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
+                                  : "border-black/5 dark:border-white/5 text-black dark:text-white hover:border-[#c2000b]/30"
+                              }`}
+                            >
+                              <div className="font-black uppercase tracking-tighter">{item.name}</div>
+                              <div className="font-mono text-gray-400 text-[8px] mt-0.5">
+                                {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
+                                {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
+                                {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
+                                {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
+                                {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
+                                {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
+                              </div>
+                              <div className="text-[#c2000b] font-black mt-1">₱{item.price.toLocaleString()}</div>
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
-              </motion.div>
-            ) : (
+            </motion.div>
+          ) : (
               /* Selection Mode / Part Catalog */
               <motion.div
                 key="mobile-catalog"
@@ -636,30 +651,34 @@ export default function BuildPage() {
               <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b] mb-4 px-4">PERIPHERALS</h2>
               <div className="p-4 rounded-xl pegboard-mesh border border-black/10 dark:border-white/10 relative overflow-hidden">
 
-                <div className="relative z-10 grid grid-cols-2 gap-3">
+                <div className="relative z-10 grid grid-cols-3 gap-y-8 gap-x-2">
                   {PERIPHERAL_CATEGORIES.map((pcat) => {
                   const sel = selectedPeripherals[pcat.id];
                   const isOpen = activePeripheral === pcat.id;
                   return (
-                    <div key={pcat.id} className={`relative rounded-xl border transition-all overflow-hidden ${
-                      sel ? "border-[#c2000b] bg-[#c2000b]/10 shadow-[0_0_15px_rgba(194,0,11,0.2)]" : "border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/50 backdrop-blur-sm"
-                    }`}>
-                      <button
-                        onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
-                        className="w-full flex flex-col items-center gap-2 p-3 text-center relative group"
-                      >
+                    <button 
+                      key={pcat.id} 
+                      onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
+                      className="flex flex-col items-center gap-2 group relative"
+                    >
+                      <div className={`relative w-11 h-11 rounded-xl flex items-center justify-center border-2 transition-all ${
+                        sel 
+                        ? "bg-[#c2000b] border-white/20 text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
+                        : "bg-white/80 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
+                      }`}>
                         {/* Hook visual */}
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-2.5 bg-gray-400 dark:bg-gray-600 rounded-b-full"></div>
-
-                        <div className={`mt-1.5 w-9 h-9 rounded-lg flex items-center justify-center border-2 transition-all ${
-                          sel ? "bg-[#c2000b] border-white/20 text-white" : "bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
-                        }`}>
-                          <Icon icon={pcat.icon} className="text-xl" />
-                        </div>
-                        <span className="text-[8px] font-black uppercase tracking-tighter text-black dark:text-white">{pcat.name}</span>
-                        {sel && <span className="text-[7px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate max-w-full">{sel.name}</span>}
-                      </button>
-                    </div>
+                        <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
+                        <Icon icon={pcat.icon} className="text-xl" />
+                      </div>
+                      <div className="flex flex-col items-center text-center">
+                        <span className="text-[7px] font-black uppercase tracking-widest text-black dark:text-white mb-0.5">{pcat.name}</span>
+                        {sel && (
+                          <span className="text-[6px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate w-full max-w-[52px]">
+                            {sel.name}
+                          </span>
+                        )}
+                      </div>
+                    </button>
                   );
                 })}
               </div>
@@ -682,7 +701,7 @@ export default function BuildPage() {
                       </button>
                     </div>
                     <div className="p-2 space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar">
-                      {(PERIPHERALS[activePeripheral] || []).map((item: any) => (
+                      {activePeripheral && (PERIPHERALS[activePeripheral] || []).map((item: any) => (
                         <button
                           key={item.id}
                           onClick={() => {
