@@ -145,7 +145,7 @@ body {
 }
 
 .pegboard-mesh {
-  background-color: var(--mesh-bg);
+  background-color: #ffffff;
   background-image: 
     radial-gradient(ellipse 1.5px 2.5px at center, rgba(0,0,0,0.2) 100%, transparent 0%),
     radial-gradient(ellipse 1.5px 2.5px at center, rgba(0,0,0,0.2) 100%, transparent 0%);
@@ -153,8 +153,7 @@ body {
   background-position: 0 0, 16px 8px;
   box-shadow: 
     0 10px 30px -10px rgba(0,0,0,0.1),
-    0 4px 10px -5px rgba(0,0,0,0.05),
-    inset 0 1px 0 rgba(255,255,255,0.8); /* Top highlight for "protruding" look */
+    0 4px 10px -5px rgba(0,0,0,0.05);
 }
 
 .dark .pegboard-mesh {
