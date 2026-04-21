@@ -25,6 +25,8 @@ const PERIPHERAL_CATEGORIES = [
   { id: "keyboard", name: "keyboard", icon: "solar:keyboard-bold-duotone" },
   { id: "mouse", name: "mouse", icon: "solar:mouse-bold-duotone" },
   { id: "headset", name: "headset", icon: "solar:headphones-bold-duotone" },
+  { id: "speaker", name: "speaker", icon: "solar:speaker-bold-duotone" },
+  { id: "webcam", name: "webcam", icon: "solar:videocamera-bold-duotone" },
 ];
 
 const PARTS: Record<string, any[]> = {
@@ -158,6 +160,16 @@ const PERIPHERALS: Record<string, any[]> = {
     { id: "hs-4", name: "Razer BlackShark V2 X", brand: "Razer", driver: "50mm", connection: "3.5mm", surround: "7.1", price: 3200 },
     { id: "hs-5", name: "ASUS ROG Delta S", brand: "ASUS", driver: "50mm", connection: "USB-C", surround: "7.1", price: 9500 },
     { id: "hs-6", name: "Audio-Technica ATH-GL3", brand: "Audio-Technica", driver: "45mm", connection: "3.5mm", surround: "None", price: 6800 },
+  ],
+  speaker: [
+    { id: "spk-1", name: "Logitech Z120", brand: "Logitech", connection: "USB", power: "1.2W", price: 650 },
+    { id: "spk-2", name: "Creative Pebble V3", brand: "Creative", connection: "USB-C/Bluetooth", power: "8W", price: 1850 },
+    { id: "spk-3", name: "Razer Nommo V2", brand: "Razer", connection: "USB/Bluetooth", power: "30W", price: 12500 },
+  ],
+  webcam: [
+    { id: "cam-1", name: "Logitech C270", brand: "Logitech", resolution: "720p", fps: 30, price: 1450 },
+    { id: "cam-2", name: "Logitech C922 PRO", brand: "Logitech", resolution: "1080p", fps: 60, price: 5800 },
+    { id: "cam-3", name: "Razer Kiyo Pro", brand: "Razer", resolution: "1080p/HDR", fps: 60, price: 9500 },
   ],
 };
 
@@ -689,6 +701,8 @@ export default function BuildPage() {
                             {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
                             {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
                             {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
+                            {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
+                            {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
                           </div>
                           <div className="text-[#c2000b] font-black mt-1">₱{item.price.toLocaleString()}</div>
                         </button>
