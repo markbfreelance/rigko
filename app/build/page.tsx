@@ -24,7 +24,7 @@ const PERIPHERAL_CATEGORIES = [
   { id: "monitor", name: "monitor", icon: "solar:monitor-bold-duotone" },
   { id: "keyboard", name: "keyboard", icon: "solar:keyboard-bold-duotone" },
   { id: "mouse", name: "mouse", icon: "solar:mouse-bold-duotone" },
-  { id: "headset", name: "headset", icon: "solar:headphones-bold-duotone" },
+  { id: "headset", name: "headset", icon: "solar:headphones-square-bold-duotone" },
   { id: "speaker", name: "speaker", icon: "solar:speaker-bold-duotone" },
   { id: "webcam", name: "webcam", icon: "solar:videocamera-bold-duotone" },
 ];
