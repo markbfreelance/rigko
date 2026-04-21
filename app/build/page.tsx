@@ -177,7 +177,7 @@ export default function BuildPage() {
   const [activeCategory, setActiveCategory] = useState("cpu");
   const [selectedParts, setSelectedParts] = useState<Record<string, any>>({});
   const [selectedPeripherals, setSelectedPeripherals] = useState<Record<string, any>>({});
-  const [activePeripheral, setActivePeripheral] = useState<string | null>(null);
+  const [enabledPeripherals, setEnabledPeripherals] = useState<string[]>([]);
 
   const [isHudOpen, setIsHudOpen] = useState(false);
   const [isSelectingMode, setIsSelectingMode] = useState(false);
@@ -185,7 +185,9 @@ export default function BuildPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const mobileConstraintsRef = useRef<HTMLDivElement>(null);
   
-  const totalPrice = Object.values(selectedParts).reduce((acc, part) => acc + (part?.price || 0), 0);
+  const totalPrice = 
+    Object.values(selectedParts).reduce((acc, part) => acc + (part?.price || 0), 0) +
+    Object.values(selectedPeripherals).reduce((acc, item) => acc + (item?.price || 0), 0);
   const totalWattage = Object.values(selectedParts).reduce((acc, part) => {
      if (part?.tdp) return acc + part.tdp;
      if (part?.power_draw) return acc + part.power_draw;
@@ -264,20 +266,31 @@ export default function BuildPage() {
     return { compatible: true };
   };
 
-  const handleSelect = (category: string, part: any) => {
-    const { compatible } = checkCompatibility(category, part);
+  const handleSelect = (category: string, item: any) => {
+    // Determine if it's a peripheral
+    const isPeripheral = PERIPHERAL_CATEGORIES.some(pc => pc.id === category);
+
+    if (isPeripheral) {
+      setSelectedPeripherals(prev => ({
+        ...prev,
+        [category]: prev[category]?.id === item.id ? null : item
+      }));
+      return;
+    }
+
+    const { compatible } = checkCompatibility(category, item);
     if (!compatible) return;
 
     setSelectedParts(prev => ({
       ...prev,
-      [category]: prev[category]?.id === part.id ? null : part
+      [category]: prev[category]?.id === item.id ? null : item
     }));
 
     // Auto-advance logic (Now default protocol)
-    const isSelecting = selectedParts[category]?.id !== part.id;
-    if (isSelecting && part) {
+    const isSelecting = selectedParts[category]?.id !== item.id;
+    if (isSelecting && item) {
       const currentIndex = CATEGORIES.findIndex(c => c.id === category);
-      if (currentIndex < CATEGORIES.length - 1) {
+      if (currentIndex !== -1 && currentIndex < CATEGORIES.length - 1) {
         setTimeout(() => setActiveCategory(CATEGORIES[currentIndex + 1].id), 300);
       }
       
@@ -286,6 +299,23 @@ export default function BuildPage() {
         setTimeout(() => setIsSelectingMode(false), 400); // Slight delay for feedback
       }
     }
+  };
+
+  const togglePeripheral = (categoryId: string) => {
+    setEnabledPeripherals(prev => {
+      if (prev.includes(categoryId)) {
+        // Remove item selection if the category is disabled
+        setSelectedPeripherals(s => {
+          const next = { ...s };
+          delete next[categoryId];
+          return next;
+        });
+        // Deselect if it was the active category
+        setActiveCategory(curr => curr === categoryId ? "cpu" : curr);
+        return prev.filter(id => id !== categoryId);
+      }
+      return [...prev, categoryId];
+    });
   };
 
   const getActiveIds = () => {
@@ -434,20 +464,22 @@ export default function BuildPage() {
                     <div className="relative z-10 grid grid-cols-3 gap-y-8 gap-x-4">
                       {PERIPHERAL_CATEGORIES.map((pcat) => {
                       const sel = selectedPeripherals[pcat.id];
-                      const isOpen = activePeripheral === pcat.id;
+                      const isActive = enabledPeripherals.includes(pcat.id);
                       return (
                         <button 
                           key={pcat.id} 
                           onClick={(e) => {
                             e.stopPropagation();
-                            setActivePeripheral(isOpen ? null : pcat.id);
+                            togglePeripheral(pcat.id);
                           }}
                           className="flex flex-col items-center gap-2 group relative"
                         >
-                          <div className={`relative w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
+                          <div className={`shrink-0 relative w-12 h-12 min-w-[48px] rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
                             sel 
                             ? "bg-[#c2000b] border-[#ff4d4d] text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
-                            : "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#222222] text-gray-400 group-hover:border-[#c2000b]/30"
+                            : isActive
+                            ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
+                            : "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#222222] text-gray-500 group-hover:border-[#c2000b]/30"
                           }`}>
                             {/* Hook visual */}
                             <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
@@ -455,86 +487,67 @@ export default function BuildPage() {
                           </div>
                           <div className="flex flex-col items-center text-center">
                             <span className="text-[7px] font-black uppercase tracking-widest text-black dark:text-white mb-0.5">{pcat.name}</span>
-                            {sel && (
-                              <span className="text-[6px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate w-full max-w-[52px]">
-                                {sel.name}
-                              </span>
-                            )}
                           </div>
                         </button>
                       );
                     })}
                   </div>
 
-                    <AnimatePresence>
-                      {activePeripheral && (
-                        <motion.div
-                          key={`inline-picker-mobile-${activePeripheral}`}
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                          className="mt-6 border-t border-black/10 dark:border-white/10 pt-6 overflow-hidden"
-                        >
-                          <div className="flex items-center justify-between mb-4 px-1">
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c2000b]">
-                              AVAILABLE_{PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
-                            </span>
-                            <button 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setActivePeripheral(null);
-                              }}
-                              className="text-[9px] font-mono text-gray-500 hover:text-[#c2000b] uppercase transition-colors"
+                    {/* Category Selection Rows */}
+                    <div className="relative z-10 mt-8 space-y-3">
+                      <AnimatePresence>
+                        {PERIPHERAL_CATEGORIES.filter(p => enabledPeripherals.includes(p.id)).map((pcat) => {
+                          const sel = selectedPeripherals[pcat.id];
+                          const isActive = activeCategory === pcat.id;
+                          return (
+                            <motion.div
+                              key={`row-anim-${pcat.id}`}
+                              initial={{ opacity: 0, height: 0, y: -10 }}
+                              animate={{ opacity: 1, height: "auto", y: 0 }}
+                              exit={{ opacity: 0, height: 0, y: -10 }}
+                              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                              className="overflow-hidden"
                             >
-                              [CLOSE]
-                            </button>
-                          </div>
-                          
-                          <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-                            {(PERIPHERALS[activePeripheral as keyof typeof PERIPHERALS] || []).map((item: any) => {
-                              const isSelected = selectedPeripherals[activePeripheral]?.id === item.id;
-                              return (
-                                <button
-                                  key={item.id}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedPeripherals(prev => ({ 
-                                      ...prev, 
-                                      [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item 
-                                    }));
-                                  }}
-                                  className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                                    isSelected
-                                      ? "bg-[#c2000b]/5 border-[#c2000b] shadow-[0_0_15px_rgba(194,0,11,0.05)]"
-                                      : "bg-white/50 dark:bg-black/20 border-black/5 dark:border-white/5 hover:border-[#c2000b]/30"
-                                  }`}
-                                >
-                                  <div className="flex justify-between items-start mb-1">
-                                    <div className="font-black uppercase tracking-tighter text-[11px] leading-tight text-black dark:text-white">
-                                      {item.name}
-                                    </div>
-                                    <div className="text-[#c2000b] font-black text-[11px]">
-                                      ₱{item.price.toLocaleString()}
-                                    </div>
+                              <button
+                                onClick={() => {
+                                  setActiveCategory(pcat.id);
+                                  setIsSelectingMode(true);
+                                }}
+                                className={`w-full flex items-center justify-between p-3 rounded-xl border-2 transition-all group/row ${
+                                  isActive
+                                  ? "bg-[#c2000b]/5 border-[#c2000b] shadow-[0_4px_12px_rgba(194,0,11,0.1)]"
+                                  : "bg-white/50 dark:bg-black/20 border-[#e5e5e5] dark:border-[#222222] hover:border-[#c2000b]/30"
+                                }`}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className={`shrink-0 w-8 h-8 min-w-[32px] rounded-lg flex items-center justify-center border transition-all ${
+                                    sel ? "bg-[#c2000b] border-[#ff4d4d] text-white shadow-[0_0_8px_rgba(194,0,11,0.2)]" : "bg-black/5 dark:bg-white/5 border-[#e5e5e5] dark:border-[#222222] text-gray-500"
+                                  }`}>
+                                    <Icon icon={pcat.icon} className="text-lg" />
                                   </div>
-                                  <div className="font-mono text-[8px] text-gray-500 uppercase tracking-widest leading-relaxed">
-                                    {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
-                                    {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
-                                    {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
-                                    {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
-                                    {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
-                                    {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
+                                  <div className="flex flex-col items-start translate-y-[1px]">
+                                    <span className={`text-[8px] font-black uppercase tracking-widest ${isActive ? "text-[#c2000b]" : "text-black dark:text-white"}`}>
+                                      {pcat.name}
+                                    </span>
+                                    {sel ? (
+                                      <span className="text-[7px] font-mono text-gray-500 uppercase truncate max-w-[120px]">{sel.name}</span>
+                                    ) : (
+                                      <span className="text-[7px] font-mono text-gray-400 uppercase">SELECT_{pcat.name}</span>
+                                    )}
                                   </div>
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  {sel && <span className="text-[9px] font-black text-[#c2000b]">₱{sel.price.toLocaleString()}</span>}
+                                  <Icon icon="solar:alt-arrow-right-linear" className={`text-gray-400 group-hover/row:text-[#c2000b] transition-colors ${isActive ? "text-[#c2000b]" : ""}`} />
+                                </div>
+                              </button>
+                            </motion.div>
+                          );
+                        })}
+                      </AnimatePresence>
+                    </div>
+                  </div>
                 </div>
-              </div>
             </motion.div>
           ) : (
               /* Selection Mode / Part Catalog */
@@ -577,14 +590,18 @@ export default function BuildPage() {
 
                 <div className="grid grid-cols-1 gap-4 pt-4">
                   <AnimatePresence>
-                    {(PARTS[activeCategory as keyof typeof PARTS] || [])
+                    {((PARTS[activeCategory as keyof typeof PARTS] || [])
+                     .concat(PERIPHERALS[activeCategory as keyof typeof PERIPHERALS] || []))
                       .filter(part => 
                         part.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                         (part.brand && part.brand.toLowerCase().includes(searchQuery.toLowerCase()))
                       )
                       .map((part, idx) => {
                       const { compatible, reason, warning } = checkCompatibility(activeCategory, part);
-                      const isSelected = selectedParts[activeCategory]?.id === part.id;
+                      const isPeripheralActive = PERIPHERAL_CATEGORIES.some(pc => pc.id === activeCategory);
+                      const isSelected = isPeripheralActive 
+                        ? selectedPeripherals[activeCategory]?.id === part.id 
+                        : selectedParts[activeCategory]?.id === part.id;
                       
                       return (
                         <motion.div
@@ -681,20 +698,22 @@ export default function BuildPage() {
                 <div className="relative z-10 grid grid-cols-3 gap-y-8 gap-x-2">
                   {PERIPHERAL_CATEGORIES.map((pcat) => {
                   const sel = selectedPeripherals[pcat.id];
-                  const isOpen = activePeripheral === pcat.id;
+                  const isActive = enabledPeripherals.includes(pcat.id);
                   return (
                     <button 
                       key={pcat.id} 
                       onClick={(e) => {
                         e.stopPropagation();
-                        setActivePeripheral(isOpen ? null : pcat.id);
+                        togglePeripheral(pcat.id);
                       }}
                       className="flex flex-col items-center gap-2 group relative"
                     >
-                      <div className={`relative w-11 h-11 rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
+                      <div className={`shrink-0 relative w-11 h-11 min-w-[44px] rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
                         sel 
                         ? "bg-[#c2000b] border-[#ff4d4d] text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
-                        : "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#222222] text-gray-400 group-hover:border-[#c2000b]/30"
+                        : isActive
+                        ? "bg-[#c2000b]/10 border-[#c2000b] text-[#c2000b]"
+                        : "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#222222] text-gray-500 group-hover:border-[#c2000b]/30"
                       }`}>
                         {/* Hook visual */}
                         <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
@@ -702,87 +721,66 @@ export default function BuildPage() {
                       </div>
                       <div className="flex flex-col items-center text-center">
                         <span className="text-[7px] font-black uppercase tracking-widest text-black dark:text-white mb-0.5">{pcat.name}</span>
-                        {sel && (
-                          <span className="text-[6px] font-mono text-[#c2000b] font-bold uppercase leading-tight truncate w-full max-w-[52px]">
-                            {sel.name}
-                          </span>
-                        )}
                       </div>
                     </button>
                   );
                 })}
               </div>
 
-                    <AnimatePresence>
-                      {activePeripheral && (
+                {/* Category Selection Rows */}
+                <div className="relative z-10 mt-8 space-y-2">
+                  <AnimatePresence>
+                    {PERIPHERAL_CATEGORIES.filter(p => enabledPeripherals.includes(p.id)).map((pcat) => {
+                      const sel = selectedPeripherals[pcat.id];
+                      const isActive = activeCategory === pcat.id;
+                      return (
                         <motion.div
-                          key={`inline-picker-desktop-${activePeripheral}`}
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
+                          key={`row-desktop-anim-${pcat.id}`}
+                          initial={{ opacity: 0, height: 0, x: -20 }}
+                          animate={{ opacity: 1, height: "auto", x: 0 }}
+                          exit={{ opacity: 0, height: 0, x: -20 }}
                           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                          className="mt-6 border-t border-black/10 dark:border-white/10 pt-6 overflow-hidden"
+                          className="overflow-hidden"
                         >
-                          <div className="flex items-center justify-between mb-4 px-1">
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c2000b]">
-                              AVAILABLE_{PERIPHERAL_CATEGORIES.find(p => p.id === activePeripheral)?.name}
-                            </span>
-                            <button 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setActivePeripheral(null);
-                              }}
-                              className="text-[9px] font-mono text-gray-500 hover:text-[#c2000b] uppercase transition-colors"
-                            >
-                              [CLOSE]
-                            </button>
-                          </div>
-                          
-                          <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-                            {(PERIPHERALS[activePeripheral as keyof typeof PERIPHERALS] || []).map((item: any) => {
-                              const isSelected = selectedPeripherals[activePeripheral]?.id === item.id;
-                              return (
-                                <button
-                                  key={item.id}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedPeripherals(prev => ({ 
-                                      ...prev, 
-                                      [activePeripheral]: prev[activePeripheral]?.id === item.id ? null : item 
-                                    }));
-                                  }}
-                                  className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                                    isSelected
-                                      ? "bg-[#c2000b]/5 border-[#c2000b] shadow-[0_0_15px_rgba(194,0,11,0.05)]"
-                                      : "bg-white/50 dark:bg-black/20 border-black/5 dark:border-white/5 hover:border-[#c2000b]/30"
-                                  }`}
-                                >
-                                  <div className="flex justify-between items-start mb-1">
-                                    <div className="font-black uppercase tracking-tighter text-[11px] leading-tight text-black dark:text-white">
-                                      {item.name}
-                                    </div>
-                                    <div className="text-[#c2000b] font-black text-[11px]">
-                                      ₱{item.price.toLocaleString()}
-                                    </div>
-                                  </div>
-                                  <div className="font-mono text-[8px] text-gray-500 uppercase tracking-widest leading-relaxed">
-                                    {activePeripheral === "monitor" && `${item.size}" · ${item.resolution} · ${item.refresh_rate}Hz · ${item.panel}`}
-                                    {activePeripheral === "keyboard" && `${item.type} · ${item.switches} · ${item.layout}`}
-                                    {activePeripheral === "mouse" && `${item.dpi} DPI · ${item.weight}g${item.wireless ? " · Wireless" : ""}`}
-                                    {activePeripheral === "headset" && `${item.driver} · ${item.connection} · ${item.surround || "Stereo"}`}
-                                    {activePeripheral === "speaker" && `${item.connection} · ${item.power}`}
-                                    {activePeripheral === "webcam" && `${item.resolution} · ${item.fps} FPS`}
-                                  </div>
-                                </button>
-                              );
-                            })}
-                          </div>
+                          <button
+                            onClick={() => setActiveCategory(pcat.id)}
+                            className={`w-full flex items-center justify-between p-2.5 rounded-xl border-2 transition-all group/row ${
+                              isActive
+                              ? "bg-[#c2000b]/5 border-[#c2000b] shadow-[0_4px_12px_rgba(194,0,11,0.1)]"
+                              : "bg-white/50 dark:bg-black/20 border-[#e5e5e5] dark:border-[#222222] hover:border-[#c2000b]/30"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className={`shrink-0 w-8 h-8 min-w-[32px] rounded-lg flex items-center justify-center border transition-all ${
+                                sel ? "bg-[#c2000b] border-[#ff4d4d] text-white shadow-[0_0_8px_rgba(194,0,11,0.2)]" : "bg-black/5 dark:bg-white/5 border-[#e5e5e5] dark:border-[#222222] text-gray-500"
+                              }`}>
+                                <Icon icon={pcat.icon} className="text-lg" />
+                              </div>
+                              <div className="flex flex-col items-start translate-y-px">
+                                <span className={`text-[8px] font-black uppercase tracking-widest ${isActive ? "text-[#c2000b]" : "text-black dark:text-white"}`}>
+                                  {pcat.name}
+                                </span>
+                                {sel ? (
+                                  <span className="text-[7px] font-mono text-gray-500 uppercase truncate max-w-[100px]">{sel.name}</span>
+                                ) : (
+                                  <span className="text-[7px] font-mono text-gray-400 uppercase">SELECT_{pcat.name}</span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {sel && <span className="text-[9px] font-black text-[#c2000b]">₱{sel.price.toLocaleString()}</span>}
+                              <Icon icon="solar:alt-arrow-right-linear" className={`text-gray-400 group-hover/row:text-[#c2000b] transition-colors ${isActive ? "text-[#c2000b]" : ""}`} />
+                            </div>
+                          </button>
                         </motion.div>
-                      )}
-                    </AnimatePresence>
+                      );
+                    })}
+                  </AnimatePresence>
                 </div>
               </div>
-        </div>
+            </div>
+          </div>
+
 
           {/* Center: Part Catalog */}
           <div className="flex-1 min-w-0">
@@ -807,7 +805,8 @@ export default function BuildPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               <AnimatePresence>
-                {(PARTS[activeCategory as keyof typeof PARTS] || [])
+                {((PARTS[activeCategory as keyof typeof PARTS] || [])
+                 .concat(PERIPHERALS[activeCategory as keyof typeof PERIPHERALS] || []))
                   .filter(part => 
                     part.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                     (part.brand && part.brand.toLowerCase().includes(searchQuery.toLowerCase()))
