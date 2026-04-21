@@ -442,7 +442,7 @@ export default function BuildPage() {
                           <div className={`relative w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all ${
                             sel 
                             ? "bg-[#c2000b] border-white/20 text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
-                            : "bg-white/80 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
+                            : "bg-white dark:bg-[#1a1a1a] border-black/10 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
                           }`}>
                             {/* Hook visual */}
                             <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
@@ -664,7 +664,7 @@ export default function BuildPage() {
                       <div className={`relative w-11 h-11 rounded-xl flex items-center justify-center border-2 transition-all ${
                         sel 
                         ? "bg-[#c2000b] border-white/20 text-white shadow-[0_0_15px_rgba(194,0,11,0.3)]" 
-                        : "bg-white/80 dark:bg-white/5 border-black/5 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
+                        : "bg-white dark:bg-[#1a1a1a] border-black/10 dark:border-white/10 text-gray-400 group-hover:border-[#c2000b]/30"
                       }`}>
                         {/* Hook visual */}
                         <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
@@ -1048,14 +1048,14 @@ export default function BuildPage() {
                 </div>
 
                 {/* Close Drawer Button & Title Unified */}
-                <div className="absolute top-6 left-12 right-8 flex items-center justify-between z-[210]">
+                <div className="absolute top-6 left-12 right-8 flex items-center justify-between z-210">
                    <div>
                      <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c2000b]">ASSEMBLY DESK</h2>
                      <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">Status: {totalPrice > 0 ? "IN_PROGRESS" : "IDLE"}</p>
                    </div>
                    <button 
                      onClick={() => setIsHudOpen(false)}
-                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[#ededed] dark:bg-[var(--chassis-metal)] text-black dark:text-white shadow-[inset_0_4px_8px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.1)] active:scale-95 transition-all"
+                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[#ededed] dark:bg-(--chassis-metal) text-black dark:text-white shadow-[inset_0_4px_8px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.1)] active:scale-95 transition-all"
                    >
                      <Icon icon="lucide:x" className="text-xl" />
                    </button>
@@ -1068,7 +1068,7 @@ export default function BuildPage() {
       </AnimatePresence>
 
       {/* Mobile HUD Toggle Button */}
-      <div className="fixed bottom-24 right-4 z-[160] lg:hidden">
+      <div className="fixed bottom-24 right-4 z-160 lg:hidden">
          <button
            onClick={() => setIsHudOpen(true)}
            className="w-14 h-14 rounded-full bg-[#c2000b] text-white flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-transform border-4 border-[#050100]"
