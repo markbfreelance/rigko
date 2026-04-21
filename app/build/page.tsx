@@ -320,7 +320,7 @@ export default function BuildPage() {
         
         {/* Mobile View Switching: Index vs Catalog */}
         <div className="lg:hidden">
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {!isSelectingMode ? (
               /* Master Assembly Index checklist */
               <motion.div
@@ -768,7 +768,7 @@ export default function BuildPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 {(PARTS[activeCategory as keyof typeof PARTS] || [])
                   .filter(part => 
                     part.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
