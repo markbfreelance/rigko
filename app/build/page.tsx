@@ -438,7 +438,10 @@ export default function BuildPage() {
                       return (
                         <button 
                           key={pcat.id} 
-                          onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActivePeripheral(isOpen ? null : pcat.id);
+                          }}
                           className="flex flex-col items-center gap-2 group relative"
                         >
                           <div className={`relative w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
@@ -467,6 +470,7 @@ export default function BuildPage() {
                   <AnimatePresence>
                     {activePeripheral && (
                       <motion.div
+                        key={`dropdown-${activePeripheral}`}
                         initial={{ opacity: 0, y: -8 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
@@ -553,7 +557,7 @@ export default function BuildPage() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 pt-4">
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence>
                     {(PARTS[activeCategory as keyof typeof PARTS] || [])
                       .filter(part => 
                         part.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -662,7 +666,10 @@ export default function BuildPage() {
                   return (
                     <button 
                       key={pcat.id} 
-                      onClick={() => setActivePeripheral(isOpen ? null : pcat.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActivePeripheral(isOpen ? null : pcat.id);
+                      }}
                       className="flex flex-col items-center gap-2 group relative"
                     >
                       <div className={`relative w-11 h-11 rounded-xl flex items-center justify-center border-2 transition-all shadow-md ${
@@ -691,6 +698,7 @@ export default function BuildPage() {
               <AnimatePresence>
                 {activePeripheral && (
                   <motion.div
+                    key={`dropdown-desktop-${activePeripheral}`}
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
