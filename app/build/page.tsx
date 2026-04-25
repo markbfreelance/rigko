@@ -2312,7 +2312,7 @@ export default function BuildPage() {
             </div>
 
             {/* Parts Selection */}
-            <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 auto-rows-max content-start">
+            <div className="flex-1 overflow-y-auto pr-2 pt-4 custom-scrollbar grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 auto-rows-max content-start">
               <AnimatePresence>
                 {(PARTS[activeCategory as keyof typeof PARTS] || [])
                   .concat(
