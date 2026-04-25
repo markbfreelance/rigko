@@ -7,12 +7,68 @@ import { useTheme } from "./theme-provider";
 import { Icon } from "@iconify/react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navLinks = [
+type NavLink = {
+  label: string;
+  href?: string;
+  items?: { label: string; href: string }[];
+};
+
+function DesktopNavDropdown({ link }: { link: NavLink }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        className="flex items-center gap-1.5 px-6 py-2 text-[11px] font-bold text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+      >
+        <span>{link.label}</span>
+        <Icon
+          icon="solar:alt-arrow-down-linear"
+          className={`text-sm transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && link.items && (
+        <div
+          role="menu"
+          className="absolute left-0 top-full pt-2 min-w-[200px] z-50"
+        >
+          <div className="rounded-2xl border-2 border-[var(--chassis-border)] bg-[#f5f5f5] dark:bg-black shadow-xl overflow-hidden">
+            {link.items.map((sub) => (
+              <Link
+                key={sub.label}
+                href={sub.href}
+                onClick={() => setOpen(false)}
+                role="menuitem"
+                className="block px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-white hover:bg-[#c2000b] transition-colors"
+              >
+                {sub.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "Build a Rig", href: "/build" },
+  {
+    label: "Build a Rig",
+    items: [
+      { label: "New Build", href: "/build" },
+      { label: "Featured Builds", href: "/featured-builds" },
+    ],
+  },
   { label: "Marketplace", href: "#" },
   { label: "Guides", href: "#" },
-  // { label: "PH Prices", href: "#" },
 ];
 
 export default function Header({ children }: { children?: React.ReactNode }) {
@@ -25,6 +81,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
       <div className="absolute top-0 left-0 w-full h-[calc(4rem+env(safe-area-inset-top))] md:h-[calc(5rem+env(safe-area-inset-top))] chassis-steel backdrop-blur-md border-b border-black/5 dark:border-white/5 pointer-events-auto" />
       
       <div className="relative z-10 mx-auto w-full h-16 md:h-20 max-w-[1440px] px-4 md:px-16 flex items-center justify-between pointer-events-auto">
+        <div className="flex items-center gap-8">
         {/* Logo Section - Flush with steel */}
         <Link href="/" className="flex items-center gap-4 group">
           <div className="relative h-7 w-7">
@@ -44,17 +101,22 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         </Link>
         
         {/* Desktop Nav - Etched into Shroud */}
-        <nav className="absolute left-1/2 -translate-x-1/2 hidden xl:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="px-6 py-2 text-[11px] font-bold text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden xl:flex items-center gap-1">
+          {navLinks.map((link) =>
+            link.items ? (
+              <DesktopNavDropdown key={link.label} link={link} />
+            ) : (
+              <Link
+                key={link.label}
+                href={link.href!}
+                className="px-6 py-2 text-[11px] font-bold text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
         </nav>
+        </div>
 
         {/* Action Buttons */}
         <div className="flex items-center gap-8">
@@ -158,16 +220,39 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               
               <div className="relative z-10 flex flex-col h-full p-12 pl-16">
                 <nav className="flex flex-col gap-8 mb-auto items-end">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.label}
-                      href={link.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="text-lg font-black tracking-widest text-gray-400 dark:text-gray-500 hover:text-[#c2000b] dark:hover:text-[#c2000b] transition-all uppercase text-right"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
+                  {navLinks.map((link) =>
+                    link.items ? (
+                      <div
+                        key={link.label}
+                        className="flex flex-col gap-3 items-end"
+                      >
+                        <span className="text-lg font-black tracking-widest text-gray-400 dark:text-gray-500 uppercase text-right">
+                          {link.label}
+                        </span>
+                        <div className="flex flex-col gap-2 items-end">
+                          {link.items.map((sub) => (
+                            <Link
+                              key={sub.label}
+                              href={sub.href}
+                              onClick={() => setIsMenuOpen(false)}
+                              className="text-sm font-bold tracking-widest text-gray-500 dark:text-gray-400 hover:text-[#c2000b] dark:hover:text-[#c2000b] transition-all uppercase text-right"
+                            >
+                              {sub.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link
+                        key={link.label}
+                        href={link.href!}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="text-lg font-black tracking-widest text-gray-400 dark:text-gray-500 hover:text-[#c2000b] dark:hover:text-[#c2000b] transition-all uppercase text-right"
+                      >
+                        {link.label}
+                      </Link>
+                    ),
+                  )}
                 </nav>
 
                 <div className="flex flex-col gap-6 mt-auto">
