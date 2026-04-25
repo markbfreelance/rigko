@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { logout } from "@/app/actions/auth";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
@@ -11,6 +11,29 @@ interface AuthNavProps {
 
 export default function AuthNav({ user }: AuthNavProps) {
   const [pending, startTransition] = useTransition();
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isOpen]);
 
   if (!user) {
     return (
@@ -24,18 +47,51 @@ export default function AuthNav({ user }: AuthNavProps) {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 hidden md:block">
-        {user.username}
-      </span>
+    <div ref={containerRef} className="relative">
       <button
-        onClick={() => startTransition(() => logout())}
-        disabled={pending}
-        className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[var(--chassis-border)] text-black dark:text-white pl-4 pr-5 py-2 rounded-full text-[11px] font-black uppercase tracking-tighter hover:border-[#c2000b] hover:bg-[#c2000b] dark:hover:bg-[#c2000b] hover:text-white transition-all"
+        type="button"
+        onClick={() => setIsOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        className="relative flex items-center gap-2 bg-[#f5f5f5] dark:bg-black border-2 border-[var(--chassis-border)] text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white pl-4 pr-3 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest hover:border-[#c2000b] transition-all cursor-pointer"
       >
-        <Icon icon="solar:logout-3-bold" className="text-sm" />
-        <span>{pending ? "..." : "LOGOUT"}</span>
+        <span className="max-w-[120px] truncate">{user.username}</span>
+        <Icon
+          icon="solar:alt-arrow-down-linear"
+          className={`text-sm transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
+
+      {isOpen && (
+        <div
+          role="menu"
+          className="absolute right-0 mt-2 w-52 rounded-2xl border-2 border-[var(--chassis-border)] bg-[#f5f5f5] dark:bg-black shadow-xl overflow-hidden z-50"
+        >
+          <Link
+            href="/saved-rigs"
+            role="menuitem"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 text-[11px] font-black uppercase tracking-tighter text-black dark:text-white hover:bg-[#c2000b] hover:text-white transition-colors"
+          >
+            <Icon icon="solar:bookmark-bold" className="text-sm" />
+            <span>Saved Rigs</span>
+          </Link>
+          <div className="h-px bg-[var(--chassis-border)]" />
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setIsOpen(false);
+              startTransition(() => logout());
+            }}
+            disabled={pending}
+            className="w-full flex items-center gap-3 px-4 py-3 text-[11px] font-black uppercase tracking-tighter text-black dark:text-white hover:bg-[#c2000b] hover:text-white transition-colors disabled:opacity-50"
+          >
+            <Icon icon="solar:logout-3-bold" className="text-sm" />
+            <span>{pending ? "..." : "Logout"}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

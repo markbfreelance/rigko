@@ -12,7 +12,7 @@ const navLinks = [
   { label: "Build a Rig", href: "/build" },
   { label: "Marketplace", href: "#" },
   { label: "Guides", href: "#" },
-  { label: "PH Prices", href: "#" },
+  // { label: "PH Prices", href: "#" },
 ];
 
 export default function Header({ children }: { children?: React.ReactNode }) {
@@ -44,7 +44,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         </Link>
         
         {/* Desktop Nav - Etched into Shroud */}
-        <nav className="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-1">
+        <nav className="absolute left-1/2 -translate-x-1/2 hidden xl:flex items-center gap-1">
           {navLinks.map((link) => (
             <Link
               key={link.label}
@@ -97,7 +97,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             {/* Mobile Menu Toggle */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-10 h-10 bg-[#c2000b] text-white border-2 border-[#c2000b] rounded-full transition-all active:scale-95 shadow-[inset_0_2px_6px_rgba(0,0,0,0.3)]"
+              className="xl:hidden flex items-center justify-center w-10 h-10 bg-[#c2000b] text-white border-2 border-[#c2000b] rounded-full transition-all active:scale-95 shadow-[inset_0_2px_6px_rgba(0,0,0,0.3)]"
             >
               <Icon 
                 icon={isMenuOpen ? "lucide:x" : "solar:hamburger-menu-linear"} 
