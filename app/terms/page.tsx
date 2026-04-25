@@ -1,6 +1,3 @@
-import Header from "@/app/components/header";
-import HeaderAuth from "@/app/components/header-auth";
-import Footer from "@/app/components/footer";
 
 export const metadata = {
   title: "Terms of Service — Rigko",
@@ -9,9 +6,6 @@ export const metadata = {
 export default function TermsPage() {
   return (
     <div className="pt-16 md:pt-20">
-      <Header>
-        <HeaderAuth />
-      </Header>
       <div className="min-h-[calc(100vh-5rem)] px-4 py-16 md:py-24">
         <div className="max-w-3xl mx-auto">
           <div className="border border-[var(--chassis-border)] bg-[var(--chassis-gray)] shadow-lg">
@@ -151,7 +145,6 @@ export default function TermsPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

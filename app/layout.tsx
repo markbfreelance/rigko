@@ -5,6 +5,9 @@ import ThemeProvider from "./components/theme-provider";
 import RevealObserver from "./components/reveal-observer";
 import ChassisFrame from "./components/chassis-frame";
 import VisualEffects from "./components/visual-effects";
+import Header from "./components/header";
+import HeaderAuth from "./components/header-auth";
+import Footer from "./components/footer";
 import { Analytics } from "@vercel/analytics/next";
 
 // REFRESH_TRIGGER: kebab-case transition complete
@@ -66,9 +69,13 @@ export default function RootLayout({
         <RevealObserver />
         <ChassisFrame />
         <ThemeProvider>
+          <Header>
+            <HeaderAuth />
+          </Header>
           <div className="flex-1 w-full">
             {children}
           </div>
+          <Footer />
         </ThemeProvider>
         <Analytics />
       </body>
