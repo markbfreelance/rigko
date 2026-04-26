@@ -1,4 +1,4 @@
-import { Star, ArrowRight, User } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 const builds = [
   {
@@ -82,7 +82,7 @@ export default function PopularBuildsHome() {
             className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
           >
             View all builds
-            <ArrowRight className="h-4 w-4" />
+            <Icon icon="lucide:arrow-right" className="h-4 w-4" />
           </a>
         </div>
 
@@ -126,14 +126,14 @@ export default function PopularBuildsHome() {
                 </span>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1">
-                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                    <Icon icon="lucide:star" className="h-3.5 w-3.5 text-amber-400" />
                     <span className="text-sm font-semibold">{build.rating}</span>
                     <span className="text-xs text-gray-400">
                       ({build.reviews})
                     </span>
                   </div>
                   <div className="flex items-center gap-1 text-xs text-gray-400">
-                    <User className="h-3 w-3" />
+                    <Icon icon="lucide:user" className="h-3 w-3" />
                     {build.author}
                   </div>
                 </div>
@@ -149,7 +149,7 @@ export default function PopularBuildsHome() {
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-600 dark:text-cyan-400"
           >
             View all builds
-            <ArrowRight className="h-4 w-4" />
+            <Icon icon="lucide:arrow-right" className="h-4 w-4" />
           </a>
         </div>
       </div>

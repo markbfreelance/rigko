@@ -1,4 +1,4 @@
-import { Zap, ArrowRight, Cpu, Monitor, HardDrive } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 export default function Cta() {
   return (
@@ -12,20 +12,20 @@ export default function Cta() {
 
       {/* Floating component icons */}
       <div className="absolute top-12 left-[10%] opacity-[0.07] dark:opacity-[0.06]">
-        <Cpu className="h-24 w-24 text-white dark:text-gray-900 rotate-12" />
+        <Icon icon="lucide:cpu" className="h-24 w-24 text-white dark:text-gray-900 rotate-12" />
       </div>
       <div className="absolute bottom-12 right-[10%] opacity-[0.07] dark:opacity-[0.06]">
-        <Monitor className="h-20 w-20 text-white dark:text-gray-900 -rotate-12" />
+        <Icon icon="lucide:monitor" className="h-20 w-20 text-white dark:text-gray-900 -rotate-12" />
       </div>
       <div className="absolute top-1/2 right-[20%] -translate-y-1/2 opacity-[0.05] dark:opacity-[0.04]">
-        <HardDrive className="h-16 w-16 text-white dark:text-gray-900 rotate-6" />
+        <Icon icon="lucide:hard-drive" className="h-16 w-16 text-white dark:text-gray-900 rotate-6" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <div className="mx-auto max-w-2xl text-center">
           {/* Urgency badge */}
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 dark:border-gray-900/10 bg-white/[0.06] dark:bg-gray-900/[0.06] px-4 py-1.5">
-            <Zap className="h-3.5 w-3.5 text-amber-400 dark:text-amber-500 fill-amber-400 dark:fill-amber-500" />
+            <Icon icon="lucide:zap" className="h-3.5 w-3.5 text-amber-400 dark:text-amber-500" />
             <span className="text-xs font-semibold text-white/80 dark:text-gray-600 tracking-wide uppercase">
               Free forever &middot; No sign-up needed
             </span>
@@ -54,9 +54,9 @@ export default function Cta() {
               href="#"
               className="group inline-flex h-14 items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 dark:from-cyan-600 dark:to-violet-600 px-10 text-base font-bold text-white shadow-2xl shadow-cyan-500/25 dark:shadow-violet-600/20 hover:shadow-cyan-500/40 dark:hover:shadow-violet-600/35 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200"
             >
-              <Zap className="h-5 w-5" />
+              <Icon icon="lucide:zap" className="h-5 w-5" />
               Start Building — It&apos;s Free
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+              <Icon icon="lucide:arrow-right" className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
 

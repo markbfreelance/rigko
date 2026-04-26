@@ -1,0 +1,29 @@
+﻿Γû▓ Next.js 16.2.3 (Turbopack)
+- Environments: .env
+- Experiments (use with caution):
+  Γ¿» preloadEntriesOnStart
+
+ΓÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Turbopack build encountered 1 warnings:
+./next.config.ts
+Encountered unexpected file in NFT list
+A file was traced that indicates that the whole project was traced unintentionally. Somewhere in the import trace below, there are:
+- filesystem operations (like path.join, path.resolve or fs.readFile), or
+- very dynamic requires (like require('./' + foo)).
+To resolve this, you can
+- remove them if possible, or
+- only use them in development, or
+- make sure they are statically scoped to some subfolder: path.join(process.cwd(), 'data', bar), or
+- add ignore comments: path.join(/*turbopackIgnore: true*/ process.cwd(), bar)
+
+Import trace:
+  Server Component:
+    ./next.config.ts
+    ./app/generated/prisma/index.js
+    ./lib/prisma.ts
+    ./app/actions/auth.ts
+
+
+Γ£ô Compiled successfully in 6.8s
+  Running TypeScript ...

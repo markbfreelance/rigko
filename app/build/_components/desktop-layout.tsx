@@ -1,8 +1,8 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
-import HardwareDeck from "../../components/hardware-deck";
 import {
   CATEGORIES,
   PERIPHERAL_CATEGORIES,
@@ -10,6 +10,12 @@ import {
   PERIPHERALS,
 } from "../_data/parts";
 import type { BuilderViewProps } from "./builder-types";
+
+// Lazy-load the SVG-heavy hardware deck; chunk loads only on first
+// desktop render of /build, keeping initial dev compile lighter.
+const HardwareDeck = dynamic(() => import("../../components/hardware-deck"), {
+  ssr: false,
+});
 
 export default function DesktopLayout({
   activeCategory,

@@ -1,19 +1,5 @@
 import Link from "next/link";
-import {
-  Cpu,
-  CircuitBoard,
-  MemoryStick,
-  Gpu,
-  HardDrive,
-  Plug,
-  Box,
-  Snowflake,
-  Monitor,
-  Keyboard,
-  Hammer,
-  Zap,
-  type LucideIcon,
-} from "lucide-react";
+import { Icon } from "@iconify/react";
 
 export const metadata = {
   title: "Featured Builds — Rigko",
@@ -23,7 +9,7 @@ export const metadata = {
 
 type Part = {
   category: string;
-  icon: LucideIcon;
+  icon: string;
   name: string;
   detail?: string;
   price: number;
@@ -65,56 +51,56 @@ const FEATURED_BUILDS: Build[] = [
     parts: [
       {
         category: "CPU",
-        icon: Cpu,
+        icon: "lucide:cpu",
         name: "AMD Ryzen 5 7500F",
         detail: "6C / 12T · AM5 · 65W",
         price: 9500,
       },
       {
         category: "Cooler",
-        icon: Snowflake,
+        icon: "lucide:snowflake",
         name: "Thermalright Peerless Assassin 120 SE",
         detail: "Dual-tower air · 157mm",
         price: 2200,
       },
       {
         category: "Motherboard",
-        icon: CircuitBoard,
+        icon: "lucide:circuit-board",
         name: "MSI PRO B650M-A WiFi",
         detail: "mATX · DDR5 · Wi-Fi 6E",
         price: 9800,
       },
       {
         category: "Memory",
-        icon: MemoryStick,
+        icon: "lucide:memory-stick",
         name: "Kingston Fury Beast 32GB",
         detail: "2×16GB · DDR5-6000 CL36",
         price: 6400,
       },
       {
         category: "GPU",
-        icon: Gpu,
+        icon: "lucide:gpu",
         name: "NVIDIA GeForce RTX 5060 8GB",
         detail: "Blackwell · 145W · DLSS 4",
         price: 22500,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "WD Black SN770 1TB",
         detail: "PCIe 4.0 NVMe · 5,150 MB/s read",
         price: 4500,
       },
       {
         category: "PSU",
-        icon: Plug,
+        icon: "lucide:plug",
         name: "MSI MAG A650BN",
         detail: "650W · 80+ Bronze",
         price: 3800,
       },
       {
         category: "Case",
-        icon: Box,
+        icon: "lucide:box",
         name: "Tecware Forge M",
         detail: "mATX · 3× ARGB fans included",
         price: 3200,
@@ -123,14 +109,14 @@ const FEATURED_BUILDS: Build[] = [
     peripherals: [
       {
         category: "Monitor",
-        icon: Monitor,
+        icon: "lucide:monitor",
         name: "Xiaomi G24i 24\"",
         detail: "1080p · 180Hz IPS",
         price: 7800,
       },
       {
         category: "Keyboard + Mouse",
-        icon: Keyboard,
+        icon: "lucide:keyboard",
         name: "Logitech G G213 + G102",
         detail: "Membrane RGB · 8K DPI optical",
         price: 3400,
@@ -157,56 +143,56 @@ const FEATURED_BUILDS: Build[] = [
     parts: [
       {
         category: "CPU",
-        icon: Cpu,
+        icon: "lucide:cpu",
         name: "AMD Ryzen 7 9700X",
         detail: "8C / 16T · Zen 5 · 65W",
         price: 22000,
       },
       {
         category: "Cooler",
-        icon: Snowflake,
+        icon: "lucide:snowflake",
         name: "DeepCool LE520",
         detail: "240mm AIO · 3-yr warranty",
         price: 5200,
       },
       {
         category: "Motherboard",
-        icon: CircuitBoard,
+        icon: "lucide:circuit-board",
         name: "ASUS TUF Gaming B650-E WiFi",
         detail: "ATX · DDR5 · Wi-Fi 6E",
         price: 13500,
       },
       {
         category: "Memory",
-        icon: MemoryStick,
+        icon: "lucide:memory-stick",
         name: "G.Skill Trident Z5 Neo 32GB",
         detail: "2×16GB · DDR5-6000 CL30 EXPO",
         price: 7800,
       },
       {
         category: "GPU",
-        icon: Gpu,
+        icon: "lucide:gpu",
         name: "NVIDIA GeForce RTX 5060 Ti 16GB",
         detail: "Blackwell · 180W · DLSS 4 + FG",
         price: 31500,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "Crucial T500 2TB",
         detail: "PCIe 4.0 NVMe · 7,400 MB/s read",
         price: 9200,
       },
       {
         category: "PSU",
-        icon: Plug,
+        icon: "lucide:plug",
         name: "Corsair RM750e (2024)",
         detail: "750W · 80+ Gold · ATX 3.1",
         price: 7600,
       },
       {
         category: "Case",
-        icon: Box,
+        icon: "lucide:box",
         name: "Lian Li LANCOOL 216",
         detail: "Mid-tower · 2× 160mm intake",
         price: 5800,
@@ -215,7 +201,7 @@ const FEATURED_BUILDS: Build[] = [
     peripherals: [
       {
         category: "Monitor",
-        icon: Monitor,
+        icon: "lucide:monitor",
         name: "LG 27GP750 27\"",
         detail: "1440p · 180Hz · IPS",
         price: 18500,
@@ -242,63 +228,63 @@ const FEATURED_BUILDS: Build[] = [
     parts: [
       {
         category: "CPU",
-        icon: Cpu,
+        icon: "lucide:cpu",
         name: "AMD Ryzen 7 9800X3D",
         detail: "8C / 16T · 96MB 3D V-Cache · 120W",
         price: 32000,
       },
       {
         category: "Cooler",
-        icon: Snowflake,
+        icon: "lucide:snowflake",
         name: "ARCTIC Liquid Freezer III 360",
         detail: "360mm AIO · VRM fan",
         price: 9500,
       },
       {
         category: "Motherboard",
-        icon: CircuitBoard,
+        icon: "lucide:circuit-board",
         name: "Gigabyte X870 AORUS Elite WiFi7",
         detail: "ATX · USB4 · Wi-Fi 7",
         price: 19500,
       },
       {
         category: "Memory",
-        icon: MemoryStick,
+        icon: "lucide:memory-stick",
         name: "Corsair Vengeance RGB 32GB",
         detail: "2×16GB · DDR5-6400 CL32 EXPO",
         price: 8800,
       },
       {
         category: "GPU",
-        icon: Gpu,
+        icon: "lucide:gpu",
         name: "NVIDIA GeForce RTX 5070 Ti 16GB",
         detail: "Blackwell · 300W · DLSS 4 + MFG",
         price: 58500,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "Samsung 990 Pro 2TB",
         detail: "PCIe 4.0 NVMe · 7,450 MB/s read",
         price: 11500,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "Seagate IronWolf 4TB HDD",
         detail: "Bulk capture & archive · 5,400 RPM",
         price: 6200,
       },
       {
         category: "PSU",
-        icon: Plug,
+        icon: "lucide:plug",
         name: "Seasonic Focus GX-850 ATX 3.1",
         detail: "850W · 80+ Gold · 12V-2x6",
         price: 9800,
       },
       {
         category: "Case",
-        icon: Box,
+        icon: "lucide:box",
         name: "Fractal Design North XL",
         detail: "Mid-tower · walnut + mesh",
         price: 11500,
@@ -325,63 +311,63 @@ const FEATURED_BUILDS: Build[] = [
     parts: [
       {
         category: "CPU",
-        icon: Cpu,
+        icon: "lucide:cpu",
         name: "AMD Ryzen 9 9950X3D",
         detail: "16C / 32T · 128MB cache · 170W",
         price: 44000,
       },
       {
         category: "Cooler",
-        icon: Snowflake,
+        icon: "lucide:snowflake",
         name: "Corsair iCUE LINK H170i LCD",
         detail: "420mm AIO · LCD pump",
         price: 21500,
       },
       {
         category: "Motherboard",
-        icon: CircuitBoard,
+        icon: "lucide:circuit-board",
         name: "ASUS ROG Strix X870E-E Gaming WiFi",
         detail: "ATX · PCIe 5.0 x16 + 5.0 NVMe · USB4",
         price: 31500,
       },
       {
         category: "Memory",
-        icon: MemoryStick,
+        icon: "lucide:memory-stick",
         name: "G.Skill Trident Z5 Neo RGB 64GB",
         detail: "2×32GB · DDR5-6400 CL32 EXPO",
         price: 17500,
       },
       {
         category: "GPU",
-        icon: Gpu,
+        icon: "lucide:gpu",
         name: "NVIDIA GeForce RTX 5080 16GB",
         detail: "Blackwell · 360W · 4K-class DLSS 4",
         price: 82000,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "Crucial T705 2TB",
         detail: "PCIe 5.0 NVMe · 14,500 MB/s read",
         price: 14500,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "Samsung 990 Pro 4TB",
         detail: "PCIe 4.0 NVMe · scratch / project",
         price: 21500,
       },
       {
         category: "PSU",
-        icon: Plug,
+        icon: "lucide:plug",
         name: "Corsair RM1000x SHIFT ATX 3.1",
         detail: "1000W · 80+ Gold · side-mount cables",
         price: 13500,
       },
       {
         category: "Case",
-        icon: Box,
+        icon: "lucide:box",
         name: "Lian Li O11 Vision Compact",
         detail: "Tri-pane · vertical GPU ready",
         price: 12500,
@@ -390,7 +376,7 @@ const FEATURED_BUILDS: Build[] = [
     peripherals: [
       {
         category: "Monitor",
-        icon: Monitor,
+        icon: "lucide:monitor",
         name: "LG 32GS95UE 32\" QD-OLED",
         detail: "4K 240Hz / 1080p 480Hz dual-mode",
         price: 78500,
@@ -417,63 +403,63 @@ const FEATURED_BUILDS: Build[] = [
     parts: [
       {
         category: "CPU",
-        icon: Cpu,
+        icon: "lucide:cpu",
         name: "AMD Ryzen 9 9950X3D",
         detail: "16C / 32T · 128MB cache · 170W",
         price: 44000,
       },
       {
         category: "Cooler",
-        icon: Snowflake,
+        icon: "lucide:snowflake",
         name: "Custom EK-Quantum 360mm Loop",
         detail: "Hardline · CPU + GPU block",
         price: 48500,
       },
       {
         category: "Motherboard",
-        icon: CircuitBoard,
+        icon: "lucide:circuit-board",
         name: "ASUS ROG Crosshair X870E Hero",
         detail: "ATX · 2× Gen5 M.2 · 10G LAN",
         price: 42500,
       },
       {
         category: "Memory",
-        icon: MemoryStick,
+        icon: "lucide:memory-stick",
         name: "G.Skill Trident Z5 Royal Neo 64GB",
         detail: "2×32GB · DDR5-7200 CL34 EXPO",
         price: 21500,
       },
       {
         category: "GPU",
-        icon: Gpu,
+        icon: "lucide:gpu",
         name: "NVIDIA GeForce RTX 5090 32GB",
         detail: "Blackwell · 575W · 12V-2x6",
         price: 158000,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "Samsung 9100 Pro 2TB",
         detail: "PCIe 5.0 NVMe · 14,800 MB/s read",
         price: 17500,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "Crucial T705 4TB",
         detail: "PCIe 5.0 NVMe · project drive",
         price: 28500,
       },
       {
         category: "PSU",
-        icon: Plug,
+        icon: "lucide:plug",
         name: "Seasonic PRIME PX-1300 ATX 3.1",
         detail: "1300W · 80+ Platinum · 12V-2x6 native",
         price: 19500,
       },
       {
         category: "Case",
-        icon: Box,
+        icon: "lucide:box",
         name: "Hyte Y70 Touch",
         detail: "Touchscreen panel · vertical GPU",
         price: 22500,
@@ -482,7 +468,7 @@ const FEATURED_BUILDS: Build[] = [
     peripherals: [
       {
         category: "Monitor",
-        icon: Monitor,
+        icon: "lucide:monitor",
         name: "Samsung Odyssey OLED G80SD 32\"",
         detail: "4K 240Hz QD-OLED · DP 2.1",
         price: 84500,
@@ -509,56 +495,56 @@ const FEATURED_BUILDS: Build[] = [
     parts: [
       {
         category: "CPU",
-        icon: Cpu,
+        icon: "lucide:cpu",
         name: "AMD Ryzen 7 9700X",
         detail: "8C / 16T · 65W eco-mode",
         price: 22000,
       },
       {
         category: "Cooler",
-        icon: Snowflake,
+        icon: "lucide:snowflake",
         name: "Noctua NH-L12Sx77 Black",
         detail: "Low-profile · 77mm height",
         price: 6800,
       },
       {
         category: "Motherboard",
-        icon: CircuitBoard,
+        icon: "lucide:circuit-board",
         name: "ASRock B650I Lightning WiFi",
         detail: "Mini-ITX · DDR5 · 2.5G LAN",
         price: 14500,
       },
       {
         category: "Memory",
-        icon: MemoryStick,
+        icon: "lucide:memory-stick",
         name: "Kingston Fury Renegade 32GB",
         detail: "2×16GB · DDR5-6400 CL32 EXPO",
         price: 8200,
       },
       {
         category: "GPU",
-        icon: Gpu,
+        icon: "lucide:gpu",
         name: "NVIDIA GeForce RTX 5070 12GB",
         detail: "Blackwell dual-fan · 250W",
         price: 42500,
       },
       {
         category: "Storage",
-        icon: HardDrive,
+        icon: "lucide:hard-drive",
         name: "WD Black SN850X 2TB",
         detail: "PCIe 4.0 NVMe · 7,300 MB/s read",
         price: 9800,
       },
       {
         category: "PSU",
-        icon: Plug,
+        icon: "lucide:plug",
         name: "Corsair SF850L (2024)",
         detail: "SFX-L · 850W · 80+ Gold · ATX 3.1",
         price: 12500,
       },
       {
         category: "Case",
-        icon: Box,
+        icon: "lucide:box",
         name: "Fractal Design Terra",
         detail: "11 L · wood front · vertical GPU",
         price: 13500,
@@ -641,7 +627,7 @@ export default function FeaturedBuildsPage() {
                         href={`/build?preset=${build.id}`}
                         className="inline-flex items-center gap-2 mt-3 px-5 py-2 rounded-full bg-[#c2000b] text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[#c2000b]/20 hover:scale-105 active:scale-95 transition-transform"
                       >
-                        <Hammer className="w-3.5 h-3.5" />
+                        <Icon icon="lucide:hammer" className="w-3.5 h-3.5" />
                         <span>Clone_Build</span>
                       </Link>
                     </div>
@@ -659,7 +645,7 @@ export default function FeaturedBuildsPage() {
                             key={i}
                             className="flex gap-3 text-xs md:text-sm font-mono text-gray-700 dark:text-gray-300 leading-relaxed"
                           >
-                            <Zap className="text-[#c2000b] w-3.5 h-3.5 shrink-0 mt-1" />
+                            <Icon icon="lucide:zap" className="text-[#c2000b] w-3.5 h-3.5 shrink-0 mt-1" />
                             <span>{h}</span>
                           </li>
                         ))}
@@ -694,14 +680,13 @@ export default function FeaturedBuildsPage() {
                     </h3>
                     <div className="rounded-2xl border border-black/5 dark:border-white/5 bg-white/40 dark:bg-black/20 overflow-hidden">
                       {build.parts.map((part, i) => {
-                        const PartIcon = part.icon;
                         return (
                           <div
                             key={i}
                             className="flex items-center gap-3 md:gap-4 p-3 md:p-4 border-b border-black/5 dark:border-white/5 last:border-b-0"
                           >
                             <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center bg-[#c2000b]/10 border border-[#c2000b]/20 text-[#c2000b]">
-                              <PartIcon className="w-5 h-5" />
+                              <Icon icon={part.icon} className="w-5 h-5" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="text-[9px] font-mono text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-0.5">
@@ -733,14 +718,13 @@ export default function FeaturedBuildsPage() {
                       </h3>
                       <div className="rounded-2xl border border-dashed border-black/10 dark:border-white/10 bg-white/20 dark:bg-black/10 overflow-hidden">
                         {build.peripherals.map((part, i) => {
-                          const PartIcon = part.icon;
                           return (
                             <div
                               key={i}
                               className="flex items-center gap-3 md:gap-4 p-3 md:p-4 border-b border-black/5 dark:border-white/5 last:border-b-0"
                             >
                               <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-400">
-                                <PartIcon className="w-5 h-5" />
+                                <Icon icon={part.icon} className="w-5 h-5" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="text-[9px] font-mono text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-0.5">
