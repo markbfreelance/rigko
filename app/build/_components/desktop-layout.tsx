@@ -6,8 +6,6 @@ import { Icon } from "@iconify/react";
 import {
   CATEGORIES,
   PERIPHERAL_CATEGORIES,
-  PARTS,
-  PERIPHERALS,
 } from "../_data/parts";
 import type { BuilderViewProps } from "./builder-types";
 
@@ -35,6 +33,8 @@ export default function DesktopLayout({
   totalPrice,
   totalWattage,
   getActiveIds,
+  PARTS,
+  PERIPHERALS,
 }: BuilderViewProps) {
   return (
     <>

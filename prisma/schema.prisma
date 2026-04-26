@@ -37,6 +37,7 @@ model Cpu {
   tdp                Int      // Watts
   integrated_graphics Boolean
   generation         String
+  ram_type           String   // DDR4 / DDR5
   price              Float
   shopeeUrl          String?
 
@@ -162,4 +163,18 @@ model CaseFan {
   shopeeUrl String?
 
   @@map("case_fans")
+}
+
+model Peripheral {
+  id        String   @id @default(cuid())
+  category  String   // monitor, keyboard, mouse, headset, speaker, webcam
+  name      String
+  brand     String
+  price     Float
+  shopeeUrl String?
+  specs     Json?    // Category-specific specs
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("peripherals")
 }

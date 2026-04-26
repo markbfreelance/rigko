@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Icon } from "@iconify/react";
+import { getParts, getPeripherals } from "../actions/parts";
 
 import { CATEGORIES, PERIPHERAL_CATEGORIES } from "./_data/parts";
 import { checkCompatibility as checkCompat } from "./_lib/compatibility";
@@ -16,6 +17,28 @@ const RenderHudDrawer = dynamic(() => import("./_components/render-hud-drawer"),
 });
 
 export default function BuildPage() {
+  const [PARTS, setPARTS] = useState<Record<string, any[]>>({});
+  const [PERIPHERALS, setPERIPHERALS] = useState<Record<string, any[]>>({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [partsData, peripheralsData] = await Promise.all([
+          getParts(),
+          getPeripherals(),
+        ]);
+        setPARTS(partsData);
+        setPERIPHERALS(peripheralsData);
+      } catch (error) {
+        console.error("Failed to load parts:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
   const [activeCategory, setActiveCategory] = useState("cpu");
   const [selectedParts, setSelectedParts] = useState<Record<string, any>>({});
   const [selectedPeripherals, setSelectedPeripherals] = useState<
@@ -87,7 +110,6 @@ export default function BuildPage() {
         );
       }
 
-      // On mobile, return to the master index after selection
       if (window.innerWidth < 1024) {
         setTimeout(() => setIsSelectingMode(false), 400); // Slight delay for feedback
       }
@@ -135,6 +157,17 @@ export default function BuildPage() {
     return ids;
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#050100] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-[#c2000b] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-[#c2000b] font-mono text-sm tracking-widest animate-pulse">LOADING_DATA_CORE...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#050100] transition-colors overflow-x-clip is-builder-page">
 
@@ -157,6 +190,8 @@ export default function BuildPage() {
           checkCompatibility={checkCompatibility}
           totalPrice={totalPrice}
           totalWattage={totalWattage}
+          PARTS={PARTS}
+          PERIPHERALS={PERIPHERALS}
         />
         <DesktopLayout
           getActiveIds={getActiveIds}
@@ -176,6 +211,8 @@ export default function BuildPage() {
           checkCompatibility={checkCompatibility}
           totalPrice={totalPrice}
           totalWattage={totalWattage}
+          PARTS={PARTS}
+          PERIPHERALS={PERIPHERALS}
         />
       </main>
 

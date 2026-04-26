@@ -25,4 +25,7 @@ export type BuilderViewProps = {
   totalWattage: number;
 
   getActiveIds: () => string[];
+  
+  PARTS: Record<string, any[]>;
+  PERIPHERALS: Record<string, any[]>;
 };

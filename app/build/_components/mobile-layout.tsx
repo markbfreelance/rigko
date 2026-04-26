@@ -5,8 +5,6 @@ import { Icon } from "@iconify/react";
 import {
   CATEGORIES,
   PERIPHERAL_CATEGORIES,
-  PARTS,
-  PERIPHERALS,
 } from "../_data/parts";
 import type { BuilderViewProps } from "./builder-types";
 
@@ -27,6 +25,8 @@ export default function MobileLayout({
   checkCompatibility,
   totalPrice,
   totalWattage,
+  PARTS,
+  PERIPHERALS,
 }: BuilderViewProps) {
   return (
     <>
