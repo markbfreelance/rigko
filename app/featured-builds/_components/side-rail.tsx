@@ -28,7 +28,7 @@ export default function SideRail({
             type="button"
             onClick={() => scrollToSection(b.id)}
             aria-label={`Jump to ${b.name}`}
-            className="group relative flex items-center gap-2 py-1 pr-0 pl-2"
+            className="group relative flex items-center gap-2 py-1 pr-0 pl-2 cursor-pointer"
           >
             {/* Label — hover only, never persistent */}
             <span

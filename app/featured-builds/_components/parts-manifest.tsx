@@ -34,9 +34,17 @@ export default function PartsManifest({
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-[#c2000b] transition-colors"
+          className="inline-flex items-center gap-1.5 cursor-pointer text-[10px] font-mono uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-[#c2000b] transition-colors"
         >
-          <span>{open ? "Hide" : `Show ${parts.length} parts`}</span>
+          <span>
+            {open
+              ? "Hide all"
+              : `Show all ${parts.length}${
+                  peripherals && peripherals.length > 0
+                    ? ` + ${peripherals.length} periph`
+                    : ""
+                } parts`}
+          </span>
           <Icon
             icon="lucide:chevron-down"
             className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`}

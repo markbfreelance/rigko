@@ -116,7 +116,7 @@ export default function BuildsExplorer({ builds }: { builds: Build[] }) {
             <button
               type="button"
               onClick={reset}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#c2000b] text-white text-[10px] font-black uppercase tracking-widest"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#c2000b] text-white text-[10px] font-black uppercase tracking-widest cursor-pointer hover:scale-105 active:scale-95 transition-transform"
             >
               <Icon icon="lucide:rotate-ccw" className="w-3 h-3" />
               Reset filters

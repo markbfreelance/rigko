@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import { FEATURED_BUILDS } from "./_data/builds";
 import StatTiles from "./_components/stat-tiles";
 import HowItWorks from "./_components/how-it-works";
-import UseCasePicker from "./_components/use-case-picker";
 import BuildsExplorer from "./_components/builds-explorer";
 
 export const metadata = {
@@ -61,11 +60,6 @@ export default function FeaturedBuildsPage() {
 
         {/* By-the-numbers trust tiles */}
         <StatTiles />
-      </div>
-
-      {/* Goal-first picker */}
-      <div className="px-4 md:px-12 max-w-[1440px] mx-auto mb-6">
-        <UseCasePicker builds={FEATURED_BUILDS} />
       </div>
 
       {/* Interactive explorer (overview + filter rail + cards + side rails) */}

@@ -26,7 +26,7 @@ export default function MobileDock({
               type="button"
               onClick={() => scrollToSection(b.id)}
               aria-label={`Jump to ${b.name}`}
-              className="p-1.5 -m-1.5"
+              className="p-1.5 -m-1.5 cursor-pointer"
             >
               <span
                 className={`block rounded-full transition-all ${

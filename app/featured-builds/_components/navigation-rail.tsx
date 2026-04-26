@@ -50,7 +50,7 @@ export default function NavigationRail({
             type="button"
             onClick={() => setFiltersOpen((v) => !v)}
             aria-expanded={filtersOpen}
-            className="group relative shrink-0 inline-flex items-center gap-2 pl-3 pr-3.5 py-2 rounded-full bg-[#c2000b] text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-[#c2000b]/30 hover:shadow-[#c2000b]/50 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] transition-all overflow-hidden"
+            className="group relative shrink-0 inline-flex items-center gap-2 pl-3 pr-3.5 py-2 rounded-full bg-[#c2000b] text-white text-[10px] font-black uppercase tracking-[0.2em] cursor-pointer shadow-lg shadow-[#c2000b]/30 hover:shadow-[#c2000b]/50 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] transition-all overflow-hidden"
           >
             {/* Idle pulse halo — only when closed and no filters */}
             {!filtersOpen && !hasFilters && (
@@ -117,7 +117,7 @@ export default function NavigationRail({
             <button
               type="button"
               onClick={onReset}
-              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-black/10 dark:border-white/10 bg-white/40 dark:bg-black/20 text-[10px] font-mono uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-[#c2000b] hover:border-[#c2000b]/40 transition-colors"
+              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-black/10 dark:border-white/10 bg-white/40 dark:bg-black/20 text-[10px] font-mono uppercase tracking-widest text-gray-600 dark:text-gray-400 cursor-pointer hover:text-[#c2000b] hover:border-[#c2000b]/40 transition-colors"
             >
               <Icon icon="lucide:rotate-ccw" className="w-3 h-3" />
               <span className="hidden sm:inline">Reset</span>
@@ -141,7 +141,7 @@ export default function NavigationRail({
                       key={tier}
                       type="button"
                       onClick={() => onToggleTier(tier)}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-mono uppercase tracking-widest transition-all ${
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-mono uppercase tracking-widest cursor-pointer transition-all ${
                         selected
                           ? "text-white"
                           : "border-black/10 dark:border-white/10 bg-white/60 dark:bg-black/30 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
@@ -217,7 +217,7 @@ export default function NavigationRail({
                       key={opt.v}
                       type="button"
                       onClick={() => onSortChange(opt.v)}
-                      className={`inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md border text-[10px] font-mono uppercase tracking-widest transition-colors ${
+                      className={`inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md border text-[10px] font-mono uppercase tracking-widest cursor-pointer transition-colors ${
                         active
                           ? "border-[#c2000b] bg-[#c2000b] text-white"
                           : "border-black/10 dark:border-white/10 bg-white/60 dark:bg-black/30 text-gray-600 dark:text-gray-400 hover:border-[#c2000b]/40"
@@ -233,7 +233,7 @@ export default function NavigationRail({
                 <button
                   type="button"
                   onClick={onReset}
-                  className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-[#c2000b]"
+                  className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 cursor-pointer hover:text-[#c2000b]"
                 >
                   <Icon icon="lucide:rotate-ccw" className="w-3 h-3" />
                   Reset all
