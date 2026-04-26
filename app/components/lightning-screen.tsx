@@ -9,12 +9,24 @@ const Lightning = ({ hue = 360, xOffset = 0, speed = 1, intensity = 1, size = 1 
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const dprCap = () => Math.min(window.devicePixelRatio || 1, 1.5);
     const resizeCanvas = () => {
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
+      const dpr = dprCap();
+      const w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+      const h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        return true;
+      }
+      return false;
     };
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
+    const resizeObserver = new ResizeObserver(() => {
+      resizeCanvas();
+    });
+    resizeObserver.observe(canvas);
 
     const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
     if (!gl) {
@@ -155,15 +167,21 @@ const Lightning = ({ hue = 360, xOffset = 0, speed = 1, intensity = 1, size = 1 
     const uIntensityLocation = gl.getUniformLocation(program, 'uIntensity');
     const uSizeLocation = gl.getUniformLocation(program, 'uSize');
 
-    const startTime = performance.now();
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
+    let elapsed = 0; // seconds, only advances while animating
+    let lastTs = 0;
+    let isVisible = true;
+    let isIntersecting = true;
 
-    const render = () => {
-      resizeCanvas();
+    const render = (ts: number) => {
+      if (lastTs === 0) lastTs = ts;
+      const dt = (ts - lastTs) / 1000;
+      lastTs = ts;
+      elapsed += dt;
+
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
-      const currentTime = performance.now();
-      gl.uniform1f(iTimeLocation, (currentTime - startTime) / 1000.0);
+      gl.uniform1f(iTimeLocation, elapsed);
       gl.uniform1f(uHueLocation, hue);
       gl.uniform1f(uXOffsetLocation, xOffset);
       gl.uniform1f(uSpeedLocation, speed);
@@ -172,11 +190,49 @@ const Lightning = ({ hue = 360, xOffset = 0, speed = 1, intensity = 1, size = 1 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
       animationFrameId = requestAnimationFrame(render);
     };
-    animationFrameId = requestAnimationFrame(render);
+
+    const start = () => {
+      if (animationFrameId !== null) return;
+      lastTs = 0;
+      animationFrameId = requestAnimationFrame(render);
+    };
+    const stop = () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    };
+    const sync = () => {
+      if (isVisible && isIntersecting) start();
+      else stop();
+    };
+
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          isIntersecting = entry.isIntersecting;
+        }
+        sync();
+      },
+      { threshold: 0 }
+    );
+    intersectionObserver.observe(canvas);
+
+    const onVisibilityChange = () => {
+      isVisible = document.visibilityState === 'visible';
+      sync();
+    };
+    isVisible = document.visibilityState === 'visible';
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    sync();
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      stop();
     };
   }, [hue, xOffset, speed, intensity, size]);
 
