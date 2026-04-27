@@ -68,7 +68,7 @@ const navLinks: NavLink[] = [
     ],
   },
   { label: "Marketplace", href: "#" },
-  { label: "Guides", href: "#" },
+  { label: "Guides", href: "/guides" },
 ];
 
 export default function Header({ children }: { children?: React.ReactNode }) {
